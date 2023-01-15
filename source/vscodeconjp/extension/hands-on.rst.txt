@@ -1,0 +1,151 @@
+Part 1. テキストをベースに写経 & 改造
+============================================================
+
+.. TODO 目次ハイライト
+
+.. _VSCode Conference Japan 2021: https://vscodejp.github.io/conf2021/ja/
+.. _vscodejp/handson-hello-vscode-extension: https://github.com/vscodejp/handson-hello-vscode-extension
+
+知っていたテキスト
+--------------------------------------------------
+
+* `VSCode Conference Japan 2021`_ (2021/11) ハンズオン
+* VS Codeの拡張機能を作ろう❗ :fab:`github` `vscodejp/handson-hello-vscode-extension`_
+* LSP（Language Server Protocol）を使った拡張を作る
+
+拡張機能の基礎を学びたい人（beginner）向け
+--------------------------------------------------
+
+* Hello World（簡単な拡張を作って起動する）
+* コードレンズのボタンからドキュメントを編集する拡張を作る
+
+経験のない試みなので、ハードルを下げた（これでもできるか分からなかった）
+
+時を戻そう（当時のnikkieに助言するなら）
+--------------------------------------------------
+
+* beginner向けテキストを改造する（変更なし）
+* 拡張開発までカバーした書籍（参考文献参照）に当たって日本語で多くの情報を得るのがより早道
+
+テキストをベースに写経 & 改造
+--------------------------------------------------
+
+1. beginner向けテキストに沿ってHello Worldを動かす
+2. beginner向けテキストに沿ってドキュメントを編集する拡張を動かす
+3. ドキュメントの編集を自分がやりたい編集の仕方に改造する
+
+.. ref: https://scrapbox.io/nikkie-memos/%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E3%81%AE%E5%9F%BA%E7%A4%8E%E3%82%92%E5%AD%A6%E3%81%B3%E3%81%9F%E3%81%84%E4%BA%BA%E5%90%91%E3%81%91
+
+1-1 Hello World
+============================================================
+
+.. TODO 目次ハイライト
+
+.. _事前準備 必要な開発環境を整えよう: https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/00_prepare.md
+
+開発環境構築
+============================================================
+
+* **開発環境構築**
+
+  * ツールのセットアップ
+  * scaffold（拡張開発に必要なファイル一式の生成）
+
+* 開発中の拡張を動かす
+
+VS Code
+--------------------------------------------------
+
+* 拡張開発中のバグ混入を防ぐため、VS Codeに `ESLint拡張機能 <https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint>`__ をインストール
+* （普段遣いなので、nikkieの場合、VS Code自体のインストールは不要でした）
+
+`事前準備 必要な開発環境を整えよう`_
+
+Node.js
+--------------------------------------------------
+
+    `Node.jsのページ <https://nodejs.org/>`__ からLTS（Long Term Support）バージョンをインストールしましょう。
+
+`事前準備 必要な開発環境を整えよう`_ では16.13.0
+
+.. _Yeoman: https://yeoman.io/
+
+:command:`npm install`
+--------------------------------------------------
+
+.. TODO 見やすくしたい
+
+* ``yo`` （`Yeoman`_。scaffold＝足場（テンプレートに沿ったファイル群）を作ってくれるツール）
+* ``generator-code`` （YeomanのVS Code拡張向けテンプレート）
+
+ref: `事前準備 必要な開発環境を整えよう`_
+
+.. _Hello Worldを作成しよう: https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/01_init.md
+
+:command:`yo code` でscaffoldするんだYO
+--------------------------------------------------
+
+TODO ディレクトリツリー（samplecode下に用意する）
+
+`Hello Worldを作成しよう`_
+
+開発中の拡張を動かす
+============================================================
+
+* 開発環境構築
+* 開発中の拡張を動かす
+
+Hello World拡張がscaffoldされている
+--------------------------------------------------
+
+* :command:`yo code` しただけ。 **実装は不要**
+* :kbd:`F5` で拡張をビルド（新しいVS CodeのWindow）
+
+.. _Hello Worldを起動しよう: https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/02_build.md
+
+Hello World!
+--------------------------------------------------
+
+* コマンドパレット（:kbd:`F1`）を開いて
+* 「Hello World」コマンドを呼び出す
+
+.. TODO コマンド実行結果のスクリーンショット
+
+`Hello Worldを起動しよう`_
+
+:file:`src/extension.ts`
+--------------------------------------------------
+
+.. TODO 続く説明の伏線として全体+ハイライトの方がわかりやすそう
+
+.. code-block:: ts
+
+    window.showInformationMessage('Hello World from Hello VSCode!');
+
+* ``showInformationMessage`` でVS CodeのWindow右下にメッセージが出た
+
+`Hello Worldを起動しよう`_
+
+メッセージの内容を変えてみる
+--------------------------------------------------
+
+* ソースを編集したら :kbd:`Shitt + Command + F5` でRestart
+* コマンドパレットから「Hello World」コマンドを呼び出すと、メッセージが変わっている！
+* 「拡張開発できている！！」🙌
+
+Hello Worldでは *コマンド* を追加した
+--------------------------------------------------
+
+* :file:`package.json` 中（``contributes``）に ``hello-vscode.helloWorld`` という識別子のコマンドを宣言
+* :file:`src/extension.ts` では ``commands.registerCommand`` で ``hello-vscode.helloWorld`` コマンドを利用可能にした
+* 追加されたコマンドをコマンドパレットから呼び出した
+
+.. TODO コントリビューションポイントを説明する？
+.. TODO コマンドパレット、すべてはコマンド
+
+🥟Hello World 小まとめ
+============================================================
+
+* `事前準備 必要な開発環境を整えよう`_ に沿って環境構築
+* Yeomanでscaffold（拡張開発に必要なファイル一式を作成）
+* Hello World拡張を動かせている！
