@@ -53,30 +53,24 @@ Part 1. テキストをベースに写経 & 改造
 
 * 開発中の拡張を動かす
 
-VS Code
---------------------------------------------------
-
-* 拡張開発中のバグ混入を防ぐため、VS Codeに `ESLint拡張機能 <https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint>`__ をインストール
-* （普段遣いなので、nikkieの場合、VS Code自体のインストールは不要でした）
-
-`事前準備 必要な開発環境を整えよう`_
-
 Node.js
 --------------------------------------------------
 
-    `Node.jsのページ <https://nodejs.org/>`__ からLTS（Long Term Support）バージョンをインストールしましょう。
+* `Node.js <https://nodejs.org/>`_ のLTSバージョンをインストール
 
-`事前準備 必要な開発環境を整えよう`_ では16.13.0
+  * ハンズオンテキストでは16.13.0
+
+* 拡張開発中のバグ混入を防ぐため、VS Codeに `ESLint拡張機能 <https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint>`__ をインストール
+
+`事前準備 必要な開発環境を整えよう`_
 
 .. _Yeoman: https://yeoman.io/
 
-:command:`npm install`
+:command:`npm install yo generator-code`
 --------------------------------------------------
 
-.. TODO 見やすくしたい
-
-* ``yo`` （`Yeoman`_。scaffold＝足場（テンプレートに沿ったファイル群）を作ってくれるツール）
-* ``generator-code`` （YeomanのVS Code拡張向けテンプレート）
+:yo: `Yeoman`_ scaffold＝足場（テンプレートに沿ったファイル群）を作ってくれるツール
+:generator-code: YeomanのVS Code拡張向けテンプレート
 
 ref: `事前準備 必要な開発環境を整えよう`_
 
@@ -85,9 +79,26 @@ ref: `事前準備 必要な開発環境を整えよう`_
 :command:`yo code` でscaffoldするんだYO
 --------------------------------------------------
 
-TODO ディレクトリツリー（samplecode下に用意する）
+.. TODO :fab:`github` samplecode下へのリンク
 
-`Hello Worldを作成しよう`_
+.. https://tree.nathanfriend.io/
+  hello-vscode
+   .vscode/
+   src/
+    extension.ts
+   package.json
+   package-lock.json
+
+.. code-block:: none
+
+    hello-vscode/
+    ├── .vscode/
+    ├── src/
+    │   └── extension.ts
+    ├── package.json
+    └── package-lock.json
+
+上記は抜粋版。 `Hello Worldを作成しよう`_ に詳細な説明あります
 
 開発中の拡張を動かす
 ============================================================
@@ -106,21 +117,23 @@ Hello World拡張がscaffoldされている
 Hello World!
 --------------------------------------------------
 
-* コマンドパレット（:kbd:`F1`）を開いて
+* *コマンド* パレット（:kbd:`F1`）を開いて
 * 「Hello World」コマンドを呼び出す
 
-.. TODO コマンド実行結果のスクリーンショット
-
 `Hello Worldを起動しよう`_
+
+コマンド実行結果、右下から来るぞ！
+--------------------------------------------------
+
+.. figure:: ../_static/vscodeconjp/01extension-hello-world.png
 
 :file:`src/extension.ts`
 --------------------------------------------------
 
-.. TODO 続く説明の伏線として全体+ハイライトの方がわかりやすそう
-
-.. code-block:: ts
-
-    window.showInformationMessage('Hello World from Hello VSCode!');
+.. literalinclude:: ../../samplecode/awakening-extension/hello-vscode/src/extension.ts
+    :language: ts
+    :lines: 3,7,16,19-20,26
+    :emphasize-lines: 4
 
 * ``showInformationMessage`` でVS CodeのWindow右下にメッセージが出た
 
@@ -136,9 +149,29 @@ Hello World!
 Hello Worldではユーザが呼び出せる *コマンド* を追加した
 ------------------------------------------------------------
 
-* :file:`package.json` 中（``contributes``）に ``hello-vscode.helloWorld`` という識別子のコマンドを宣言
-* :file:`src/extension.ts` では ``commands.registerCommand`` で ``hello-vscode.helloWorld`` コマンドを利用可能にした
-* 追加されたコマンドをコマンドパレットから呼び出した
+* :file:`package.json`
+* :file:`src/extension.ts`
+
+ユーザが使えるコマンドの秘密は、この2つのファイル
+
+:file:`package.json` にコマンドのID 🏃‍♂️
+--------------------------------------------------
+
+``hello-vscode.helloWorld`` という識別子のコマンドを宣言
+
+.. literalinclude:: ../../samplecode/awakening-extension/hello-vscode/package.json
+    :language: json
+    :lines: 16-23
+
+:file:`src/extension.ts` にコマンドの実装 🏃‍♂️
+--------------------------------------------------
+
+``commands.registerCommand`` で ``hello-vscode.helloWorld`` コマンドを実装と紐付けた
+
+.. literalinclude:: ../../samplecode/awakening-extension/hello-vscode/src/extension.ts
+    :language: ts
+    :lines: 3,7,16,19-20,26
+    :emphasize-lines: 3-5
 
 .. TODO コントリビューションポイントを説明する？
 .. TODO コマンドパレット、すべてはコマンド
