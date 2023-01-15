@@ -25,7 +25,7 @@ Part 1. テキストをベースに写経 & 改造
 --------------------------------------------------
 
 * beginner向けテキストを改造する（変更なし）
-* 拡張開発までカバーした書籍（参考文献参照）に当たって日本語で多くの情報を得るのがより早道
+* 拡張開発までカバーした書籍（参考文献参照）に当たって **日本語で多くの情報を得る** のがより早道
 
 テキストをベースに写経 & 改造
 --------------------------------------------------
@@ -133,8 +133,8 @@ Hello World!
 * コマンドパレットから「Hello World」コマンドを呼び出すと、メッセージが変わっている！
 * 「拡張開発できている！！」🙌
 
-Hello Worldでは *コマンド* を追加した
---------------------------------------------------
+Hello Worldではユーザが呼び出せる *コマンド* を追加した
+------------------------------------------------------------
 
 * :file:`package.json` 中（``contributes``）に ``hello-vscode.helloWorld`` という識別子のコマンドを宣言
 * :file:`src/extension.ts` では ``commands.registerCommand`` で ``hello-vscode.helloWorld`` コマンドを利用可能にした
@@ -149,3 +149,170 @@ Hello Worldでは *コマンド* を追加した
 * `事前準備 必要な開発環境を整えよう`_ に沿って環境構築
 * Yeomanでscaffold（拡張開発に必要なファイル一式を作成）
 * Hello World拡張を動かせている！
+
+1-2 マークダウンを編集する拡張
+============================================================
+
+.. TODO 目次ハイライト
+
+.. _ドキュメントを編集しよう: https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/04_edit.md
+
+やりたいことは、日付の挿入
+============================================================
+
+* マークダウンファイル
+* **見出しに日付を挿入** したい
+
+.. code-block:: markdown
+    :caption: before
+
+    ## VSCodeConJP
+
+.. code-block:: markdown
+    :caption: after
+
+    ## 2023/01/21 VSCodeConJP
+
+日付挿入ロジック
+--------------------------------------------------
+
+* 1つ以上の ``#`` を「同じ数の ``#`` とその日の日付」で **置き換え** る
+* ``## VSCodeConJP`` であれば、 ``##(空白)`` を ``## 2023/01/21(空白)`` で置き換え（いずれも末尾に空白文字 **含む**）
+
+.. code-block:: diff
+
+    - ## VSCodeConJP
+    + ## 2023/01/21 VSCodeConJP
+
+ハンズオンにおける実装：CodeLens（コードレンズ）
+--------------------------------------------------
+
+`CodeLens - Show Actionable Context Information Within Source Code <https://code.visualstudio.com/api/language-extensions/programmatic-language-features#codelens-show-actionable-context-information-within-source-code>`_
+
+*ソースコード中に表示される、ユーザがアクションできるリンク*
+
+CodeLensを使った拡張の例：GitLens
+--------------------------------------------------
+
+TODO
+
+CodeLensを使った日付挿入
+--------------------------------------------------
+
+* 1行目が見出しの行（``#`` で始まる行）であればCodeLensを作る
+
+  * 1行目が ``## VSCodeConJP`` であれば ``##(空白)`` にCodeLensを作る（add dateというリンク）
+
+* ユーザがCodeLensをクリックすると ``##(空白)`` を ``## 2023/01/21(空白)`` に置き換え（日付挿入）
+
+.. 1行目以外はCodeLensが作られない実装
+
+TODO 視覚的にわかりやすく表示するスクリーンショットなど
+
+CodeLensを使った日付挿入を実現する要素
+============================================================
+
+* CodeLens
+* コマンド
+
+  * ユーザがCodeLensのリンクをクリックしたら、コマンドが呼び出され、日付挿入される
+
+``vscode.CodeLensProvider``
+--------------------------------------------------
+
+* 実装して独自の ``CodeLensProvider`` クラスを定義する
+* ソースコード（今回はマークダウンファイル）中にCodeLensを設定する
+
+``CodeLensProvider`` が設定するCodeLens1つ1つ
+--------------------------------------------------
+
+* 「何行目の何文字目から何文字目まで」（range）にCodeLensを作成する
+* rangeを出すのに正規表現を使う
+
+  * マークダウンファイルの中身について ``/^#+\s/g;`` と一致する箇所（range）すべてにCodeLensを作成
+
+.. 正規表現が^から始まるので、マークダウンファイル1つに1個あるかないか
+
+コマンドを呼び出すようにCodeLensを作成
+--------------------------------------------------
+
+.. code-block:: ts
+
+        codeLenses.push(
+          new vscode.CodeLens(range, {
+            title: "add date",
+            tooltip: "add date",
+            command: "markdown-date.addDate",
+            arguments: [range],
+          })
+        );
+
+.. return codeLenses があると分かりやすそう
+
+``markdown-date.addDate`` コマンド
+--------------------------------------------------
+
+.. code-block:: ts
+
+    commands.registerCommand("markdown-date.addDate", (range: Range) => {
+      if (vscode.window.activeTextEditor) {
+        // ## VSCodeConJP の場合、textが「## 」
+        const text = vscode.window.activeTextEditor.document.getText(range);
+
+        const today = dayjs().format("YYYY-MM-DD");
+
+        vscode.window.activeTextEditor.edit((editBuilder) => {
+          // ## VSCodeConJP の場合、「## 」を表すrangeを「## 2023/01/21 」で置き換える
+          editBuilder.replace(range, text + today + " ");
+        });
+      }
+    });
+
+.. TODO マークダウンだけというmanifestの宣言
+
+🥟マークダウンを編集する拡張 小まとめ
+============================================================
+
+* 1行目の見出しに日付を挿入できるようにしたい
+* CodeLensと、CodeLensクリックでコマンド呼び出し
+* ``vscode.CodeLensProvider`` を実装（正規表現にマッチしたrangeに ``CodeLens`` を作る）
+
+1-3 マークダウン編集ロジックを改造
+============================================================
+
+実は無限に日付を挿入できる
+--------------------------------------------------
+
+* ``## VSCodeConJP``
+* ``## 2023/01/21 VSCodeConJP``
+
+  * ``##(空白)`` の部分にCodeLensが作成される
+
+* ``## 2023/01/21 2023/01/21 VSCodeConJP``
+
+改造案を着想
+--------------------------------------------------
+
+* 見出しに限らず、特定の文字列の後ろにemojiを挿入できるのでは！？
+* 文字列「歩夢」の後ろに「🎀」を挿入（「歩夢」を「歩夢🎀」で置換）
+* 歩夢 ➡️ 歩夢🎀 ➡️ 歩夢🎀🎀 ➡️ 歩夢🎀🎀🎀
+
+これを実装し、公開したのが
+--------------------------------------------------
+
+https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-editing
+
+公開までの手順は続くパートで
+
+🌯Part 1. テキストをベースに写経 & 改造 まとめ
+============================================================
+
+* :fab:`github` `vscodejp/handson-hello-vscode-extension`_ をベースにマークダウンを編集する拡張を写経・改造できる
+* VS Codeの概念：「コマンド」「CodeLens」
+
+  * CodeLensからコマンドを呼び出し、**CodeLensが設定されている範囲を編集** できる
+
+関連アウトプット 🏃‍♂️
+--------------------------------------------------
+
+* `VSCode拡張開発 素振りの記：ハンズオンテキストを元に「歩夢」を「歩夢🎀」に置き換える拡張を自作し、コマンドとコードレンズを完全に理解 <https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-development-101-command-codelens>`__
