@@ -1,0 +1,198 @@
+Part 2. 拡張のE2Eテストを書こう
+============================================================
+
+テストを書きたい！
+--------------------------------------------------
+
+* 改造がうまくいき、公開が見えてきた✨
+* IMO「自分以外が使う可能性があるなら、テストを書きたい」
+* VS Codeを操作するE2Eテスト（End to End）、どう書くんだ？
+
+実はテストはscaffoldされてるYO
+--------------------------------------------------
+
+* Yeomanにより :file:`src/test` 以下にテストに使うファイルが生成されています
+* :command:`npm run test` または :command:`yarn test`
+
+.. TODO ディレクトリツリー
+
+テストを繰り返し実行できるように設定
+--------------------------------------------------
+
+開発環境（macOS）で、テストの2回めが実行できなかったのに対処
+
+.. code-block:: ts
+    :caption: src/test/runTest.ts
+    :emphasize-lines: 7
+
+    async function main() {
+        // ... 省略 ...
+        await runTests(
+            {
+                extensionDevelopmentPath,
+                extensionTestsPath,
+                launchArgs: ['--user-data-dir', `${tmpdir()}`]
+            });
+        // ... 省略 ...
+    }
+
+.. _typescript-language-featuresのCodeLensのE2E: https://github.com/microsoft/vscode/blob/1.74.3/extensions/typescript-language-features/src/test/smoke/referencesCodeLens.test.ts
+
+マークダウンを編集する拡張のテスト（IMO）
+============================================================
+
+* マークダウンファイルを開いたときのCodeLensの設定（個数や行）
+
+  * ref: `typescript-language-featuresのCodeLensのE2E`_
+
+* ユーザがCodeLensをクリックしたのをエミュレートしたコマンド実行
+
+マークダウンファイルを開いたときのCodeLensの設定をテスト
+============================================================
+
+* テストに使うマークダウンファイル（**フィクスチャ**）
+* テストコードでCodeLensを取得する
+
+フィクスチャの設定
+--------------------------------------------------
+
+* フィクスチャを配置
+* フィクスチャを使うように設定（:file:`src/test/runTest.ts`）
+
+フィクスチャ
+--------------------------------------------------
+
+.. code-block:: markdown
+    :lineno-start: 0
+    :caption: test-fixtures/markdown/example.md
+
+    # Test of tokimeki-editing
+
+    ## テスト歩夢
+
+    歩夢の行にemojiを追加できる
+
+    この行には何もしません
+
+.. ディレクトリツリーがあってもいいかも
+
+フィクスチャを使うように設定
+--------------------------------------------------
+
+.. code-block:: ts
+    :caption: src/test/runTest.ts
+    :emphasize-lines: 3,8
+
+    async function main() {
+        // ... 省略 ...
+        const testWorkspace = path.resolve(__dirname, '../../test-fixtures');
+        await runTests(
+            {
+                extensionDevelopmentPath,
+                extensionTestsPath,
+                launchArgs: [testWorkspace, '--user-data-dir', `${tmpdir()}`]
+            });
+        // ... 省略 ...
+    }
+
+.. TODO テストコードはここにあると示したい
+    https://github.com/ftnext/vscode-tokimeki-editing/blob/v0.0.2/src/test/suite/extension.test.ts
+
+テストコードでフィクスチャのマークダウンファイルを開く
+------------------------------------------------------------
+
+.. code-block:: ts
+    :caption: src/test/suite/extension.test.ts
+
+    const testFileLocation = '/markdown/example.md';
+
+    suite('Extension Test Suite', () => {
+        let fileUri: vscode.Uri;
+        let editor: vscode.TextEditor;
+        
+        setup(async () => {
+            fileUri = vscode.Uri.file(vscode.workspace.workspaceFolders![0].uri.fsPath + testFileLocation);
+            const document = await vscode.workspace.openTextDocument(fileUri);
+            editor = await vscode.window.showTextDocument(document);
+        });
+    });
+
+テストコードでCodeLensを取得する
+--------------------------------------------------
+
+.. code-block:: ts
+
+    vscode.commands.executeCommand<readonly vscode.CodeLens[]>('vscode.executeCodeLensProvider', fileUri, 100);
+
+ref: `typescript-language-featuresのCodeLensのE2E`_
+
+CodeLensの設定をテスト
+--------------------------------------------------
+
+.. code-block:: ts
+    :caption: src/test/suite/extension.test.ts
+
+    const codeLenses = await vscode.commands.executeCommand<readonly vscode.CodeLens[]>('vscode.executeCodeLensProvider', fileUri, 100);
+
+    // フィクスチャのファイルでCodeLensはいくつ設定されるか - 2個
+    assert.strictEqual(codeLenses?.length, 2);
+    // フィクスチャのファイルでCodeLensは何行目に設定されるか - 2行目と4行目（歩夢がある行）
+    assert.strictEqual(codeLenses?.[0].range.start.line, 2);
+    assert.strictEqual(codeLenses?.[1].range.start.line, 4);
+
+コマンド実行のテスト
+============================================================
+
+ユーザがCodeLensをクリックしたのをエミュレートする意図
+
+コマンド実行するテストコード
+--------------------------------------------------
+
+.. code-block:: ts
+    :caption: src/test/suite/extension.test.ts
+
+    test('Insert 🎀 after 歩夢', async () => {
+        const COMMAND_NAME = "tokimeki-editing.addOshiEmoji";
+        await sleep(1500);  // sleepはユーザ定義関数でブロッキングする（VS CodeのWindowのロード待ちの意図）
+        // 4行目「歩夢の行にemojiを追加できる」の「歩夢」にCodeLensが設定されている。
+        // このCodeLensがユーザにクリックされたときに呼び出されるのと同様のコマンド呼び出し（「歩夢」のrangeも渡す）
+        await vscode.commands.executeCommand(COMMAND_NAME, new vscode.Range(new vscode.Position(4, 0), new vscode.Position(4, 2)));
+        await sleep(500);
+
+        const actual = editor.document.lineAt(4).text;
+        assert.strictEqual(actual, '歩夢🎀の行にemojiを追加できる');
+    });
+
+テストの実行時間が伸びたことでテストが落ちないようにする
+------------------------------------------------------------
+
+.. code-block:: ts
+    :caption: src/test/suite/index.ts
+    :emphasize-lines: 5
+
+    export function run(): Promise<void> {
+        const mocha = new Mocha({
+            ui: 'tdd',
+            color: true,
+            timeout: 5000  // 2000msから伸ばした（60000msまで伸ばしてもよいかも）
+        });
+
+        // ... 省略 ...
+    }
+
+Mochaの設定を変更
+
+🌯Part 2. 拡張のE2Eテストを書こう まとめ
+============================================================
+
+* マークダウンを編集できるCodeLensを提供する拡張について、E2Eテストを書いた
+
+  * CodeLensの設定を検証
+  * ユーザがCodeLensをクリックしたときのエミュレートして検証
+
+* runTestsの ``launchArgs`` ・Mochaの設定
+
+関連アウトプット 🏃‍♂️
+--------------------------------------------------
+
+* `私は、VS Code拡張のE2E、書いてみたい！ 〜今はこれが精一杯🔰、中間報告編〜 <https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-codelens-e2e-beginner>`__
