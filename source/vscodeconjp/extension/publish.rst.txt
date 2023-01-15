@@ -1,0 +1,157 @@
+Part 3. 拡張を公開しよう
+============================================================
+
+.. _Marketplace: https://marketplace.visualstudio.com/vscode
+
+`Marketplace`_ へ公開！
+--------------------------------------------------
+
+1. ブラウザからアップロードして公開
+2. コマンドラインで操作して公開
+
+3-1 ブラウザからアップロードして公開
+============================================================
+
+* Visual Studio Marketplace publisher management page
+* :command:`vsce` コマンド
+
+Visual Studio Marketplace publisher management page
+============================================================
+
+* https://marketplace.visualstudio.com/manage
+* マイクロソフトアカウントでサインイン（GitHubアカウントは未検証）
+* Create publisher（publisherを作る）
+
+Nameだけ入力すればpublisherは作れる
+--------------------------------------------------
+
+.. figure:: ../_static/vscodeconjp/01extension-create-publisher.png
+
+:command:`vsce` コマンド
+============================================================
+
+:command:`npm install @vscode/vsce`
+
+https://code.visualstudio.com/api/working-with-extensions/publishing-extension#installation
+
+:file:`package.json` を編集
+--------------------------------------------------
+
+.. code-block:: json
+
+    {
+      // nameはMarketplaceで一意になるように変えるのがオススメ（チュートリアルのままだとかぶってしまう）
+      "name": "tokimeki-editing",
+      // publisher management pageで作ったpublisherのIDを書く
+      "publisher": "everlasting-diary",
+      // ... 省略 ....
+    }
+
+:command:`vsce package`
+--------------------------------------------------
+
+* 拡張のソースコードを ``vsix`` ファイルにまとめる
+
+  * :file:`tokimeki-editing-0.0.1.vsix` 🙌
+
+* Yeomanでscaffoldした :file:`README.md` のままだとpackageでエラー。編集する（内容を削った）
+
+.. _Visual Studio Marketplace publisher management page: https://marketplace.visualstudio.com/manage
+
+ブラウザからアップロード
+============================================================
+
+* `Visual Studio Marketplace publisher management page`_ を操作
+* publisherにvsixファイルをアップロード
+
+  * `ドキュメントの「Publish an extension」 <https://code.visualstudio.com/api/working-with-extensions/publishing-extension#publish-an-extension>`__ に画像あり
+
+`Marketplace`_ に公開🙌
+--------------------------------------------------
+
+* アップロード後、verifyされるため少しだけ待つ
+
+  * パスしたらメールが来た
+
+* 公開後、拡張を右クリックして表示されるメニューから、非公開にも切り替えられる
+
+3-2 コマンドラインで操作して公開
+============================================================
+
+.. code-block:: sh
+
+    vsce package
+    vsce login <publisher name>
+    vsce publish
+
+:command:`vsce login` にはトークンが必要
+--------------------------------------------------
+
+.. code-block:: sh
+
+    $ vsce login everlasting-diary
+    Personal Access Token for publisher 'everlasting-diary':
+
+Personal Access Token作成
+============================================================
+
+1. Azure DevOpsの組織（organization）を作る
+2. Azure DevOpsの組織でPersonal Access Tokenを作る
+
+Azure DevOpsの組織を作る
+--------------------------------------------------
+
+* https://go.microsoft.com/fwlink/?LinkId=307137 からサインイン
+
+  * Visual Studio Marketplace publisher management pageと同じマイクロソフトアカウント
+
+* 組織（organization）だけを作る
+* 画像つきの手順： `組織の作成 <https://learn.microsoft.com/ja-jp/azure/devops/organizations/accounts/create-organization?view=azure-devops>`_
+
+Azure DevOpsの組織でPersonal Access Tokenを作る
+------------------------------------------------------------
+
+.. figure:: ../_static/vscodeconjp/01extension-azure-devops-create-token.png
+
+User settings（右上のアイコン） > Personal access tokens
+
+Personal Access Token作成時の必須項目
+------------------------------------------------------------
+
+:Name: トークンの名前
+:Organization: everlasting-diary
+:Scopes: MarketplaceのManageだけ
+
+`ドキュメントの「Get a Personal Access Token」 <https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token>`__ に画像あり
+
+控えたトークンで :command:`vsce login` が通ります
+------------------------------------------------------------
+
+.. code-block:: sh
+
+    vsce package
+    vsce login <publisher name>
+    vsce publish
+
+🌯Part 3. 拡張を公開しよう まとめ
+============================================================
+
+* ブラウザからアップロードしてMarketplaceに公開：初めての方🔰にオススメ
+
+  * publisher management pageの操作 & :command:`vsce` コマンド
+
+* コマンドラインで操作して公開：慣れてきたらこちらを
+
+  * Azure DevOpsでPersonal Access Tokenを作る
+
+この先：楽にリリースするために 🏃‍♂️
+--------------------------------------------------
+
+* GitHub ActionsなどCIツール上で、Marketplaceに公開するためのコマンドを実行
+* 👉 `Continuous Integration <https://code.visualstudio.com/api/working-with-extensions/continuous-integration>`__
+
+関連アウトプット 🏃‍♂️
+--------------------------------------------------
+
+* `新しい概念を最小限にして、自作VS Code拡張をMarketplaceに公開する <https://nikkie-ftnext.hatenablog.com/entry/publish-vscode-extensions-with-minimum-new-concepts>`__
+* `vsceコマンドで、自作VS Code拡張をMarketplaceに公開する <https://nikkie-ftnext.hatenablog.com/entry/publish-vscode-extensions-using-vsce-command-well>`__
