@@ -10,17 +10,10 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:markdown-date.helloWorld"
+    "onLanguage:markdown"
   ],
   "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "markdown-date.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
+  "contributes": {},
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
