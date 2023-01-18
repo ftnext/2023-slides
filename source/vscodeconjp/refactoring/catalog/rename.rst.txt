@@ -1,0 +1,92 @@
+Part 3. カタログ：VS Codeでリファクタリング
+============================================================
+
+* **変数名の変更**
+* **関数名の変更**
+* 変数の抽出
+* 関数の抽出
+* 特性の移動に関する数テクニック
+
+コンピュータサイエンスで最も難しい2つ
+--------------------------------------------------
+
+    cache invalidation and **naming things** (Phil Karlton)
+
+ref: `TwoHardThings <https://martinfowler.com/bliki/TwoHardThings.html>`_
+
+命名（naming things）は難しい🤯
+--------------------------------------------------
+
+* `名前重要 <https://プログラマが知るべき97のこと.com/%E3%82%A8%E3%83%83%E3%82%BB%E3%82%A4/%E5%90%8D%E5%89%8D%E9%87%8D%E8%A6%81/>`_ （by Matz）だけれど、激ムズ
+* IMO：一発でいい命名ができないからこそ、 **いい名前に気付いたらコードを更新** して理解しやすくしたい
+
+「{変数,関数}名の変更」の使い所
+--------------------------------------------------
+
+* **適切な名前に気付いたとき**
+* コードを明快にしたい（理解しやすい・変更しやすい）
+* 「*不可思議な名前*」 （📘『`リファクタリング`_』第3章）
+
+テクニック：変数名の変更
+--------------------------------------------------
+
+* 「*変数への参照をくまなく探し、それらをすべて変更する。*」（📘『`リファクタリング`_』第6章）
+* Webカタログ：https://refactoring.com/catalog/renameVariable.html
+
+.. code-block:: diff
+
+    - a = height * width
+    + area = height * width
+
+テクニック：関数名の変更
+--------------------------------------------------
+
+* *関数宣言の変更* の非常に重要なユースケース
+* Webカタログ：https://refactoring.com/catalog/changeFunctionDeclaration.html
+* 一度に全部置き換える手順だけでなく、 **漸進的に置き換える** 手順がある
+
+VS Codeを操作して名前を変更
+============================================================
+
+* **Rename Symbol**
+* :kbd:`F2` キー（これだけ！）
+
+Rename Symbol
+--------------------------------------------------
+
+* https://code.visualstudio.com/docs/editor/refactoring#_rename-symbol
+* *検索や置換* でも変数名や関数名は変更できるが、確認も必要
+* Rename Symbolは **VS Codeに全部任せられる** （同じ名前でもスコープを考慮！）
+
+Rename Symbolによる「変数名の変更」のデモ
+--------------------------------------------------
+
+.. literalinclude:: ../../samplecode/vscode-easy-refactoring/rename_symbol.py
+    :language: python
+    :linenos:
+    :start-after: [rename variable]
+    :end-before: [rename variable]
+
+スコープを考慮のデモ & 「関数名の変更」のデモ
+--------------------------------------------------
+
+.. literalinclude:: ../../samplecode/vscode-easy-refactoring/rename_symbol.py
+    :language: python
+    :linenos:
+    :start-after: [rename variable & rename function]
+    :end-before: [rename variable & rename function]
+
+変数名の変更・関数名の変更
+============================================================
+
+:どんなときに使うのか: 適切な名前に気付いたとき
+:VS Codeではどんな操作になるのか: :kbd:`F2` (Rename Symbol)
+
+「{変数,関数}名の変更」で省略したこと 🏃‍♂️
+--------------------------------------------------
+
+* クラス名・属性名・メソッド名の変更もRename Symbolできます
+
+  * *フィールド名の変更* （📘第9章・`Webカタログ <https://refactoring.com/catalog/renameField.html>`__）
+
+* モジュール名（:file:`spam.py`）の変更はPython拡張がサポート
