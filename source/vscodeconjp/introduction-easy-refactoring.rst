@@ -1,3 +1,9 @@
+:ogp_title: 楽々入門！VS Codeで『リファクタリング』
+:ogp_event_name: vscodeconjp
+:ogp_slide_name: introduction-easy-refactoring
+:ogp_description: 2023/01 VS Code Conference Japan 2022 - 2023 15分トークスライド（ドラフト版）
+:ogp_image_name: vscodeconjp-refactoring
+
 ============================================================
 楽々入門！VS Codeで『リファクタリング』
 ============================================================
