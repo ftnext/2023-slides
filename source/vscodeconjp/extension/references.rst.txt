@@ -1,0 +1,28 @@
+References
+==========
+
+vscodejp/handson-hello-vscode-extension 1/2
+--------------------------------------------------
+
+* `事前準備 必要な開発環境を整えよう`_
+* `Hello Worldを作成しよう`_
+* `Hello Worldを起動しよう`_
+
+vscodejp/handson-hello-vscode-extension 2/2
+--------------------------------------------------
+
+* `ドキュメントを編集しよう`_
+* `作成した拡張機能をインストールしよう <https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/expert/04_publish.md>`_
+
+VS Code ドキュメント（英語）
+--------------------------------------------------
+
+* `Testing Extensions`_
+* `Publishing Extensions`_
+* `VS Code API <https://code.visualstudio.com/api/references/vscode-api>`_
+
+拡張開発まで扱った書籍
+--------------------------------------------------
+
+* 『`Visual Studio Code実践ガイド <https://gihyo.jp/book/2020/978-4-297-11201-1>`_』74thさん
+* 『`プログラマーのためのVisual Studio Codeの教科書 <https://book.mynavi.jp/ec/products/detail/id=115232>`_』もよさそう
