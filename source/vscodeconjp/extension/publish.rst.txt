@@ -1,6 +1,10 @@
 Part 3. 拡張を公開しよう
 ============================================================
 
+1. テキストをベースに写経 & 改造（メインパート）
+2. 拡張のE2Eテストを書く
+3. **拡張を公開**
+
 .. _Marketplace: https://marketplace.visualstudio.com/vscode
 
 `Marketplace`_ へ公開！
@@ -8,6 +12,8 @@ Part 3. 拡張を公開しよう
 
 1. ブラウザからアップロードして公開
 2. コマンドラインで操作して公開
+
+ドキュメント `Publishing Extensions <https://code.visualstudio.com/api/working-with-extensions/publishing-extension>`_ を参照
 
 3-1 ブラウザからアップロードして公開
 ============================================================
@@ -20,7 +26,7 @@ Visual Studio Marketplace publisher management page
 
 * https://marketplace.visualstudio.com/manage
 * マイクロソフトアカウントでサインイン（GitHubアカウントは未検証）
-* Create publisher（publisherを作る）
+* Create publisher（**publisherを作る**）
 
 Nameだけ入力すればpublisherは作れる
 --------------------------------------------------
@@ -32,7 +38,7 @@ Nameだけ入力すればpublisherは作れる
 
 :command:`npm install @vscode/vsce`
 
-https://code.visualstudio.com/api/working-with-extensions/publishing-extension#installation
+ref: `ドキュメントの「vsce > Installation」 <https://code.visualstudio.com/api/working-with-extensions/publishing-extension#installation>`__
 
 :file:`package.json` を編集
 --------------------------------------------------
@@ -64,14 +70,22 @@ https://code.visualstudio.com/api/working-with-extensions/publishing-extension#i
 * `Visual Studio Marketplace publisher management page`_ を操作
 * publisherにvsixファイルをアップロード
 
-  * `ドキュメントの「Publish an extension」 <https://code.visualstudio.com/api/working-with-extensions/publishing-extension#publish-an-extension>`__ に画像あり
+  * `ドキュメントの「Publish an extension」 <https://code.visualstudio.com/api/working-with-extensions/publishing-extension#publish-an-extension>`__ に画像あり（次スライド）
+
+.. 画像は以下から
+    https://github.com/microsoft/vscode-docs/tree/5e40432c324328cdedd2cb6d62e8e3d5ff3a4c66/api/working-with-extensions/images/publishing-extension
+
+.. revealjs-break::
+    :notitle:
+
+.. image:: https://media.githubusercontent.com/media/microsoft/vscode-docs/5e40432c324328cdedd2cb6d62e8e3d5ff3a4c66/api/working-with-extensions/images/publishing-extension/add-extension.png
 
 `Marketplace`_ に公開🙌
 --------------------------------------------------
 
-* アップロード後、verifyされるため少しだけ待つ
+* アップロード後、verifyされるまで少し待つ
 
-  * パスしたらメールが来た
+  * パスしたらメールが来た📧 *Extension publish on Visual Studio Marketplace*
 
 * 公開後、拡張を右クリックして表示されるメニューから、非公開にも切り替えられる
 
@@ -98,12 +112,12 @@ Personal Access Token作成
 1. Azure DevOpsの組織（organization）を作る
 2. Azure DevOpsの組織でPersonal Access Tokenを作る
 
-Azure DevOpsの組織を作る
+Azure DevOpsの **組織** を作る
 --------------------------------------------------
 
 * https://go.microsoft.com/fwlink/?LinkId=307137 からサインイン
 
-  * Visual Studio Marketplace publisher management pageと同じマイクロソフトアカウント
+  * Visual Studio Marketplace publisher management pageと **同じ** マイクロソフトアカウント
 
 * 組織（organization）だけを作る
 * 画像つきの手順： `組織の作成 <https://learn.microsoft.com/ja-jp/azure/devops/organizations/accounts/create-organization?view=azure-devops>`_
@@ -122,7 +136,12 @@ Personal Access Token作成時の必須項目
 :Organization: everlasting-diary
 :Scopes: MarketplaceのManageだけ
 
-`ドキュメントの「Get a Personal Access Token」 <https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token>`__ に画像あり
+`ドキュメントの「Get a Personal Access Token」 <https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token>`__ に画像あり（次スライド）
+
+.. revealjs-break::
+    :notitle:
+
+.. image:: https://media.githubusercontent.com/media/microsoft/vscode-docs/5e40432c324328cdedd2cb6d62e8e3d5ff3a4c66/api/working-with-extensions/images/publishing-extension/token2.png
 
 控えたトークンで :command:`vsce login` が通ります
 ------------------------------------------------------------
@@ -136,11 +155,11 @@ Personal Access Token作成時の必須項目
 🌯Part 3. 拡張を公開しよう まとめ
 ============================================================
 
-* ブラウザからアップロードしてMarketplaceに公開：初めての方🔰にオススメ
+* ブラウザからアップロードしてMarketplaceに公開：**初めて** の方🔰にオススメ
 
   * publisher management pageの操作 & :command:`vsce` コマンド
 
-* コマンドラインで操作して公開：慣れてきたらこちらを
+* コマンドラインで操作して公開： **慣れてきたら** こちらを
 
   * Azure DevOpsでPersonal Access Tokenを作る
 
