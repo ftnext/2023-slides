@@ -1,3 +1,9 @@
+:ogp_title: Awakening Extension (拡張開発はじまるよ🔰)
+:ogp_event_name: vscodeconjp
+:ogp_slide_name: awakening-extension
+:ogp_description: 2023/01 VS Code Conference Japan 2022 - 2023 15分トークスライド
+:ogp_image_name: vscodeconjp-extension
+
 ============================================================
 Awakening Extension (拡張開発はじまるよ🔰)
 ============================================================
