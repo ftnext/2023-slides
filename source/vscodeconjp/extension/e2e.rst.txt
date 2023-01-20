@@ -49,6 +49,10 @@ VS Codeを操作するE2Eテスト、どう書くんだ？
 * :command:`yarn test`
 * ref: `Testing Extensions`_ の「Overview」
 
+.. code-block:: none
+
+    Downloading VS Code [==============================] 100%
+
 テストを繰り返し実行できるように設定
 --------------------------------------------------
 
