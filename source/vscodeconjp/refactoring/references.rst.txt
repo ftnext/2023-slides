@@ -1,0 +1,15 @@
+References
+==========
+
+VS Codeドキュメント
+--------------------------------------------------
+
+* `Refactoring <https://code.visualstudio.com/docs/editor/refactoring>`__
+* `Editing Python in Visual Studio Code <https://code.visualstudio.com/docs/python/editing>`__
+* `Key Bindings for Visual Studio Code <https://code.visualstudio.com/docs/getstarted/keybindings>`__
+
+関連アウトプット
+--------------------------------------------------
+
+* `入門F2 〜VS CodeのRename Symbolで楽々リファクタリング〜 <https://nikkie-ftnext.hatenablog.com/entry/vscode-f2-easy-refactoring>`__
+* `エディタの機能を知って身につけるリファクタリング 〜VS CodeでExtract編〜 <https://nikkie-ftnext.hatenablog.com/entry/vscode-extract-easy-refactoring>`__
