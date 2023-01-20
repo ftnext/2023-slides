@@ -1,20 +1,53 @@
 Part 2. 拡張のE2Eテストを書こう
 ============================================================
 
+1. テキストをベースに写経 & 改造（メインパート）
+2. **拡張のE2Eテストを書く**
+3. 拡張を公開
+
 テストを書きたい！
 --------------------------------------------------
 
-* 改造がうまくいき、公開が見えてきた✨
-* IMO「自分以外が使う可能性があるなら、テストを書きたい」
-* VS Codeを操作するE2Eテスト（End to End）、どう書くんだ？
+* 改造がうまくいき、**公開が見え** てきた✨
+* IMO「自分が作ったもので、自分以外が使う可能性があるなら、テストを書きたい」
+
+VS Codeを操作するE2Eテスト、どう書くんだ？
+--------------------------------------------------
+
+* この発表ではテスト＝ **End to End** テスト
+* 参照：`Testing Extensions <https://code.visualstudio.com/api/working-with-extensions/testing-extension>`_
+* :fab:`github` `書いたテスト <https://github.com/ftnext/vscode-tokimeki-editing/blob/v0.0.2/src/test/suite/extension.test.ts>`__
 
 実はテストはscaffoldされてるYO
 --------------------------------------------------
 
 * Yeomanにより :file:`src/test` 以下にテストに使うファイルが生成されています
-* :command:`npm run test` または :command:`yarn test`
 
-.. TODO ディレクトリツリー
+.. https://tree.nathanfriend.io
+    src/
+     test/
+      suite/
+       extension.test.ts
+       index.ts
+      runTest.ts
+     extension.ts
+
+.. code-block:: none
+
+    src/
+    ├── test/
+    │   ├── suite/
+    │   │   ├── extension.test.ts
+    │   │   └── index.ts
+    │   └── runTest.ts
+    └── extension.ts
+
+テスト実行（以下のどちらか）
+--------------------------------------------------
+
+* :command:`npm run test`
+* :command:`yarn test`
+* ref: `Testing Extensions`_ の「Overview」
 
 テストを繰り返し実行できるように設定
 --------------------------------------------------
@@ -41,13 +74,13 @@ Part 2. 拡張のE2Eテストを書こう
 マークダウンを編集する拡張のテスト（IMO）
 ============================================================
 
-* マークダウンファイルを開いたときのCodeLensの設定（個数や行）
+* マークダウンファイルに対するCodeLensの **設定** （個数や行）
 
   * ref: `typescript-language-featuresのCodeLensのE2E`_
 
-* ユーザがCodeLensをクリックしたのをエミュレートしたコマンド実行
+* ユーザがCodeLensをクリックしたのをエミュレートした **コマンド実行**
 
-マークダウンファイルを開いたときのCodeLensの設定をテスト
+CodeLensの設定をテスト
 ============================================================
 
 * テストに使うマークダウンファイル（**フィクスチャ**）
@@ -58,6 +91,27 @@ Part 2. 拡張のE2Eテストを書こう
 
 * フィクスチャを配置
 * フィクスチャを使うように設定（:file:`src/test/runTest.ts`）
+
+フィクスチャを配置
+--------------------------------------------------
+
+.. https://tree.nathanfriend.io/
+    src/
+    test-fixtures/
+     markdown/
+      example.md
+    package.json
+    package-lock.json
+
+.. code-block:: none
+
+    .
+    ├── src/
+    ├── test-fixtures/
+    │   └── markdown/
+    │       └── example.md
+    ├── package.json
+    └── package-lock.json
 
 フィクスチャ
 --------------------------------------------------
@@ -73,8 +127,6 @@ Part 2. 拡張のE2Eテストを書こう
     歩夢の行にemojiを追加できる
 
     この行には何もしません
-
-.. ディレクトリツリーがあってもいいかも
 
 フィクスチャを使うように設定
 --------------------------------------------------
@@ -95,10 +147,7 @@ Part 2. 拡張のE2Eテストを書こう
         // ... 省略 ...
     }
 
-.. TODO テストコードはここにあると示したい
-    https://github.com/ftnext/vscode-tokimeki-editing/blob/v0.0.2/src/test/suite/extension.test.ts
-
-テストコードでフィクスチャのマークダウンファイルを開く
+テストコードでフィクスチャのマークダウンファイルを **開く**
 ------------------------------------------------------------
 
 .. code-block:: ts
@@ -117,7 +166,7 @@ Part 2. 拡張のE2Eテストを書こう
         });
     });
 
-テストコードでCodeLensを取得する
+テストコードで **CodeLensを取得** する
 --------------------------------------------------
 
 .. code-block:: ts
@@ -180,15 +229,15 @@ CodeLensの設定をテスト
         // ... 省略 ...
     }
 
-Mochaの設定を変更
+`Mochaのtimeout設定 <https://mochajs.org/#timeouts>`__ を変更
 
 🌯Part 2. 拡張のE2Eテストを書こう まとめ
 ============================================================
 
 * マークダウンを編集できるCodeLensを提供する拡張について、E2Eテストを書いた
 
-  * CodeLensの設定を検証
-  * ユーザがCodeLensをクリックしたときのエミュレートして検証
+  * CodeLensの **設定** を検証
+  * ユーザがCodeLensをクリックして呼び出される **コマンド** を実行して検証
 
 * runTestsの ``launchArgs`` ・Mochaの設定
 
