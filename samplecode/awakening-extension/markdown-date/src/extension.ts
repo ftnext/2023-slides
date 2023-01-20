@@ -16,9 +16,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     const text = document.getText();
     let matches;
     while ((matches = regex.exec(text)) !== null) {
-      const line = document.lineAt(document.positionAt(matches.index).line);
-      const indexOf = line.text.indexOf(matches[0]);
-      const position = new vscode.Position(line.lineNumber, indexOf);
+      const position = document.positionAt(matches.index);
       const range = document.getWordRangeAtPosition(
         position,
         new RegExp(titleRegex)
