@@ -96,3 +96,10 @@ Part 3. カタログ：VS Codeでリファクタリング
 --------------------------------------------------
 
 Enjoy development!
+
+.. include:: refactoring/references.rst.txt
+
+.. include:: refactoring/appendix.rst.txt
+
+EOF
+===
