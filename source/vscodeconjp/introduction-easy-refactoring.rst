@@ -1,7 +1,7 @@
 :ogp_title: 楽々入門！VS Codeで『リファクタリング』
 :ogp_event_name: vscodeconjp
 :ogp_slide_name: introduction-easy-refactoring
-:ogp_description: 2023/01 VS Code Conference Japan 2022 - 2023 15分トークスライド（ドラフト版）
+:ogp_description: 2023/01 VS Code Conference Japan 2022 - 2023 15分トークスライド
 :ogp_image_name: vscodeconjp-refactoring
 
 ============================================================
@@ -75,6 +75,8 @@ Part 3. カタログ：VS Codeでリファクタリング
 今回紹介したリファクタリングテクニックはごく一部
 --------------------------------------------------
 
+.. TODO 削る
+
 * 📘『`リファクタリング`_』にはまだまだテクニックが載っている
 * VS Codeがサポートしないテクニックは、テストコードを書いて、リファクタリング手順を練習して常中させていきましょう！
 
@@ -91,6 +93,10 @@ Part 3. カタログ：VS Codeでリファクタリング
 * 変数の抽出➡️ :guilabel:`Extract variable`
 * 関数の抽出➡️ :guilabel:`Extract method`
 * 特性の移動に関する数テクニック➡️ :kbd:`⌥↑` :kbd:`⌥↓` で始めよう
+
+.. リファクタリング読むのオススメ
+
+.. TODO 特性の移動スキップスライドで列挙する
 
 ご清聴ありがとうございました！
 --------------------------------------------------
