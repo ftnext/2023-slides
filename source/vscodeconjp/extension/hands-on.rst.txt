@@ -1,7 +1,9 @@
-Part 1. テキストをベースに写経 & 改造
+Part 1. テキストを写経 & 改造しよう
 ============================================================
 
-.. TODO 目次ハイライト
+1. **テキストをベースに写経 & 改造** （メインパート）
+2. 拡張のE2Eテストを書く
+3. 拡張を公開
 
 .. _VSCode Conference Japan 2021: https://vscodejp.github.io/conf2021/ja/
 .. _vscodejp/handson-hello-vscode-extension: https://github.com/vscodejp/handson-hello-vscode-extension
@@ -13,25 +15,25 @@ Part 1. テキストをベースに写経 & 改造
 * VS Codeの拡張機能を作ろう❗ :fab:`github` `vscodejp/handson-hello-vscode-extension`_
 * LSP（Language Server Protocol）を使った拡張を作る
 
-拡張機能の基礎を学びたい人（beginner）向け
+拡張機能の基礎を学びたい人（**beginner**）向け
 --------------------------------------------------
 
-* Hello World（簡単な拡張を作って起動する）
-* コードレンズのボタンからドキュメントを編集する拡張を作る
+* Hello World（**簡単な拡張** を作って起動する）
+* *コードレンズ* のボタンから **ドキュメントを編集** する拡張を作る
 
 経験のない試みなので、ハードルを下げた（これでもできるか分からなかった）
 
 時を戻そう（当時のnikkieに助言するなら）
 --------------------------------------------------
 
-* beginner向けテキストを改造する（変更なし）
-* 拡張開発までカバーした書籍（参考文献参照）に当たって **日本語で多くの情報を得る** のがより早道
+* **beginner向けテキスト** を改造する（変更なし）
+* 英語のドキュメントにあたったが、拡張開発までカバーした書籍（参考文献参照）より早道（**日本語で多くの情報を得る**）
 
-テキストをベースに写経 & 改造
+テキストを写経 & 改造
 --------------------------------------------------
 
-1. beginner向けテキストに沿ってHello Worldを動かす
-2. beginner向けテキストに沿ってドキュメントを編集する拡張を動かす
+1. 写経：Hello Worldを動かす
+2. 写経：ドキュメントを編集する拡張を動かす
 3. ドキュメントの編集を自分がやりたい編集の仕方に改造する
 
 .. ref: https://scrapbox.io/nikkie-memos/%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E3%81%AE%E5%9F%BA%E7%A4%8E%E3%82%92%E5%AD%A6%E3%81%B3%E3%81%9F%E3%81%84%E4%BA%BA%E5%90%91%E3%81%91
@@ -39,11 +41,13 @@ Part 1. テキストをベースに写経 & 改造
 1-1 Hello World
 ============================================================
 
-.. TODO 目次ハイライト
+1. **写経：Hello Worldを動かす**
+2. 写経：ドキュメントを編集する拡張を動かす
+3. ドキュメントの編集を自分がやりたい編集の仕方に改造する
 
 .. _事前準備 必要な開発環境を整えよう: https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/00_prepare.md
 
-開発環境構築
+Hello Worldを動かす
 ============================================================
 
 * **開発環境構築**
@@ -53,14 +57,16 @@ Part 1. テキストをベースに写経 & 改造
 
 * 開発中の拡張を動かす
 
-Node.js
+インストールしたもの
 --------------------------------------------------
 
-* `Node.js <https://nodejs.org/>`_ のLTSバージョンをインストール
+* `Node.js <https://nodejs.org/>`_ のLTSバージョン
 
   * ハンズオンテキストでは16.13.0
 
-* 拡張開発中のバグ混入を防ぐため、VS Codeに `ESLint拡張機能 <https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint>`__ をインストール
+* VS Codeに `ESLint拡張機能 <https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint>`__
+
+  * 拡張開発中のバグ混入を防ぐ
 
 `事前準備 必要な開発環境を整えよう`_
 
@@ -79,7 +85,7 @@ ref: `事前準備 必要な開発環境を整えよう`_
 :command:`yo code` でscaffoldするんだYO
 --------------------------------------------------
 
-.. TODO :fab:`github` samplecode下へのリンク
+:fab:`github` `hello-vscode <https://github.com/ftnext/2023-slides/tree/main/samplecode/awakening-extension/hello-vscode>`__
 
 .. https://tree.nathanfriend.io/
   hello-vscode
@@ -100,21 +106,21 @@ ref: `事前準備 必要な開発環境を整えよう`_
 
 上記は抜粋版。 `Hello Worldを作成しよう`_ に詳細な説明あります
 
-開発中の拡張を動かす
+Hello Worldを動かす
 ============================================================
 
-* 開発環境構築
-* 開発中の拡張を動かす
+* 開発環境構築✅
+* **開発中の拡張を動かす**
 
 Hello World拡張がscaffoldされている
 --------------------------------------------------
 
 * :command:`yo code` しただけ。 **実装は不要**
-* :kbd:`F5` で拡張をビルド（新しいVS CodeのWindow）
+* VS Codeで :kbd:`F5` で拡張をビルド（新しいVS CodeのWindow）
 
 .. _Hello Worldを起動しよう: https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/02_build.md
 
-Hello World!
+Hello World!（デモ）
 --------------------------------------------------
 
 * *コマンド* パレット（:kbd:`F1`）を開いて
@@ -142,7 +148,7 @@ Hello World!
 メッセージの内容を変えてみる
 --------------------------------------------------
 
-* ソースを編集したら :kbd:`Shitt + Command + F5` でRestart
+* **ソースを編集** したら :kbd:`Shift + Command + F5` でRestart
 * コマンドパレットから「Hello World」コマンドを呼び出すと、メッセージが変わっている！
 * 「拡張開発できている！！」🙌
 
@@ -154,8 +160,8 @@ Hello Worldではユーザが呼び出せる *コマンド* を追加した
 
 ユーザが使えるコマンドの秘密は、この2つのファイル
 
-:file:`package.json` にコマンドのID 🏃‍♂️
---------------------------------------------------
+:file:`package.json` にコマンドのID 🏃‍♂️== **skip**
+------------------------------------------------------------
 
 ``hello-vscode.helloWorld`` という識別子のコマンドを宣言
 
@@ -186,7 +192,9 @@ Hello Worldではユーザが呼び出せる *コマンド* を追加した
 1-2 マークダウンを編集する拡張
 ============================================================
 
-.. TODO 目次ハイライト
+1. 写経：Hello Worldを動かす
+2. **写経：ドキュメントを編集する拡張を動かす**
+3. ドキュメントの編集を自分がやりたい編集の仕方に改造する
 
 .. _ドキュメントを編集しよう: https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/04_edit.md
 
@@ -210,7 +218,9 @@ Hello Worldではユーザが呼び出せる *コマンド* を追加した
 --------------------------------------------------
 
 * 1つ以上の ``#`` を「同じ数の ``#`` とその日の日付」で **置き換え** る
-* ``## VSCodeConJP`` であれば、 ``##(空白)`` を ``## 2023/01/21(空白)`` で置き換え（いずれも末尾に空白文字 **含む**）
+* 例 ``## VSCodeConJP``
+
+  * ``##(空白)`` ➡️ ``## 2023/01/21(空白)``
 
 .. code-block:: diff
 
@@ -224,23 +234,16 @@ Hello Worldではユーザが呼び出せる *コマンド* を追加した
 
 *ソースコード中に表示される、ユーザがアクションできるリンク*
 
-CodeLensを使った拡張の例：GitLens
+CodeLensを使った日付挿入（デモ）
 --------------------------------------------------
 
-TODO
+.. figure:: ../_static/vscodeconjp/01extension-add-date-codelens-example.png
 
-CodeLensを使った日付挿入
+CodeLensを使った日付挿入 🏃‍♂️
 --------------------------------------------------
 
-* 1行目が見出しの行（``#`` で始まる行）であればCodeLensを作る
-
-  * 1行目が ``## VSCodeConJP`` であれば ``##(空白)`` にCodeLensを作る（add dateというリンク）
-
-* ユーザがCodeLensをクリックすると ``##(空白)`` を ``## 2023/01/21(空白)`` に置き換え（日付挿入）
-
-.. 1行目以外はCodeLensが作られない実装
-
-TODO 視覚的にわかりやすく表示するスクリーンショットなど
+* :guilabel:`add date` がCodeLens。ユーザはクリックできる
+* **クリックすると日付挿入**： ``##(空白)`` を ``## 2023/01/21(空白)`` に置き換え
 
 CodeLensを使った日付挿入を実現する要素
 ============================================================
@@ -248,39 +251,45 @@ CodeLensを使った日付挿入を実現する要素
 * CodeLens
 * コマンド
 
-  * ユーザがCodeLensのリンクをクリックしたら、コマンドが呼び出され、日付挿入される
+  * ユーザがCodeLensをクリックしたら、**コマンドが呼び出され**、日付挿入される
 
-``vscode.CodeLensProvider``
+ファイルにCodeLensを用意するには
 --------------------------------------------------
 
-* 実装して独自の ``CodeLensProvider`` クラスを定義する
-* ソースコード（今回はマークダウンファイル）中にCodeLensを設定する
+* 今回はマークダウンファイル中にCodeLensを設定する
+* ``vscode.CodeLensProvider``
 
-``CodeLensProvider`` が設定するCodeLens1つ1つ
+  * 実装して独自の ``CodeLensProvider`` クラスを定義
+
+``CodeLensProvider`` で複数のCodeLensを作る
 --------------------------------------------------
 
-* 「何行目の何文字目から何文字目まで」（range）にCodeLensを作成する
-* rangeを出すのに正規表現を使う
+* CodeLens1つ1つは「何行目の何文字目から何文字目まで」（**range**）に作られる
+* rangeを求めるのに正規表現を使う（後述）
 
-  * マークダウンファイルの中身について ``/^#+\s/g;`` と一致する箇所（range）すべてにCodeLensを作成
+マークダウンの見出しの行を **正規表現** で見つける
+--------------------------------------------------
+
+* ``/^#+\s/g`` と一致するrange（すべて）にCodeLensを作成
+* 例：1行目が ``## VSCodeConJP``
+
+  * ``##(空白)`` にCodeLensを作る（:guilabel:`add date` というリンク）
 
 .. 正規表現が^から始まるので、マークダウンファイル1つに1個あるかないか
+.. 1行目以外はCodeLensが作られない実装
 
 コマンドを呼び出すようにCodeLensを作成
 --------------------------------------------------
 
+.. literalinclude:: ../../samplecode/awakening-extension/markdown-date/src/extension.ts
+  :language: ts
+  :start-after: [コマンドを呼び出すようにCodeLensを作成]
+  :end-before: [コマンドを呼び出すようにCodeLensを作成]
+  :caption: ``provideCodeLenses`` メソッド（``CodeLensProvider`` クラス）
+
 .. code-block:: ts
 
-        codeLenses.push(
-          new vscode.CodeLens(range, {
-            title: "add date",
-            tooltip: "add date",
-            command: "markdown-date.addDate",
-            arguments: [range],
-          })
-        );
-
-.. return codeLenses があると分かりやすそう
+    return codeLenses;
 
 ``markdown-date.addDate`` コマンド
 --------------------------------------------------
@@ -310,10 +319,20 @@ CodeLensを使った日付挿入を実現する要素
 * CodeLensと、CodeLensクリックでコマンド呼び出し
 * ``vscode.CodeLensProvider`` を実装（正規表現にマッチしたrangeに ``CodeLens`` を作る）
 
+テキストの実装をもっと詳しく知りたい方向け 🏃‍♂️
+--------------------------------------------------
+
+* `VS Code拡張ハンズオン基礎編のテキストの中の、正規表現を使ってCodeLensを設定する実装を理解する <https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-create-codelens-with-regex>`__
+* `VS Code拡張ハンズオン基礎編のテキストの中の、VSCode APIを駆使してドキュメントに対してCodeLensを作成する実装を理解する <https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-provide-codelens-with-vscode-api>`__
+
 1-3 マークダウン編集ロジックを改造
 ============================================================
 
-実は無限に日付を挿入できる
+1. 写経：Hello Worldを動かす
+2. 写経：ドキュメントを編集する拡張を動かす
+3. **ドキュメントの編集を自分がやりたい編集の仕方に改造する**
+
+実は **無限** に日付を挿入できる
 --------------------------------------------------
 
 * ``## VSCodeConJP``
@@ -328,19 +347,19 @@ CodeLensを使った日付挿入を実現する要素
 
 * 見出しに限らず、特定の文字列の後ろにemojiを挿入できるのでは！？
 * 文字列「歩夢」の後ろに「🎀」を挿入（「歩夢」を「歩夢🎀」で置換）
-* 歩夢 ➡️ 歩夢🎀 ➡️ 歩夢🎀🎀 ➡️ 歩夢🎀🎀🎀
+* 歩夢 ➡️ 歩夢🎀 ➡️ 歩夢🎀🎀 ➡️ 歩夢🎀🎀🎀 🤩
 
 これを実装し、公開したのが
 --------------------------------------------------
 
-https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-editing
+`TOKIMEKI Editing🌈 <https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-editing>`__
 
 公開までの手順は続くパートで
 
-🌯Part 1. テキストをベースに写経 & 改造 まとめ
+🌯Part 1. テキストを写経 & 改造しよう まとめ
 ============================================================
 
-* :fab:`github` `vscodejp/handson-hello-vscode-extension`_ をベースにマークダウンを編集する拡張を写経・改造できる
+* :fab:`github` `vscodejp/handson-hello-vscode-extension`_ beginner向けをベースに、マークダウンを編集する拡張を写経・改造
 * VS Codeの概念：「コマンド」「CodeLens」
 
   * CodeLensからコマンドを呼び出し、**CodeLensが設定されている範囲を編集** できる
