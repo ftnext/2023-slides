@@ -105,3 +105,10 @@ https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-e
 --------------------------------------------------
 
 Enjoy extension! 🎀🌈
+
+.. include:: extension/references.rst.txt
+
+.. include:: extension/supplement.rst.txt
+
+EOF
+===
