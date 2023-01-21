@@ -33,7 +33,7 @@ Extract method
 * https://code.visualstudio.com/docs/python/editing#_extract-method
 * VS Codeによって ``new_func`` が抽出されるので、renameする
 
-Extract methodによる「関数の抽出」のデモ
+Extract methodによる「関数の抽出」のデモ💡
 --------------------------------------------------
 
 .. literalinclude:: ../../samplecode/vscode-easy-refactoring/extract_method.py
@@ -55,7 +55,7 @@ Extract methodは一足飛び⚠️
 関数の抽出
 ============================================================
 
-:どんなときに使うのか: 長い関数で一部を説明するコメントがあるとき
+:どんなときに使うのか: 長い関数で **一部を説明するコメント** があるとき
 :VS Codeではどんな操作になるのか: コードを選択して :guilabel:`Extract method`
 
 「関数の抽出」の使い所 2 🏃‍♂️

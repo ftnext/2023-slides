@@ -16,7 +16,7 @@ Part 3. カタログ：VS Codeでリファクタリング
 「変数の抽出」の使い所
 --------------------------------------------------
 
-* 式を説明するコメントを見つけた・書きたいとき
+* **式を説明するコメント** を見つけた・書きたいとき
 * 「*コメントを書かなくとも内容がわかるようなコードを目指す*」（📘『`リファクタリング`_』第3章）
 
 VS Codeを操作して変数を抽出
@@ -32,7 +32,7 @@ Extract variable
 * https://code.visualstudio.com/docs/python/editing#_extract-variable
 * VS Codeによって ``new_var`` が抽出されるので、renameする
 
-Extract variableによる「変数の抽出」のデモ
+Extract variableによる「変数の抽出」のデモ💡
 --------------------------------------------------
 
 .. literalinclude:: ../../samplecode/vscode-easy-refactoring/extract_variable.py
@@ -53,5 +53,5 @@ Extract variableによる「変数の抽出」のデモ
 変数の抽出
 ============================================================
 
-:どんなときに使うのか: 式を説明するコメントがある・必要があると思われるとき
+:どんなときに使うのか: **式を説明するコメント** がある・必要があると思われるとき
 :VS Codeではどんな操作になるのか: コードを選択して :guilabel:`Extract variable`
