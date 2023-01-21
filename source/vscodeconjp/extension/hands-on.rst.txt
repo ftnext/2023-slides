@@ -179,9 +179,6 @@ Hello Worldではユーザが呼び出せる *コマンド* を追加した
     :lines: 3,7,16,19-20,26
     :emphasize-lines: 3-5
 
-.. TODO コントリビューションポイントを説明する？
-.. TODO コマンドパレット、すべてはコマンド
-
 🥟Hello World 小まとめ
 ============================================================
 
@@ -310,7 +307,38 @@ CodeLensを使った日付挿入を実現する要素
       }
     });
 
-.. TODO マークダウンだけというmanifestの宣言
+この拡張が機能するのはマークダウンだけに設定 🏃‍♂️
+--------------------------------------------------
+
+    1. Markdown を開いたときに拡張機能が起動するようにする
+    2. 拡張機能が起動したときに CodeLensProvider を起動する
+
+`ドキュメントを編集しよう`_
+
+Markdown を開いたときに拡張機能が起動 🏃‍♂️
+--------------------------------------------------
+
+    拡張機能が起動するタイミングを、対象の言語 ID のファイルを開いたときにまで遅らせる
+
+.. literalinclude:: ../../samplecode/awakening-extension/markdown-date/package.json
+    :language: json
+    :lines: 12-14
+
+拡張機能が起動したときに CodeLensProvider を起動 🏃‍♂️
+------------------------------------------------------------
+
+.. code-block:: ts
+    :emphasize-lines: 4-7
+
+    export function activate(context: ExtensionContext) {
+      const codelensProvider = new CodelensProvider();
+
+      let disposable = languages.registerCodeLensProvider(
+        { language: "markdown" },
+        codelensProvider
+      );
+      disposables.push(disposable);
+    }
 
 🥟マークダウンを編集する拡張 小まとめ
 ============================================================
@@ -324,6 +352,12 @@ CodeLensを使った日付挿入を実現する要素
 
 * `VS Code拡張ハンズオン基礎編のテキストの中の、正規表現を使ってCodeLensを設定する実装を理解する <https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-create-codelens-with-regex>`__
 * `VS Code拡張ハンズオン基礎編のテキストの中の、VSCode APIを駆使してドキュメントに対してCodeLensを作成する実装を理解する <https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-provide-codelens-with-vscode-api>`__
+
+IMO：VS Codeの操作、内部的にはすべてはコマンド 🏃‍♂️
+------------------------------------------------------------
+
+* Hello Worldコマンド（ユーザが **コマンドパレット** から呼び出せる）
+* CodeLensでマークダウン編集（**コマンド** を呼び出して編集を実現）
 
 1-3 マークダウン編集ロジックを改造
 ============================================================
