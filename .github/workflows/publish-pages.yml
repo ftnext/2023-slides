@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: "3.10"
       - id: sitepackages
-        run: echo "::set-output path=$(python -c 'import site; print(site.getsitepackages()[0])')"
+        run: echo "::set-output name=path::$(python -c 'import site; print(site.getsitepackages()[0])')"
       - name: Install dependencies
         run: |
           python -m pip install -U pip
