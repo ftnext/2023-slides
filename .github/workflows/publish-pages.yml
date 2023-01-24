@@ -24,9 +24,11 @@ jobs:
         run: |
           python -m pip install -U pip
           pip install -r requirements.in
-          echo ${{ steps.sitepackages.outputs.path }}
-          SITE_PACKAGES_DIR=$(python -c 'import site; print(site.getsitepackages()[0])')
-          environments/install_revealjs.sh 4.2.1 "${SITE_PACKAGES_DIR}/sphinx_revealjs/themes/sphinx_revealjs/static/revealjs4"
+      - name: Arrange Reveal.js assets
+        uses: ftnext/action-fetch-revealjs@main
+        with:
+          version: 4.2.1
+          dest_dir: ${{ steps.sitepackages.outputs.path }}/sphinx_revealjs/themes/sphinx_revealjs/static/revealjs4
       - name: Build slide
         run: |
           make revealjs
