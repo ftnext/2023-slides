@@ -271,3 +271,146 @@ https://docs.python.org/ja/3/library/logging.html#logging.basicConfig
 * ルートロガーのロギングレベルはWARNING
 * ``"%(levelname)s:%(name)s:%(message)s"`` 書式のFormatter
 * StreamHandlerは標準エラー出力に出力
+
+ロガーの階層構造
+============================================================
+
+* ルートロガー以外のロガーについて
+* ポイントは階層構造（**親子関係**）
+
+ルートロガー以外のロガー
+--------------------------------------------------
+
+* ``logging.getLogger`` にロガーの名を渡せる
+
+  * ``logging.getLogger("awesome")``
+
+* モジュールレベルロガー ``logging.getLogger(__name__)``
+
+ロガーの親子関係（階層構造）
+--------------------------------------------------
+
+* ``getLogger("foo.bar")``
+* ``getLogger("foo")`` foo.barの親
+* ``getLogger()`` ルートロガー、すべての親
+
+https://docs.python.org/ja/3/howto/logging.html#advanced-logging-tutorial
+
+``propagate`` 属性
+--------------------------------------------------
+
+    この属性が真と評価された場合、このロガーに記録されたイベントは、このロガーに取り付けられた全てのハンドラに加え、上位 (祖先) ロガーのハンドラにも渡されます。 
+
+https://docs.python.org/ja/3/library/logging.html#logging.Logger.propagate
+
+``propagate`` 属性（承前）
+--------------------------------------------------
+
+    A.B.C という名前のロガーの propagate 属性が真と評価された場合、(略)
+
+    最初に A.B.C に接続されたハンドラに渡され、その後 A.B, A という名前のロガー、そしてルートロガーという順番で各ロガーに接続されたハンドラに渡されます。
+
+子のロガーから親のロガーに伝播する
+--------------------------------------------------
+
+* ``getLogger("foo.bar")`` で記録されるログは
+* 親の ``getLogger("foo")`` にも伝播し
+* すべての親 ルートロガー ``getLogger()`` にも伝播する
+
+例 ``logging.warning`` したばっかりに
+============================================================
+
+* 奇妙な挙動ですが、 **階層構造** を押さえていると理解できると思います
+* ``logging.warning`` は ``basicConfig`` で *ルートロガーにハンドラを設定*
+
+``logging.warning`` したばっかりに
+--------------------------------------------------
+
+.. code-block:: python
+
+    >>> import logging
+    >>> logging.warning('Watch out!')
+    WARNING:root:Watch out!
+
+ルートロガーが設定された（フォーマッタとStreamHandler）
+
+子ロガー用のフォーマッタ、ハンドラ設定
+--------------------------------------------------
+
+.. code-block:: python
+
+    >>> log_format = "%(asctime)s | %(levelname)s | %(name)s:%(funcName)s:%(lineno)d - %(message)s"
+    >>> formatter = logging.Formatter(log_format)
+    >>> handler = logging.StreamHandler()
+    >>> handler.setFormatter(formatter)
+
+子ロガー ``practice`` の設定
+--------------------------------------------------
+
+.. code-block:: python
+
+    >>> logger = logging.getLogger("practice")
+    >>> logger.setLevel(logging.INFO)
+    >>> logger.addHandler(handler)
+
+レベルはINFO、StreamHandlerも設定
+
+奇妙な挙動？ propagateによる
+--------------------------------------------------
+
+.. code-block:: python
+
+    >>> logger.info('想定通り')  # doctest: +SKIP
+    2023-03-15 22:21:43,880 | INFO | practice:<module>:1 - 想定通り
+    INFO:practice:想定通り
+
+2行出力されてしまう
+
+ロガーの階層構造
+--------------------------------------------------
+
+* 日付で始まる行
+
+  * 子ロガー（practice）による出力
+
+* もう1行
+
+  * **ルートロガーによる出力**
+  * 子ロガーが記録するINFOレベルが伝播した
+
+子ロガーにハンドラがなくても出力される！
+--------------------------------------------------
+
+.. code-block:: python
+
+    >>> logger = logging.getLogger("practice")
+    >>> logger.setLevel(logging.INFO)
+    >>> # logger.addHandler(handler)
+    >>> logger.info('想定通り')  # doctest: +SKIP
+    INFO:practice:想定通り
+
+ルートロガーに伝播して出力
+
+``logging.warning`` がないだけで
+--------------------------------------------------
+
+.. code-block:: python
+
+    >>> # logging.warning がない以外は共通のコード
+    >>> logger.info('想定通り')  # doctest: +SKIP
+    2023-03-15 22:27:32,375 | INFO | practice:<module>:1 - 想定通り
+
+子ロガーに設定したハンドラによる1行のみ出力
+
+実体験に基づく例でした
+--------------------------------------------------
+
+* 子ロガーにFileHandlerを指定して、この体験を味わいました
+* ルートロガーからStreamHandlerを引き剥がす実装が必要でした
+* 詳しくは https://nikkie-ftnext.hatenablog.com/entry/python-logging-root-logger-and-chain-propagation
+
+IMO ライブラリ開発でのlogging利用
+--------------------------------------------------
+
+* ライブラリで ``logging.warning`` や ``logging.basicConfig`` は、利用者に苦労をかけるので望ましくないと考えます
+* 自戒を込めて、NullHandlerを使っていきたい（教えてChatGPT🙏）
