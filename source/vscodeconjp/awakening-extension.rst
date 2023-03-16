@@ -37,7 +37,7 @@ Thank you VSCodeConJP❤️
 ============================================================
 
 * わわわ、わたし、にっきー
-* :fab:`twitter` `@ftnext <https://twitter.com/ftnext>`__ ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `はてなブログ <https://nikkie-ftnext.hatenablog.com/>`_
+* :fab:`twitter` `@ftnext <https://twitter.com/ftnext>`__ ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `はてなブログ <https://nikkie-ftnext.hatenablog.com/>`__
 * Python大好き（**TypeScriptほぼ経験無し**）
 * 株式会社ユーザベースでデータサイエンティスト（自然言語処理、XP）
 

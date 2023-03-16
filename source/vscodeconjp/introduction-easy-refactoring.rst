@@ -15,7 +15,7 @@
 ============================================================
 
 * にっきーって言います。VS Code使ってます
-* :fab:`twitter` `@ftnext <https://twitter.com/ftnext>`__ ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `はてなブログ <https://nikkie-ftnext.hatenablog.com/>`_
+* :fab:`twitter` `@ftnext <https://twitter.com/ftnext>`__ ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__ ／ `はてなブログ <https://nikkie-ftnext.hatenablog.com/>`__
 * **Python** 大好き。コードは **構造** にもこだわりたい
 * 株式会社ユーザベースでデータサイエンティスト（自然言語処理、XP）
 
