@@ -1,3 +1,9 @@
+:ogp_title: Pythonのlogging入門
+:ogp_event_name: stapy-march
+:ogp_slide_name: logging-introduction
+:ogp_description: 2023/03 みんなのPython勉強会#91 10分トーク2本立て 2/2
+:ogp_image_name: stapy-march-logging
+
 ============================================================
 Pythonのlogging入門
 ============================================================
