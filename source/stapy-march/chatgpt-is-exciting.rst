@@ -1,3 +1,9 @@
+:ogp_title: ChatGPT、どれくらいヤバいかって言うとマジヤバい！
+:ogp_event_name: stapy-march
+:ogp_slide_name: chatgpt-is-exciting
+:ogp_description: 2023/03 みんなのPython勉強会#91 10分トーク2本立て 1/2
+:ogp_image_name: stapy-march-chatgpt
+
 ============================================================
 ChatGPT、どれくらいヤバいかって言うとマジヤバい！
 ============================================================
