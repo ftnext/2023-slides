@@ -139,6 +139,8 @@ Web APIもあります
 
     <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/DIL82INALDI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+`AIの声を聴かせて（ChatGPTに耳と口を与えてアニメガタリ！） <https://nikkie-ftnext.hatenablog.com/entry/my-first-shion-meets-chatgpt>`__
+
 nikkie的 マジヤバいポイント！
 ============================================================
 
@@ -219,4 +221,27 @@ IMO：ChatGPTとの協同
 References
 ============================================================
 
-(TODO)
+nikkieがキャッチアップに使った動画や資料
+--------------------------------------------------
+
+* `動画や資料でChatGPTのヤバさを遅ればせながら認識！ワクワクもんだぁ！ <https://nikkie-ftnext.hatenablog.com/entry/awaken-chatgpt-is-awesome>`__
+
+  * Weekly Ochiai
+  * **松尾さん、安宅さん** （自民党AIプロジェクトチーム）
+  * note深津さんによる使いこなし配信
+
+nikkieが追っているもの
+--------------------------------------------------
+
+* はてなブックマークで上がっている記事
+* Twitter `うみゆきさん <https://twitter.com/umiyuki_ai>`__ `小猫遊さん <https://twitter.com/jaguring1>`__ `からあげさん <https://twitter.com/karaage0703>`__ などなど
+* 追いきれない！ お祭り感！！
+
+nikkieのアウトプット
+--------------------------------------------------
+
+* `『Clean Craftsmanship』のリファクタリングのJavaのコード例をPythonで書き換える（検索してやりきった後にChatGPTも試してみました） <https://nikkie-ftnext.hatenablog.com/entry/clean-craftsmanship-refactoring-example-java-to-python-with-chatgpt>`__
+* `非公式のChatGPT APIのラッパーライブラリrevChatGPTを触る <https://nikkie-ftnext.hatenablog.com/entry/first-time-revchatgpt-as-of-2023-feb>`__
+
+EOF
+===
