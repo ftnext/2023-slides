@@ -5,6 +5,21 @@ Pythonのlogging入門
 :Event: みんなのPython勉強会#91
 :Presented: 2023/03/16 nikkie
 
+お前、誰よ（知ってる）
+============================================================
+
+* **にっきー** ／ `はてなブログ <https://nikkie-ftnext.hatenablog.com/>`__ （毎日1記事書いてます） 
+* みんなのPython勉強会 4代目LT王子 スタッフ
+* PyCon JP 2021 座長
+* `SpeechRecognition <https://github.com/Uberi/speech_recognition>`__ メンテナ
+
+Pythonのlogging入門
+============================================================
+
+* 2本立ての2本目です。引き続きChatGPTとお楽しみいただいても全然大丈夫
+* loggingモジュールに苦手意識がありましたが、 **理解が進んだポイントを共有** します
+* 「なぜログが必要か」は今回は話しません
+
 もっとも単純な例
 ============================================================
 
@@ -27,11 +42,11 @@ https://docs.python.org/ja/3/library/logging.html
 
 https://docs.python.org/ja/3/library/logging.html#logging.warning
 
-もっとも単純な例で完全に理解
+もっとも単純な例で完全に理解😎
 --------------------------------------------------
 
 * WARNING以外のレベルのメッセージも記録してみよう
-* `ロギングレベル <https://docs.python.org/ja/3/library/logging.html#logging-levels>`__ を参照
+* `ロギングレベル <https://docs.python.org/ja/3/library/logging.html#logging-levels>`_ を参照
 
   * `logging を使うとき <https://docs.python.org/ja/3/howto/logging.html#when-to-use-logging>`__ の「レベル」もいいぞ
 
@@ -45,7 +60,7 @@ https://docs.python.org/ja/3/library/logging.html#logging.warning
 
 https://docs.python.org/ja/3/library/logging.html#logging.error
 
-レベル INFO、あれ？
+レベル INFO、あれ？😳
 --------------------------------------------------
 
 .. code-block:: python
@@ -54,7 +69,7 @@ https://docs.python.org/ja/3/library/logging.html#logging.error
 
 https://docs.python.org/ja/3/library/logging.html#logging.info
 
-ロガーとロギングレベル
+1️⃣ロガーとロギングレベル
 ============================================================
 
 * なぜレベル INFOのメッセージは画面に出力されなかったのでしょう？
@@ -72,7 +87,7 @@ https://docs.python.org/ja/3/library/logging.html#logging.info
 
     >>> # ルートロガーを取得
     >>> root_logger = logging.getLogger()
-    >>> root_logger
+    >>> root_logger  # (WARNING) に注目
     <RootLogger root (WARNING)>
 
 なぜレベル INFOのメッセージは出力されなかった？
@@ -81,6 +96,15 @@ https://docs.python.org/ja/3/library/logging.html#logging.info
     デフォルトのレベルは WARNING なので、INFO メッセージは現れません。
 
 https://docs.python.org/ja/3/howto/logging.html#a-simple-example
+
+高いレベル・低いレベルがある
+--------------------------------------------------
+
+* (高) ERROR
+* WARNING
+* (低) INFO
+
+`ロギングレベル`_
 
 ロギングレベルを設定する
 --------------------------------------------------
@@ -98,7 +122,7 @@ https://docs.python.org/ja/3/howto/logging.html#a-simple-example
 
     >>> import logging
     >>> logging.basicConfig(level=logging.INFO)
-    >>> logging.getLogger()
+    >>> logging.getLogger()  # (INFO) になってます！
     <RootLogger root (INFO)>
     >>> logging.info('想定通り')
     INFO:root:想定通り
@@ -107,10 +131,10 @@ https://docs.python.org/ja/3/howto/logging.html#a-simple-example
 --------------------------------------------------
 
 * ルートロガーはレベルがWARNING
-* 下のレベルのINFOやDEBUGのメッセージは出力されない
+* ルートロガーのレベルより下のレベルのINFOやDEBUGのメッセージは出力されない
 * ``logging.basicConfig(level=...)`` で **ルートロガーのレベルを変えられる**
 
-ログメッセージの書式
+2️⃣ログメッセージの書式
 ============================================================
 
 * なぜ「WARNING:root:Watch out!」という書式なのでしょう？
@@ -125,8 +149,8 @@ https://docs.python.org/ja/3/library/logging.html#logging.debug
 ``logging.basicConfig()`` が呼び出されていた！
 ------------------------------------------------------------
 
-* 引数無しでの呼び出し
-* 書式に関わるのは ``format`` 引数
+* **引数無し** での呼び出し
+* 書式に関わるのは ``format`` 引数（`ドキュメント <https://docs.python.org/ja/3/library/logging.html#logging.basicConfig>`__）
 
     デフォルトは levelname, name, message 属性をコロン区切りにしたものです。
 
@@ -164,7 +188,7 @@ https://docs.python.org/ja/3/library/logging.html#logging.debug
 * ``logging.basicConfig(format=...)`` で **ログメッセージの書式を変えられる**
 * ログメッセージの書式はドキュメントの `LogRecord 属性`_ に一覧あり
 
-ログの出力先
+3️⃣ログの出力先
 ============================================================
 
 * 画面以外にも出力するには？（ファイル）
@@ -195,7 +219,7 @@ https://docs.python.org/ja/3/library/logging.html#logging.basicConfig
 * https://docs.python.org/ja/3/library/logging.handlers.html#logging.StreamHandler
 * ログは **標準エラー出力** に出力される
 
-標準出力も指定可能（対話モード立ち上げ直し）
+脱線：標準出力も指定可能（対話モード立ち上げ直し）
 --------------------------------------------------
 
 .. code-block:: python
@@ -244,6 +268,13 @@ https://docs.python.org/ja/3/library/logging.html#logging.basicConfig
 * ``format``: ログメッセージ書式
 * ``filename``: FileHandler
 
+``import logging; logging.info("想定通り")`` が出力されないのは
+---------------------------------------------------------------------
+
+* （ルートロガー未設定なので） ``logging.info`` は ``logging.basicConfig()`` を呼び出す
+* ルートロガーがレベル **WARNING** で設定される
+* WARNINGより低いINFOレベルは出力されない
+
 深堀り ``logging.warning``
 ============================================================
 
@@ -263,14 +294,14 @@ https://docs.python.org/ja/3/library/logging.html#logging.basicConfig
 
 * Formatterを生成
 * StreamHandlerを生成
-* これらをルートロガーに追加
+* これらを **ルートロガーに追加**
 
 画面に「WARNING:root:Watch out!」と現れたのは
 ---------------------------------------------------------------------
 
-* ルートロガーのロギングレベルはWARNING
-* ``"%(levelname)s:%(name)s:%(message)s"`` 書式のFormatter
-* StreamHandlerは標準エラー出力に出力
+* ルートロガーのロギングレベルは **WARNING**
+* ``"%(levelname)s:%(name)s:%(message)s"`` **書式** のFormatter
+* StreamHandlerは **標準エラー出力** に出力
 
 ロガーの階層構造
 ============================================================
@@ -292,7 +323,7 @@ https://docs.python.org/ja/3/library/logging.html#logging.basicConfig
 
 * ``getLogger("foo.bar")``
 * ``getLogger("foo")`` foo.barの親
-* ``getLogger()`` ルートロガー、すべての親
+* ``getLogger()`` ルートロガー、 **すべての親**
 
 https://docs.python.org/ja/3/howto/logging.html#advanced-logging-tutorial
 
@@ -364,7 +395,7 @@ https://docs.python.org/ja/3/library/logging.html#logging.Logger.propagate
     2023-03-15 22:21:43,880 | INFO | practice:<module>:1 - 想定通り
     INFO:practice:想定通り
 
-2行出力されてしまう
+**2行出力** されてしまう
 
 ロガーの階層構造
 --------------------------------------------------
@@ -375,10 +406,10 @@ https://docs.python.org/ja/3/library/logging.html#logging.Logger.propagate
 
 * もう1行
 
-  * **ルートロガーによる出力**
+  * 親の **ルートロガーによる出力**
   * 子ロガーが記録するINFOレベルが伝播した
 
-子ロガーにハンドラがなくても出力される！
+参考：子ロガーにハンドラがなくても出力される！
 --------------------------------------------------
 
 .. code-block:: python
@@ -400,17 +431,43 @@ https://docs.python.org/ja/3/library/logging.html#logging.Logger.propagate
     >>> logger.info('想定通り')  # doctest: +SKIP
     2023-03-15 22:27:32,375 | INFO | practice:<module>:1 - 想定通り
 
-子ロガーに設定したハンドラによる1行のみ出力
+**子ロガー** に設定した **ハンドラ** による1行のみ出力
 
 実体験に基づく例でした
 --------------------------------------------------
 
 * 子ロガーにFileHandlerを指定して、この体験を味わいました
-* ルートロガーからStreamHandlerを引き剥がす実装が必要でした
+* ルートロガーからStreamHandlerを *引き剥がす実装* が必要でした...
 * 詳しくは https://nikkie-ftnext.hatenablog.com/entry/python-logging-root-logger-and-chain-propagation
 
 IMO ライブラリ開発でのlogging利用
 --------------------------------------------------
 
 * ライブラリで ``logging.warning`` や ``logging.basicConfig`` は、利用者に苦労をかけるので望ましくないと考えます
-* 自戒を込めて、NullHandlerを使っていきたい（教えてChatGPT🙏）
+* 自戒を込めて、`NullHandler <https://docs.python.org/ja/3/library/logging.handlers.html#logging.NullHandler>`__ を使っていきたい（教えてChatGPT🙏）
+
+Logging クックブックより
+--------------------------------------------------
+
+    もしあなたがライブラリのメンテナンスをしているのであれば、 NullHandler インスタンス以外のロガーを追加してはいけない、ということを意味します。
+
+https://docs.python.org/ja/3/howto/logging-cookbook.html#adding-handlers-other-than-nullhandler-to-a-logger-in-a-library
+
+まとめ🌯 Pythonのlogging入門
+============================================================
+
+* もっとも単純な例 ``logging.warning`` は ``logging.basicConfig`` を **呼んでいた**
+
+  * ルートロガーにStreamHandlerを設定
+
+* ライブラリの中で ``logging.warning`` や ``logging.basicConfig`` はNG🙅‍♂️です
+
+2本ご清聴ありがとうございました
+--------------------------------------------------
+
+Happy development!
+
+References
+============================================================
+
+(TODO)
