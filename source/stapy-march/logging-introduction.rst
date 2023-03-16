@@ -470,4 +470,24 @@ Happy development!
 References
 ============================================================
 
-(TODO)
+オススメのリソース
+--------------------------------------------------
+
+* 『`Python実践レシピ <https://gihyo.jp/book/2022/978-4-297-12576-9>`__』17.4 ログを出力する―logging
+* PyCon JP 2021 `Loggingモジュールではじめるログ出力入門 <https://2021.pycon.jp/time-table?id=272259>`__
+
+公式ドキュメント
+--------------------------------------------------
+
+* `Logging HOWTO <https://docs.python.org/ja/3/howto/logging.html>`__ （基本／上級チュートリアル）
+* `Logging クックブック <https://docs.python.org/ja/3/howto/logging-cookbook.html>`__
+* https://docs.python.org/ja/3/library/logging.html
+
+nikkieのアウトプット
+--------------------------------------------------
+
+* `Pythonのloggingを よ う や く 完全に理解しました 〜revChatGPTでdebugレベルログを出そうとした試行錯誤を題材に〜 <https://nikkie-ftnext.hatenablog.com/entry/python-logging-root-logger-and-chain-propagation>`__
+* `Pythonのloggingモジュールのドキュメントの「もっとも単純な例」を説明する 〜logging.warningの裏側で起こっていること〜 <https://nikkie-ftnext.hatenablog.com/entry/python-logging-the-simplest-example-under-the-hood>`__
+
+EOF
+===
