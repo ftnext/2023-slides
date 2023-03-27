@@ -1,3 +1,9 @@
+:ogp_title: XP（エクストリームプログラミング）で取り組むMLOps
+:ogp_event_name: mlops-march
+:ogp_slide_name: mlops-with-extreme-programming
+:ogp_description: 2023/03 第29回MLOps勉強会
+:ogp_image_name: mlops-march
+
 ============================================================
 XPで取り組むMLOps
 ============================================================
