@@ -28,14 +28,14 @@ Python環境構築には **流派** がある
 * Python使い＝〇〇したくてPythonを使う＝ *鬼と闘う* （鬼殺隊の一員）
 * Python開発環境構築はさまざま＝ *呼吸はさまざま* （霞、恋）
 
-  * 今日のトークからも（Python、Anaconda）
+  * 今日のトークからも（Python本家、Anaconda）
 
 最近のnikkie： **pyenv + venv** の呼吸
 --------------------------------------------------
 
-* pyenvでPythonのバージョンを管理
-* venvでプロジェクトごとの依存ライブラリを管理
-* *Poetry* の呼吸に憧れている（他には *rye*）
+* `pyenv <https://github.com/pyenv/pyenv>`__ でPythonのバージョンを管理
+* venv（仮想環境）でプロジェクトごとの依存ライブラリを管理
+* `Poetry <https://python-poetry.org/docs/>`__ の呼吸に憧れている（他には `rye <https://github.com/mitsuhiko/rye>`__ の呼吸）
 
 IMO：紹介した方法を絶対採用、ではないです
 --------------------------------------------------
@@ -59,6 +59,13 @@ taskipyを使った **Python開発** 環境の一例
 * PyCon JP 2020 `チーム開発立ち上げにやっておいたほうがいいソース管理の方法 <https://pycon.jp/2020/timetable/?id=203858>`__
 * PyCon Kyushu 2022 `静的コード解析から見出す一人前Pythonistaへの道 <https://www.docswell.com/s/moonwalkerpoday/ZP4VE5-2022-01-22-133417>`__
 
+スタイルガイド PEP 8
+--------------------------------------------------
+
+* （守らなくてもコードは動くけど）「Pythonをこういうふうに書きましょう」
+* https://peps.python.org/pep-0008/
+* 人が頑張る道もあるけど、 **ツールを使ってPEP 8に沿う**
+
 開発しやすくするツールの例
 --------------------------------------------------
 
@@ -69,6 +76,18 @@ taskipyを使った **Python開発** 環境の一例
 
 Black
 --------------------------------------------------
+
+* スタイルガイドに合うコードに **有無を言わさず整形**
+* https://black.readthedocs.io/en/stable/
+
+.. code-block:: shell
+
+    % pip install black
+    % # conda install -c conda-forge black
+
+.. https://anaconda.org/conda-forge/black
+
+.. revealjs-break::
 
 .. literalinclude:: example.py
     :language: python
@@ -84,6 +103,18 @@ Black
 Flake8
 --------------------------------------------------
 
+* コードを実行せずに（＝静的）解析して、**スタイルや問題を指摘**
+* https://flake8.pycqa.org/en/stable/
+
+.. code-block:: shell
+
+    % pip install flake8
+    % # conda install -c anaconda flake8
+
+.. https://anaconda.org/anaconda/flake8
+
+.. revealjs-break::
+
 :command:`flake8 example.py`
 
 .. code-block:: txt
@@ -96,9 +127,9 @@ Flake8
 nikkieは思った「コマンドをまとめたい」
 --------------------------------------------------
 
-* :command:`black` や :command:`flake8` 以外に :command:`pytest` などなどたくさんのツールが登場
-* 便利なんだけど、覚えていられない🤯（実行漏れもある）
-* *1つのコマンドにまとめられないかな？*
+* :command:`black` の後に :command:`flake8` だとスタイル関係は指摘されない（この順にしたい）
+* ほかにも :command:`pytest` などなどたくさんのツール。便利だけど、覚えていられない🤯（実行漏れもある）
+* *順番も含めて、1つのコマンドにまとめられないかな？*
 
 **taskipy** を使ったPython開発環境の一例
 ============================================================
@@ -181,3 +212,12 @@ taskipyの **フック** ✨
 --------------------------------------------------
 
 Enjoy Python!
+
+Appendix
+============================================================
+
+* オススメ `もうPythonの細かい書き方で議論しない。blackで自動フォーマットしよう <https://blog.hirokiky.org/entry/2019/06/03/202745>`__
+* Flake8は今後Ruffに変わるかも？ `新しい静的コード解析ツール「Ruff」をご紹介 <https://gihyo.jp/article/2023/03/monthly-python-2303>`__
+
+EOF
+===
