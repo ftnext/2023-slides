@@ -1,3 +1,9 @@
+:ogp_title: taskipyを使ったPython開発環境の一例
+:ogp_event_name: stapy-june
+:ogp_slide_name: development-environment-with-taskipy
+:ogp_description: 2023/06 みんなのPython勉強会#94 LT
+:ogp_image_name: stapy-june-taskipy
+
 ============================================================
 taskipyを使ったPython開発環境の一例
 ============================================================
