@@ -1,3 +1,9 @@
+:ogp_title: pyproject.tomlの一歩目
+:ogp_event_name: stapy-august
+:ogp_slide_name: pyproject-toml-first-step
+:ogp_description: 2023/08 みんなのPython勉強会#96 LT
+:ogp_image_name: stapy-august-pyproject-toml
+
 ============================================================
 :file:`pyproject.toml` の一歩目
 ============================================================
@@ -20,6 +26,9 @@
 
 ℹ️インフォメーションℹ️
 ============================================================
+
+* 10/7(土) `Django Congress JP 2023 <https://djangocongress.jp/>`__ （プロポーザルが8/21(月)まで）
+* 10/26(木)〜29(日) `PyCon APAC 2023 <https://2023-apac.pycon.jp/>`__
 
 本編：:file:`pyproject.toml` の一歩目
 ============================================================
