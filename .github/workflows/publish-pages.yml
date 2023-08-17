@@ -7,6 +7,7 @@ on:
       - source/**
       - samplecode/**
       - .github/workflows/publish-pages.yml
+      - requirements.in
 
 jobs:
   build:
