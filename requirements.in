@@ -1,2 +1,3 @@
 git+https://github.com/ftnext/sphinx-revealjs@code-block-emphasize-lines
+Sphinx<6
 sphinx_design
