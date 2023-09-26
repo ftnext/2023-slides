@@ -199,5 +199,26 @@ Appendix
 * 毎日1エントリ継続中 https://nikkie-ftnext.hatenablog.com/
 * アニメが好きです（三重さんかわいい。ミリアニ最高！）
 
+参考資料：自分の学びのためのLT
+============================================================
+
+* `自分のためにやるプレゼンそれがLT <https://speakerdeck.com/ma2shita/lets-lightning-talk-v4>`__
+* `やはり俺のLT登壇はまちがっている。 <https://speakerdeck.com/moomooya/my-lightning-talk-is-wrong-as-i-expected>`__
+* `技術ブログを書こう <https://www.slideshare.net/akira6592/happyblogging>`__
+
+プレゼンとしてのLT
+--------------------------------------------------
+
+* IMO：上手いな〜と思ったプレゼンの要素をパクろう
+* 非常に参考になる：`プレゼンの作り方 <https://speakerdeck.com/puhitaku/purezenfalsezuo-rifang>`__
+* 拙ブログ `自分の学びのためのLT・プレゼンとしてのLT #LTのコツ <https://nikkie-ftnext.hatenablog.com/entry/lt-two-phases-from-learning-to-presentation-202309>`__
+
+LT王子となるまで
+============================================================
+
+* 先代LT王子の「`LT駆動開発 <https://github.com/NaoY-2501/GitPitch-Slides/blob/10b04edcfa4396bce664fa34db2fa91131178dbf/stapy31_20180110/PITCHME.md#lt%E9%A7%86%E5%8B%95%E5%AD%A6%E7%BF%92%E3%81%AE%E3%81%99%E3%82%9D%E3%82%81>`__」を真似た
+* 期日が決まっている。ネタは **自分の学び** から選ぶ形式が定着
+* 詳細： `LT王子 nikkie：オリジン #stapy <https://nikkie-ftnext.hatenablog.com/entry/stapy-lt-prince-nikkie-the-origin>`__
+
 EOF
 ============================================================
