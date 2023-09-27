@@ -1,5 +1,6 @@
 # 2023_slides
 
+- [LTのコツだと思うことを 思いつくまま挙げていくので なにか1つでも参考になったら嬉しいです](https://ftnext.github.io/2023-slides/engineers-lt-sep/nikkies-lt-tips.html#/1) @[「LTのコツ」大披露会 (2023/09)](https://engineers.connpass.com/event/294400/)
 - [pyproject.tomlの一歩目](https://ftnext.github.io/2023-slides/stapy-august/pyproject-toml-first-step.html) @[みんなのPython勉強会#96 (2023/08)](https://startpython.connpass.com/event/290332/)
 - [taskipyを使ったPython開発環境の一例](https://ftnext.github.io/2023-slides/stapy-june/development-environment-with-taskipy.html) @[みんなのPython勉強会#94 (2023/06)](https://startpython.connpass.com/event/272159/)
 - [ChatGPT、どれくらいヤバいかって言うとマジヤバい！](https://ftnext.github.io/2023-slides/stapy-march/chatgpt-is-exciting.html) ／ [Pythonのlogging入門](https://ftnext.github.io/2023-slides/stapy-march/logging-introduction.html) @[みんなのPython勉強会#91 (2023/03)](https://startpython.connpass.com/event/270313/)
