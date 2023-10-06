@@ -1,4 +1,4 @@
-SQLインジェクション
+1️⃣ SQLインジェクション 💉
 ============================================================
 
 SQLインジェクションって、なによ
@@ -12,6 +12,21 @@ SQLインジェクションって、なによ
 .. raw:: html
 
     <blockquote class="twitter-tweet" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">湯婆婆「フン『千尋&#39; AND Password = &#39;1&#39;; DROP TABLE employee&quot;』というのかい。 」<br>千尋「はい」<br>湯婆婆「贅沢な名だね。今からおまえの名前は、名前は………？」</p>&mdash; ロボ太 (@kaityo256) <a href="https://twitter.com/kaityo256/status/1451737864526389254?ref_src=twsrc%5Etfw">October 23, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+🏃‍♂️巨人の肩に乗る
+--------------------------------------------------
+
+（🏃‍♂️のスライドは参考情報で、本編では飛ばして進めます）
+
+* DjangoCongress JP 2019 「現場で使える Django のセキュリティ対策」
+* 『`実践Django <https://www.shoeisha.co.jp/book/detail/9784798153957>`_』2.6
+
+🏃‍♂️「現場で使える Django のセキュリティ対策」
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/47b9d3a52ec94b27a88367d6ddec316d?slide=45" title="現場で使える Django のセキュリティ対策 / Django security measures for business (DjangoCon JP 2019)" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
 
 百聞は一見に如かず、デモの時間です！
 --------------------------------------------------
@@ -107,6 +122,13 @@ ORMを使おう！
 
 * SQLを原則書かない。 **ORMの書き方を覚えて使う**
 
+🏃‍♂️「Make Query Great Again!」
+------------------------------------------------------------
+
+* DjangoCongress JP 2019より
+* `発表スライド <https://www.slideshare.net/dattun/django-congress-jp-2019-make-query-great-again-slide-share>`__
+* `YouTube アーカイブ <https://youtu.be/VQvniZoy8HY?si=QAWauZS3W0HKRsPQ>`__
+
 静的解析で気づこう 〜Bandit〜
 ============================================================
 
@@ -131,6 +153,13 @@ ORMを使おう！
     12                  "SELECT id, id_str, todo, created_date, due_date FROM todos "
     13                  "WHERE todo = '{}';".format(todo_str)
     14              )
+
+🏃‍♂️「静的コード解析から見出す一人前Pythonistaへの道」
+------------------------------------------------------------
+
+* Banditを知ったきっかけ（紹介された静的解析ツールの1つ）
+* PyCon Kyushu 2022
+* `発表スライド <https://www.docswell.com/s/moonwalkerpoday/ZP4VE5-2022-01-22-133417>`__
 
 SQLインジェクションのまとめ🌯
 ============================================================
@@ -159,7 +188,7 @@ SQLインジェクション脆弱性を埋め込まない実装
 * Banditで気付ける
 
 ⚠️この場限りにしてくださいね（攻撃になっちゃうので！）
---------------------------------------------------
+------------------------------------------------------------
 
 * あなたが利用しているWebアプリのフォームに、ここで紹介した入力はしないでください
 * それは **攻撃** です（学習用のこのアプリだけにしてください）
@@ -169,6 +198,19 @@ SQLインジェクション脆弱性を埋め込まない実装
 
 * SQLインジェクションがどういうものか分かっていなかった あの日の私、チュートリアルに沿うことで回避していた
 * `DjangoのORMとクエリセット <https://tutorial.djangogirls.org/ja/django_orm/>`__
+
+🏃‍♂️関連アウトプット
+--------------------------------------------------
+
+* `これがSQLインジェクション！ やられサイトBad Todo Listで体験し、湯婆婆に対する防衛術を習得しました！ <https://nikkie-ftnext.hatenablog.com/entry/bad-todo-list-sql-injection-first-time>`__
+* `SQLインジェクションされちゃうDjangoアプリってどう作る？ ORMの代わりにrawメソッドを使って実装し攻撃してみる（よいハッカーは真似しないでね） <https://nikkie-ftnext.hatenablog.com/entry/django-bad-example-sql-injection-manager-raw>`__
+
+🏃‍♂️SQLインジェクションの診断の様子
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aXNhsQbeJec?si=PL5fAyCN4WFqfhIB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 小話：復旧に使ったmanage.pyのコマンド
 ============================================================
@@ -198,3 +240,10 @@ SQLインジェクション脆弱性を埋め込まない実装
 * :command:`sqlmigrate` で確認したSQLを流す
 * https://docs.djangoproject.com/ja/4.2/ref/django-admin/#dbshell
 * （仮想環境で開発する中で）DROPしたテーブルを復旧するのに使用
+
+🏃‍♂️「Django 管理コマンド manage.py を深掘り」
+--------------------------------------------------
+
+* DjangoCongress JP 2022より
+* `発表スライド <https://docs.google.com/presentation/d/1pco7ey3I1Eqa_f2MM8a5ziwAKnZHCm92GGweEBQYJ8c/edit#slide=id.g184278461a4_1_151>`__
+* `YouTube アーカイブ <https://youtu.be/QSJDrcQB0z8?si=llOvPPv3dTHRovrF>`__
