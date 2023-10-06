@@ -1,4 +1,4 @@
-XSS（クロスサイト・スクリプティング）
+2️⃣ XSS（クロスサイト・スクリプティング） 🙅
 ============================================================
 
 XSSって、なによ
@@ -6,6 +6,19 @@ XSSって、なによ
 
 * Cross-Site Scripting
 * **悪意を持ったHTMLやJavaScriptコードを注入** できてしまう脆弱性
+
+🏃‍♂️巨人の肩に乗る
+--------------------------------------------------
+
+* DjangoCongress JP 2019 「現場で使える Django のセキュリティ対策」
+* 『`実践Django`_』4.4
+
+🏃‍♂️「現場で使える Django のセキュリティ対策」
+--------------------------------------------------
+
+.. raw:: html
+
+    <iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/47b9d3a52ec94b27a88367d6ddec316d?slide=60" title="現場で使える Django のセキュリティ対策 / Django security measures for business (DjangoCon JP 2019)" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe>
 
 百聞は一見に如かず、デモの時間です！
 --------------------------------------------------
@@ -198,7 +211,7 @@ XSSの脆弱性を埋め込まない実装
   * さらに、HTMLの **属性値はクォートで囲む**
 
 ⚠️この場限りにしてくださいね（攻撃になっちゃうので！）
---------------------------------------------------
+------------------------------------------------------------
 
 * あなたが利用しているWebアプリに、ここで紹介したJavaScriptを保存しないでください
 * それは **攻撃** です（学習用のこのアプリだけにしてください）
@@ -208,3 +221,9 @@ XSSの脆弱性を埋め込まない実装
 
 * XSSがどういうものか分かっていなかった あの日の私、チュートリアルに沿うことで回避していた
 * `Djangoテンプレート <https://tutorial.djangogirls.org/ja/django_templates/>`__
+
+🏃‍♂️関連アウトプット
+--------------------------------------------------
+
+* `DjangoにおけるXSS対策理解の一歩目。JavaScriptのコード片から作ったレスポンスを返してみる（HttpResponse・TemplateResponse） <https://nikkie-ftnext.hatenablog.com/entry/django-response-xss-protection-introduction>`__
+* `XSSの例に登場するJavaScriptのopen（window.open）を理解したく手を動かす <https://nikkie-ftnext.hatenablog.com/entry/grasp-javascript-window-open-in-xss-example>`__
