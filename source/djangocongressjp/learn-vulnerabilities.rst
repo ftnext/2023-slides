@@ -1,3 +1,9 @@
+:ogp_title: Djangoアプリに作り込んで学ぶ脆弱性
+:ogp_event_name: djangocongressjp
+:ogp_slide_name: learn-vulnerabilities
+:ogp_description: 2023/10 DjangoCongress JP 2023
+:ogp_image_name: djangocongressjp
+
 ============================================================
 Djangoアプリに作り込んで学ぶ脆弱性
 ============================================================
