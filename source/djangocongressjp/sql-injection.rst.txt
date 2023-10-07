@@ -4,7 +4,9 @@
 SQLインジェクションって、なによ
 ============================================================
 
-* **悪意を持ったSQLを注入** できてしまう脆弱性
+* Webアプリに文字列を入力できる箇所
+* **SQL** を入力したときに、それが **実行** できてしまうバグ（脆弱性）
+* 悪意を持ったSQLを実行して攻撃できてしまう☠️
 
 これ好き（湯婆婆から身を守れる）
 --------------------------------------------------
@@ -12,6 +14,8 @@ SQLインジェクションって、なによ
 .. raw:: html
 
     <blockquote class="twitter-tweet" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">湯婆婆「フン『千尋&#39; AND Password = &#39;1&#39;; DROP TABLE employee&quot;』というのかい。 」<br>千尋「はい」<br>湯婆婆「贅沢な名だね。今からおまえの名前は、名前は………？」</p>&mdash; ロボ太 (@kaityo256) <a href="https://twitter.com/kaityo256/status/1451737864526389254?ref_src=twsrc%5Etfw">October 23, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+https://togetter.com/li/1792595
 
 🏃‍♂️巨人の肩に乗る
 --------------------------------------------------
@@ -31,19 +35,17 @@ SQLインジェクションって、なによ
 百聞は一見に如かず、デモの時間です！
 --------------------------------------------------
 
-http://127.0.0.1:8000/todolist/
-
-* TODOの検索（完全一致）ができるページ
+https://github.com/ftnext/django-bad-apps/tree/main/sql-injection
 
 :command:`docker compose up`
 --------------------------------------------------
 
-* SQLインジェクション脆弱性のあるDjangoアプリ
-* DB（PostgreSQL）
+* SQLインジェクション脆弱性のあるDjangoアプリ ``web``
+* DB（PostgreSQL） ``db``
 
   * :command:`docker compose run web python manage.py loaddata dump_todos.json`
 
-完全一致で検索
+TODOを完全一致で検索
 --------------------------------------------------
 
 http://127.0.0.1:8000/todolist/
@@ -51,21 +53,32 @@ http://127.0.0.1:8000/todolist/
 * 「パソコンを買う」で1件に絞れる
 * クエリパラメタ ``todo=...``
 
-SQLインジェクションで攻撃してみましょう
+やられサイトをSQLインジェクションで攻撃してみましょう
 ============================================================
 
 **複数文** のSQLが実行できるぞ！
 --------------------------------------------------
 
 * 攻撃「パソコンを買う'; SELECT id FROM todos WHERE '1' = '1」
-* 全件表示されます
-* ※これは **できちゃダメ** なやつです
+* 全件表示されます ※ **できちゃダメ** なやつ
+
+.. code-block:: sql
+
+    パソコンを買う';
+    SELECT id FROM todos WHERE '1' = '1
 
 全てのTODOをDELETE😈
 --------------------------------------------------
 
 * 「パソコンを買う'; DELETE FROM todos WHERE '1' = '1'; SELECT id FROM todos WHERE '1' = '1」
-* http://127.0.0.1:8000/todolist/?todo=%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%82%92%E8%B2%B7%E3%81%86%27%3B+DELETE+FROM+todos+WHERE+%271%27+%3D+%271%27%3B+SELECT+id+FROM+todos+WHERE+%271%27+%3D+%271
+
+.. code-block:: sql
+
+    パソコンを買う';
+    DELETE FROM todos WHERE '1' = '1';
+    SELECT id FROM todos WHERE '1' = '1
+
+* クエリパラメタ指定しても http://127.0.0.1:8000/todolist/?todo=%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%82%92%E8%B2%B7%E3%81%86%27%3B+DELETE+FROM+todos+WHERE+%271%27+%3D+%271%27%3B+SELECT+id+FROM+todos+WHERE+%271%27+%3D+%271
 
 .. 復旧は loaddata で
 
@@ -73,12 +86,26 @@ TODOのテーブルをDROP👹
 --------------------------------------------------
 
 * 「パソコンを買う'; DROP TABLE todos; SELECT id FROM django_migrations WHERE '1' = '1」
-* http://127.0.0.1:8000/todolist/?todo=%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%82%92%E8%B2%B7%E3%81%86%27%3B+DROP+TABLE+todos%3B+SELECT+id+FROM+django_migrations+WHERE+%271%27+%3D+%271
 
-どうすればよかったの？
+.. code-block:: sql
+
+    パソコンを買う';
+    DROP TABLE todos;
+    SELECT id FROM django_migrations WHERE '1' = '1
+
+* クエリパラメタ指定しても http://127.0.0.1:8000/todolist/?todo=%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%82%92%E8%B2%B7%E3%81%86%27%3B+DROP+TABLE+todos%3B+SELECT+id+FROM+django_migrations+WHERE+%271%27+%3D+%271
+
+やられサイトを攻撃できました！
+--------------------------------------------------
+
+* DELETE文を実行してデータ削除
+* DROP TABLE文を実行してテーブル削除
+
+実装はどうすればよかったの？
 ============================================================
 
 .. code-block:: python
+    :emphasize-lines: 4-5
 
     def todo_list(request):
         todo_str = request.GET["todo"]
@@ -88,10 +115,16 @@ TODOのテーブルをDROP👹
         )
         todos = Todo.objects.raw(sql)
 
-SQLインジェクションできちゃう実装
+SQLインジェクションできちゃう実装（原因箇所）
 --------------------------------------------------
 
-* 外から渡される文字列を **フォーマットしてSQLを組み立て**、ORMの ``raw`` で実行
+* ``str.format`` で外から渡される文字列をフォーマットしてSQLを組み立てる
+* SQLはORMの ``raw`` で実行
+* https://docs.djangoproject.com/ja/4.2/ref/models/querysets/#raw
+
+TODOを検索するだけならいいのですが...
+--------------------------------------------------
+
 * 「パソコンを買う」が渡されたときはうまくいく
 
 .. code-block:: sql
@@ -99,7 +132,7 @@ SQLインジェクションできちゃう実装
     SELECT id, id_str, todo, created_date, due_date FROM todos 
     WHERE todo = 'パソコンを買う';
 
-複数文作れてしまう
+複数文作れてしまう☠️
 --------------------------------------------------
 
 * 「パソコンを買う'; SELECT id FROM todos WHERE '1' = '1」
@@ -109,18 +142,20 @@ SQLインジェクションできちゃう実装
     SELECT id, id_str, todo, created_date, due_date FROM todos 
     WHERE todo = 'パソコンを買う'; SELECT id FROM todos WHERE '1' = '1';
 
-* 外から渡したシングルクォートで ``'{}'`` の先頭のシングルクォートが閉じてしまい、任意のSQLが続けられる
+* 外から渡したシングルクォートで ``'{}'`` の先頭のシングルクォートが閉じてしまい、 **任意のSQLが続けられる**
 
-ORMを使おう！
+対策：ORMを使おう！
 --------------------------------------------------
 
 .. code-block:: python
+    :emphasize-lines: 3
 
     def todo_list(request):
         todo_str = request.GET["todo"]
         todos = Todo.objects.filter(todo=todo_str)
 
 * SQLを原則書かない。 **ORMの書き方を覚えて使う**
+* https://docs.djangoproject.com/ja/4.2/ref/models/querysets/#filter
 
 🏃‍♂️「Make Query Great Again!」
 ------------------------------------------------------------
@@ -129,7 +164,7 @@ ORMを使おう！
 * `発表スライド <https://www.slideshare.net/dattun/django-congress-jp-2019-make-query-great-again-slide-share>`__
 * `YouTube アーカイブ <https://youtu.be/VQvniZoy8HY?si=QAWauZS3W0HKRsPQ>`__
 
-静的解析で気づこう 〜Bandit〜
+他の対策：静的解析で気づこう 〜Bandit〜
 ============================================================
 
 * https://pypi.org/project/bandit/
@@ -141,7 +176,7 @@ ORMを使おう！
 
 .. code-block:: shell
 
-    $ bandit bad_sql_injection/todo/views.py
+    $ bandit bad_sql_injection/todo/views.py  # bandit -r bad_sql_injection
     
     Test results:
     >> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
@@ -170,7 +205,7 @@ SQLインジェクションのまとめ🌯
 SQLインジェクション脆弱性を埋め込む実装🙅‍♂️
 --------------------------------------------------
 
-* 外から渡される文字列を **フォーマットしてSQLを組み立て**、ORMの ``raw`` で実行
+* 外から渡される文字列を **str.formatしてSQLを組み立て**、ORMの ``raw`` で実行
 
 .. code-block:: python
 
@@ -179,7 +214,7 @@ SQLインジェクション脆弱性を埋め込む実装🙅‍♂️
         "WHERE todo = '{}';".format(todo_str)
     )
 
-* シングルクォートのあとに任意のSQLを入力して、実行してしまえる
+* **シングルクォートのあとに任意のSQL** を入力して、実行してしまえる
 
 SQLインジェクション脆弱性を埋め込まない実装
 --------------------------------------------------
@@ -224,6 +259,15 @@ SQLインジェクション脆弱性を埋め込まない実装
 * https://docs.djangoproject.com/ja/4.2/ref/django-admin/#loaddata
 * JSONファイルは `dumpdata <https://docs.djangoproject.com/ja/4.2/ref/django-admin/#dumpdata>`__ で作っておく
 
+DROPした後の復旧
+--------------------------------------------------
+
+.. code-block:: shell
+
+    $ python manage.py sqlmigrate todo 0001  # SQLを出力
+    $ psql -h 127.0.0.1 -p 5432 -U developer badapp
+    # SQLを実行していく
+
 :command:`python manage.py sqlmigrate`
 --------------------------------------------------
 
@@ -234,12 +278,12 @@ SQLインジェクション脆弱性を埋め込まない実装
 
     python manage.py sqlmigrate todo 0001
 
-:command:`python manage.py dbshell`
+他に :command:`python manage.py dbshell` も
 --------------------------------------------------
 
+* （仮想環境で開発する中で）DROPしたテーブルを復旧するのに使用
 * :command:`sqlmigrate` で確認したSQLを流す
 * https://docs.djangoproject.com/ja/4.2/ref/django-admin/#dbshell
-* （仮想環境で開発する中で）DROPしたテーブルを復旧するのに使用
 
 🏃‍♂️「Django 管理コマンド manage.py を深掘り」
 --------------------------------------------------
