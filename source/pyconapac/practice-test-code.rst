@@ -22,7 +22,7 @@ Pythonとアニメが好き
 
 最近ハマってる #ミリアニネタバレ感想
 
-.. なぜテストコードが書けるといいのか
+.. include:: test-code-benefits.rst.txt
 
 .. doctest
 
