@@ -34,4 +34,4 @@ Pythonとアニメが好き
 * Start Python Club (#stapy)
 * 読書py
 
-.. pytest
+.. include:: pytest.rst.txt
