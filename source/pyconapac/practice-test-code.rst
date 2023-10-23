@@ -24,7 +24,7 @@ Pythonとアニメが好き
 
 .. include:: test-code-benefits.rst.txt
 
-.. doctest
+.. include:: doctest.rst.txt
 
 閑話休題🍵 お前、誰よ 続
 ============================================================

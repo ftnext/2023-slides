@@ -1,0 +1,110 @@
+doctest
+============================================================
+
+関数のdocstring
+============================================================
+
+.. code-block:: python
+
+    def fizzbuzz(number: int) -> str:
+        """FizzBuzz関数
+        
+        TODO docstringの例をいい感じに
+        """
+
+Python対話モードの実行例をdocstringに
+--------------------------------------------------
+
+.. code-block:: python
+
+    def fizzbuzz(number: int) -> str:
+        """FizzBuzz関数
+        
+        >>> fizzbuzz(1)
+        '1'
+        >>> fizzbuzz(3)
+        'Fizz'
+        """
+
+対話モードの実行例をテストとして実行
+============================================================
+
+* :command:`python -m doctest fizzbuzz.py`
+
+TODO 実行結果を示す
+
+利用シーン：ライブラリのドキュメントにも
+--------------------------------------------------
+
+* 例：scikit-learn
+
+.. code-block:: python
+
+    >>> from sklearn.metrics import f1_score
+    >>> f1_score(y_true, y_pred, average='macro')
+    0.26...
+
+https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
+
+docstringに限らず使えます
+--------------------------------------------------
+
+テキストファイル（特にreStructuredText）で頻繁に使用
+
+* 書籍執筆
+* 発表資料作成
+
+doctestの注意点
+============================================================
+
+.. code-block:: python
+
+    def fizzbuzz(number: int) -> str:
+        """FizzBuzz関数
+        
+        >>> fizzbuzz(3)
+        "FIzz"
+        """
+
+ダブルクォートに変えただけで、テストがfail
+
+あくまで対話モードの例
+--------------------------------------------------
+
+* 対話モードでは **文字列** は基本は **シングルクォート** で囲まれる
+* doctestでも文字列はシングルクォートにする必要がある
+
+対話モードは ``repr`` 関数の返り値
+--------------------------------------------------
+
+    repr() 関数はインタープリタに読める（略）表現を返すためのもの
+
+https://docs.python.org/ja/3/tutorial/inputoutput.html#fancier-output-formatting
+
+doctest再訪
+============================================================
+
+* 実行例を書くだけで、関数にある値を入力したときの出力を検証できた
+* *3A* という見方を導入
+
+3A
+--------------------------------------------------
+
+* Arrange 準備
+* Act 実行
+* Assert 検証
+
+https://xp123.com/articles/3a-arrange-act-assert/
+
+doctestを3Aで見る
+--------------------------------------------------
+
+コメントを使った説明のため、対話モードで示します
+
+.. code-block:: pycon
+
+    >>> number = 3  # Arrange
+    >>> fizzbuzz(number)  # Act
+    'Fizz'  # <- Assert
+
+.. TODO スライドを送ってアニメーションで見せるやり方ありそう
