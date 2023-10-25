@@ -149,11 +149,9 @@ pytestで **docstringの対話例も** 実行できる🏃‍♂️
 ``@pytest.mark.parametrize`` を使おう
 --------------------------------------------------
 
-.. code-block:: python
-
-    @pytest.mark.parametrize("number", [3, 6])
-    def test_3の倍数のときはFizzを返す(number):
-        assert fizzbuzz(number) == "Fizz"
+.. literalinclude:: ../../samplecode/python-testing/pytest-example/test_fizzbuzz.py
+    :language: python
+    :pyobject: test_3の倍数のときはFizzを返す
 
 1つの関数、複数のテストケース
 --------------------------------------------------
@@ -178,18 +176,15 @@ pytestで **docstringの対話例も** 実行できる🏃‍♂️
 * テストを書きたい関数 ``foo``
 * 処理A -> B -> Cの順で呼び出している
 
-.. code-block:: python
-
-    def foo():
-        a_func(42)
-        b_func("ham", "egg")
-        c_func()
+.. literalinclude:: ../../samplecode/python-testing/pytest-example/test_with_mock.py
+    :language: python
+    :pyobject: foo
 
 どうテストコードを書くか？
 --------------------------------------------------
 
 * 全ての処理を通したテストも書ける
-* 呼び出される処理を **ニセモノ（＝モック）に置き換え** てテスト
+* 推し：呼び出される処理を **ニセモノ（＝モック）に置き換え** てテスト
 
 モックを使ったテスト
 --------------------------------------------------
@@ -201,7 +196,9 @@ pytestで **docstringの対話例も** 実行できる🏃‍♂️
 モックを使ったテストの例
 --------------------------------------------------
 
-TODO
+.. literalinclude:: ../../samplecode/python-testing/pytest-example/test_with_mock.py
+    :language: python
+    :pyobject: test_foo
 
 * 処理の **呼び出しを検証**
 * 処理A,B,C自体はいずれも別途、徹底的に検証
