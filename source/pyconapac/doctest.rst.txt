@@ -48,17 +48,9 @@ docstringの例
 Python対話モードの **実行例をdocstringに書く**
 --------------------------------------------------
 
-.. code-block:: python
-
-    def fizzbuzz(number: int) -> str:
-        """FizzBuzzゲームを解く関数
-        
-        >>> fizzbuzz(1)
-        '1'
-        >>> fizzbuzz(3)
-        'Fizz'
-
-        """
+.. literalinclude:: ../../samplecode/python-testing/doctest-example/fizzbuzz.py
+    :language: python
+    :lines: 1-3,6-9,14
 
 対話モードの実行例を **テストとして実行**
 ============================================================
@@ -109,15 +101,30 @@ https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
 doctestの注意点
 ============================================================
 
+.. 以下のコードのdoctestを通すだけのコード（doctest: +SKIPがtrimされないため）
+    >>> def fizzbuzz(number):
+    ...     print('"Fizz"')
+
 .. code-block:: python
 
     def fizzbuzz(number: int) -> str:
-        """FizzBuzz関数
+        """FizzBuzzゲームを解く関数
 
-        >>> fizzbuzz(3)  # doctest: +SKIP
+        >>> fizzbuzz(3)
         "Fizz"
 
         """
+
+.. 残りのテストを通すための定義
+    >>> def fizzbuzz(number: int) -> str:
+    ...     if number % 3 == 0 and number % 5 == 0:
+    ...         return "FizzBuzz"
+    ...     elif number % 3 == 0:
+    ...         return "Fizz"
+    ...     elif number % 5 == 0:
+    ...         return "Buzz"
+    ...     else:
+    ...         return str(number)
 
 文字列に **ダブルクォート** を使ったらテストがfail😱
 ------------------------------------------------------------
@@ -156,14 +163,9 @@ https://docs.python.org/ja/3/tutorial/inputoutput.html#fancier-output-formatting
 doctestから見るテストコードの書き方
 ============================================================
 
-.. code-block:: python
-
-    def fizzbuzz(number: int) -> str:
-        """
-        >>> fizzbuzz(3)
-        'Fizz'
-
-        """
+.. literalinclude:: ../../samplecode/python-testing/doctest-example/fizzbuzz.py
+    :language: python
+    :lines: 1-3,8-9,14
 
 * 実行例を書くだけで、関数に **ある値を入力したときの出力** を検証できた
 * *3A* という見方を導入
