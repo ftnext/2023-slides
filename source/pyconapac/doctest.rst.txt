@@ -15,11 +15,10 @@ doctest
 
 https://docs.python.org/ja/3/glossary.html#term-docstring
 
-ドキュメンテーション文字列
+ドキュメンテーション文字列 とも
 --------------------------------------------------
 
 * https://docs.python.org/ja/3/tutorial/controlflow.html#tut-docstrings
-* a.k.a. docstring
 * **三連引用符** を用い、複数行にまたがった文字列リテラルとすることがほとんど
 
 .. https://docs.python.org/ja/3/tutorial/introduction.html#text
@@ -27,15 +26,26 @@ https://docs.python.org/ja/3/glossary.html#term-docstring
 docstringの例
 --------------------------------------------------
 
+.. テストを通すための定義
+    >>> def fizzbuzz(number: int) -> str:
+    ...     if number % 3 == 0 and number % 5 == 0:
+    ...         return "FizzBuzz"
+    ...     elif number % 3 == 0:
+    ...         return "Fizz"
+    ...     elif number % 5 == 0:
+    ...         return "Buzz"
+    ...     else:
+    ...         return str(number)
+
 .. code-block:: python
 
     def fizzbuzz(number: int) -> str:
         """FizzBuzzゲームを解く関数（：1行要約）
-        
+
         ...（後述）...
         """
 
-Python対話モードの実行例をdocstringに書く
+Python対話モードの **実行例をdocstringに書く**
 --------------------------------------------------
 
 .. code-block:: python
@@ -47,12 +57,13 @@ Python対話モードの実行例をdocstringに書く
         '1'
         >>> fizzbuzz(3)
         'Fizz'
+
         """
 
-対話モードの実行例をテストとして実行
+対話モードの実行例を **テストとして実行**
 ============================================================
 
-.. code-block::
+.. code-block:: txt
 
     .
     └── fizzbuzz.py
@@ -62,7 +73,7 @@ Python対話モードの実行例をdocstringに書く
 実行結果の確認（:command:`-v` オプション）
 --------------------------------------------------
 
-.. code-block::
+.. code-block:: shell
 
     $ python -m doctest fizzbuzz.py -v
     Trying:
@@ -74,13 +85,13 @@ Python対話モードの実行例をdocstringに書く
     4 passed and 0 failed.
     Test passed.
 
-docstringに限らず使えます
+関数のdocstringに限らず使えます
 --------------------------------------------------
 
 nikkieはテキストファイル（特にreStructuredText）で頻繁に使用
 
 * 書籍執筆
-* 発表資料作成（本資料含む）
+* **発表資料** 作成（本資料含む）
 
 利用シーン：ライブラリのドキュメントにも
 --------------------------------------------------
@@ -89,8 +100,8 @@ nikkieはテキストファイル（特にreStructuredText）で頻繁に使用
 
 .. code-block:: pycon
 
-    >>> from sklearn.metrics import f1_score
-    >>> f1_score(y_true, y_pred, average='macro')
+    >>> from sklearn.metrics import f1_score  # doctest: +SKIP
+    >>> f1_score(y_true, y_pred, average='macro')  # doctest: +ELLIPSIS +SKIP
     0.26...
 
 https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
@@ -102,15 +113,16 @@ doctestの注意点
 
     def fizzbuzz(number: int) -> str:
         """FizzBuzz関数
-        
-        >>> fizzbuzz(3)
-        "FIzz"
+
+        >>> fizzbuzz(3)  # doctest: +SKIP
+        "Fizz"
+
         """
 
-文字列にダブルクォートを使ったらテストがfail😱
---------------------------------------------------
+文字列に **ダブルクォート** を使ったらテストがfail😱
+------------------------------------------------------------
 
-.. code-block::
+.. code-block:: shell
 
     $ python -m doctest fizzbuzz.py
     Failed example:
@@ -126,6 +138,12 @@ doctestの注意点
 --------------------------------------------------
 
 * 対話モードでは **文字列** は基本 **シングルクォート** で囲まれる
+
+.. code-block:: pycon
+
+    >>> "Fizz"
+    'Fizz'
+
 * doctestでも文字列はシングルクォートにする必要がある
 
 対話モードは ``repr`` 関数の返り値
@@ -144,6 +162,7 @@ doctestから見るテストコードの書き方
         """
         >>> fizzbuzz(3)
         'Fizz'
+
         """
 
 * 実行例を書くだけで、関数に **ある値を入力したときの出力** を検証できた
@@ -193,7 +212,7 @@ Act
     >>> fizzbuzz(number)
     'Fizz'
 
-Arrange
+Assert
 --------------------------------------------------
 
 実行結果が期待値と等しいかを **検証**
@@ -204,3 +223,10 @@ Arrange
     >>> number = 3
     >>> fizzbuzz(number)
     'Fizz'
+
+🥟doctest まとめ
+============================================================
+
+* 対話モードの **実行例を、docstringに書くだけ**！
+* :command:`python -m doctest` にPythonファイルを渡してテスト実行
+* テストコードの一歩目として非常にオススメです
