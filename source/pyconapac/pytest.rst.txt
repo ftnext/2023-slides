@@ -3,17 +3,16 @@ pytest
 
 * サードパーティライブラリ https://pypi.org/project/pytest/
 * :command:`pip install pytest`
+* ヒミツ：古くは py.test だった
 
-.. ずっと昔はpy.test
-
-pytestで書くテスト
+pytestで書くテストは **3** ステップ
 ============================================================
 
 1. テストコードのファイルを作る
 2. テストコードとして、関数を書く
 3. assert文
 
-pytestの規則に従ったファイル
+Step1 pytestの規則に従った **ファイル**
 --------------------------------------------------
 
 * ``test_`` で始まるPythonファイルを作成
@@ -26,7 +25,7 @@ pytestの規則に従ったファイル
     ├── fizzbuzz.py
     └── test_fizzbuzz.py
 
-pytestの規則に従った関数
+Step2 pytestの規則に従った **関数**
 --------------------------------------------------
 
 * ``test_`` で始まる関数を書く
@@ -37,7 +36,7 @@ pytestの規則に従った関数
     def test_3の倍数のときはFizzを返す():
         ...
 
-Pythonのassert文
+Step3 Pythonの **assert文**
 --------------------------------------------------
 
 * ``assert 式``
@@ -56,7 +55,7 @@ assert文の例
       File "<stdin>", line 1, in <module>
     AssertionError
 
-3Aで理解するpytest
+3Aでとらえるpytest
 --------------------------------------------------
 
 .. code-block:: python
@@ -64,7 +63,10 @@ assert文の例
 
     def test_3の倍数のときはFizzを返す():
         number = 3  # Arrange
-        assert fizzbuzz(number) == "Fizz"  # Act & Assert
+          # Act & Assert (actual == expected)
+        assert fizzbuzz(number) == "Fizz"
+
+.. 1つの関数の中で3Aを行います
 
 テスト実行 :command:`pytest -v`
 --------------------------------------------------
@@ -75,7 +77,7 @@ assert文の例
     ├── fizzbuzz.py
     └── test_fizzbuzz.py
 
-.. code-block::
+.. code-block:: shell
 
     $ pytest -v
     ============================= test session starts ==============================
@@ -87,7 +89,7 @@ assert文の例
 failしたテスト（15でFizzを返した）
 --------------------------------------------------
 
-.. code-block::
+.. code-block:: shell
 
     test_fizzbuzz.py::test_15の倍数のときはFizzBuzzを返す FAILED             [ 20%]
 
@@ -100,15 +102,17 @@ failしたテスト（15でFizzを返した）
     E         - FizzBuzz
     E         + Fizz
 
-* assert文だが、diffが分かりやすい
+* assert文だが、 **diffが分かりやすい**
 
 pytestは **assert文を拡張**
 --------------------------------------------------
 
-* テストコードに使うのはassert文だけと **簡単**、かつ、fail下テストのdiffが **分かりやすい**
-* 実はpytestがassert文を書き換えて、分かりやすいdiffを実現している（`assertion rewriting <https://docs.pytest.org/en/latest/how-to/writing_plugins.html#assertion-rewriting>`__）
+* テストコードに使うのはassert文だけと **簡単**
+* failしたテストのdiffが **分かりやすい**
 
-pytestでdocstringの対話例も実行できる🏃‍♂️
+  * 秘密は *pytestがassert文を書き換え* ている（`assertion rewriting <https://docs.pytest.org/en/latest/how-to/writing_plugins.html#assertion-rewriting>`__）
+
+pytestで **docstringの対話例も** 実行できる🏃‍♂️
 --------------------------------------------------
 
 * :command:`pytest --doctest-modules`
@@ -124,6 +128,8 @@ pytestでdocstringの対話例も実行できる🏃‍♂️
 
 3の倍数ならFizz
 --------------------------------------------------
+
+``number`` の **取りうる値は複数**
 
 * 3
 * 6
@@ -152,32 +158,57 @@ pytestでdocstringの対話例も実行できる🏃‍♂️
 1つの関数、複数のテストケース
 --------------------------------------------------
 
-.. code-block::
+.. code-block:: shell
 
     $ pytest -v
 
     test_fizzbuzz.py::test_3の倍数のときはFizzを返す[3] PASSED               [ 40%]
     test_fizzbuzz.py::test_3の倍数のときはFizzを返す[6] PASSED               [ 60%]
 
-個別に書いたのと同じ結果が得られる
+**個別に書いたのと同じ** 結果が得られる
 
 モック
 ============================================================
 
-TODO 見直し
+やや発展的話題（いまは分からなかったとしても大丈夫）
 
-部品ごとにテストする
+複数の処理を呼び出す実装のテストコードを書く
 --------------------------------------------------
 
-* 全て通さないテストコード
-* ある部品の呼び出し方を検証
-* 部品自体は徹底的に検証
+* テストを書きたい関数 ``foo``
+* 処理A -> B -> Cの順で呼び出している
 
-.. TODO 例を出す
+.. code-block:: python
 
-モックを使って部品をテスト
+    def foo():
+        a_func(42)
+        b_func("ham", "egg")
+        c_func()
+
+どうテストコードを書くか？
 --------------------------------------------------
 
-* ある部品をモックにする
-* モックは呼び出され方を覚えている -> 検証できる
-* モックにした部品自体は、単体テストで徹底的に検証
+* 全ての処理を通したテストも書ける
+* 呼び出される処理を **ニセモノ（＝モック）に置き換え** てテスト
+
+モックを使ったテスト
+--------------------------------------------------
+
+* ``foo`` 関数で呼び出す各処理を *何もしない* （＝モック）に置き換える
+* **モックは呼び出され方を記憶** している
+* 処理Aがこれこれを引数に呼び出されたかをAssertする
+
+モックを使ったテストの例
+--------------------------------------------------
+
+TODO
+
+* 処理の **呼び出しを検証**
+* 処理A,B,C自体はいずれも別途、徹底的に検証
+
+🥟pytest まとめ
+============================================================
+
+* ``test_`` で始まるファイル
+* ``test_`` で始まる関数。assert文を使う
+* テストに慣れてきたらぜひ試してみてください！
