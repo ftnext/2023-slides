@@ -9,7 +9,6 @@ def test_15の倍数のときはFizzBuzzを返す():
 
 @pytest.mark.parametrize("number", [3, 6])
 def test_3の倍数のときはFizzを返す(number):
-    number = 3
     assert fizzbuzz(number) == "Fizz"
 
 
