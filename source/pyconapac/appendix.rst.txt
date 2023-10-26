@@ -49,7 +49,7 @@ https://github.com/ftnext/tddbc-fizzbuzz/blob/8ea856c4c59780837410a44a8583680472
 テストを書いているあなたへ
 --------------------------------------------------
 
-拙ブログ TODO
+拙ブログ `テストを書くようになったあなたと語りたいトピック集 <https://nikkie-ftnext.hatenablog.com/entry/pycon-apac-2023-practice-test-talk-extra-test-topics-commentary>`__
 
 タイトルの秘密
 ============================================================

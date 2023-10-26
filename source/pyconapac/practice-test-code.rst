@@ -1,6 +1,6 @@
-============================================================
-（準備中）好きとか嫌いとかはいい、練習してテストを書けるようになるんだ
-============================================================
+======================================================================
+好きとか嫌いとかはいい、練習してテストを書けるようになるんだ
+======================================================================
 
 好きとか嫌いとかはいい、 **練習してテストを書けるよ** うになるんだ
 ======================================================================
@@ -84,9 +84,16 @@
 動作環境 & サンプルコード
 --------------------------------------------------
 
-* Python 3.10.9 (TODO)
+* Python 3.12.0 (latest🙌)
 * :fab:`github` `doctest-example <https://github.com/ftnext/2023-slides/tree/main/samplecode/python-testing/doctest-example>`__
 * :fab:`github` `pytest-example <https://github.com/ftnext/2023-slides/tree/main/samplecode/python-testing/pytest-example>`__
+
+.. Sample codes work at Python 3.12.0!
+
+.. コマンド控え
+    python -m doctest fizzbuzz.py example_repr.py
+    pytest --doctest-modules -v
+    python -m doctest ../../../source/pyconapac/doctest.rst.txt ../../../source/pyconapac/pytest.rst.txt
 
 .. include:: test-code-benefits.rst.txt
 
