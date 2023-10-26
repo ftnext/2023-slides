@@ -1,6 +1,8 @@
 テストコードが書けるメリット
 ============================================================
 
+.. First, let's talk about the benefits of being able to write test code.
+
 .. まず、テストコードが書けるとどんないいことがあるかを話していきます
 
 一度書いたコードは改善（変更）を免れない
@@ -8,6 +10,10 @@
 
 * 持てる知識を全て動員して書いたが、より適切な文法を知らなかった
 * **新しく知った書き方** で書き直したい ➡️ 学びになり、Pythonの力がつく💪
+
+.. Personally, I don't think there's ever a time when you shouldn't improve the code you've written.
+    You might have written the code using all the knowledge you have, but you may not have known a more appropriate syntax.
+    I often find that rewriting code to be more efficient is a great learning experience, and it builds your proficiency in Python.
 
 .. 私、思うんですけど、一度書いたコードを改善しないことってないんじゃないかなと。
     持てる知識を全て使って書いたコードだが、より適切な文法を知らなかった。
@@ -32,6 +38,9 @@
 
 https://pycamp.pycon.jp/textbook/2_intro.html#fizzbuzz リスト2.14
 
+.. Let's take the example of the FizzBuzz program.
+    It's a familiar programming task where you return "Fizz" for multiples of 3 and so on.
+
 .. 例はFizzBuzzのプログラムです。
     3の倍数のときはFizz、5の倍数のときはBuzzと返すという、プログラミングではおなじみの課題ですね
 
@@ -51,6 +60,8 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 
 裏で「`Introduction to Structural Pattern Matching <https://2023-apac.pycon.jp/timetable?id=DXWXGJ>`__」
 
+.. With Python 3.10's Structural Pattern Matching, you can write it like this! It's quite surprising.
+
 .. このFizzBuzzですが、Python 3.10から使えるようになったStructural Pattern Matchingを使うと
     こんな感じでスッキリ書けちゃう！ びっくりですよね
 
@@ -58,6 +69,9 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 ============================================================
 
 **不安** に対処するいくつかのアプローチ
+
+.. However, there's a fear that you might change the behavior unintentionally with the rewrite.
+    There are various approaches to address this fear.
 
 .. ですが、書き換えで振る舞いを変えちゃっているかもという不安を感じます。
     この不安にはいろんなアプローチがあると思います。
@@ -69,6 +83,10 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 
 * 🙏🙏「どうか変わっていませんように」🙏🙏
 * 振る舞いを変えていないか不安だが、 *何も確認はしない*
+
+.. One approach is to pray for the fear.
+    "I'm rewriting it, but please don't change anything!"
+    (While the fear might diminish,) IN fact you're not really confirming anything.
 
 .. 例えば祈りで不安にアプローチ。
     書き換えるんだけど変わっていないでくれ！という祈りです。
@@ -87,6 +105,11 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 
 * 安心できるが、 *関数の数が増えて* いくと現実的ではなさそう
 
+.. Another approach is to manually check.
+    Start the interpreter, import fizzbuzz, pass 15(fifteen), and see if it returns "FizzBuzz".
+    (If it behaves as expected, you can feel at ease.
+    However,) as the number of functions you want to check increases, it might become challenging.
+
 .. 別のアプローチとして、手で動作確認です。
     インタプリタを立ち上げて、fizzbuzzをimportして15を渡してFizzBuzzと返る。
     これは期待通りの動きだ！と安心できると思います。
@@ -99,6 +122,11 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 * 「手で動作確認」の **自動化** （テストコードを書く）
 * プログラムで使う部品のコードは、プログラムを書いて動作確認するという考え方
 
+.. Third approach is to write code to automate the manual check.
+    This is the main topic of this presentation.
+    We'll write what's called test code.
+    (Considering it as a component that the program uses, we'll use the program to confirm its behavior.)
+
 .. 3つのアプローチ、コードを書いて動作確認しましょう。
     これがこの発表の本題です。
     手での確認を自動化していく。テストコードと呼ばれるコードを書いていきます。
@@ -106,10 +134,26 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 
 .. 「単体テスト」はAppendix？
 
-テストコードの用語紹介
+用語紹介(1/2) 実行結果
 --------------------------------------------------
 
-テストコードを実行すると、 **pass** （全て通る・成功）または **fail** （1つでも失敗・落ちる）
+テストコードを実行すると、いずれか
+
+* **pass** （全て通る・成功）
+* fail （1つでも失敗・落ちる）
+
+.. Let's introduce some terminology here.
+    When you execute a set of test codes, there are only two outcomes: pass or fail.
+    "Pass" means all tests have succeeded.
+    If even one test fails, the entire set is marked as "fail".
+
+.. ここで用語を紹介しましょう。
+    テストコードの集合を全部実行したらpassかfailしかありません。
+    passはテストが全て成功したということです。
+    テストが1つでも失敗するとテストもfailとなります。
+
+用語紹介(2/2) 値
+--------------------------------------------------
 
 .. code-block:: pycon
     :caption: かしこまった書き方
@@ -119,11 +163,11 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
     >>> actual == expected
     True
 
-.. ここで用語を紹介しましょう。
-    テストコードの集合を全部実行したらpassかfailしかありません。
-    passはテストが全て成功したということです。
-    テストが1つでも失敗するとテストもfailとなります。
-    もう1つ（TODO スライド分ける）、かしこまった書き方ですが（formal way）、
+.. In formal way, The value returned by the subject you want to test is called "actual",
+    and the result you expect is called "expected".
+    You verify that actual and expected are equal.
+
+.. もう1つ、かしこまった書き方ですが（formal way）、
     テストしたい対象を実行した値はactual、
     期待する結果をexpectedと呼んで、
     actualとexpectedが等しいことを検証しています
@@ -142,6 +186,10 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
     * - ``fizzbuzz(15)``
       - ``"FizzBuzz"``
 
+.. I'll tell you a bit later how to write test code,
+    but even if you imagine having test code, it brings so many benefits.
+    For example, there's a test that checks if passing 3 to fizzbuzz returns the string "Fizz".
+
 .. テストコードをどう書くかはもう少し先でお伝えしますが、
     仮にテストコードがあるとこんなにいいことがありますよ。
     例えば、fizzbuzzに3を渡すと文字列のFizz
@@ -151,6 +199,9 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 
 * 実装中、仕様を満たす **動作するコード** であると確認できる🙌
 * 書き換える際も、おかしくしていたら気付ける 🙌（*回帰テスト*）
+
+.. When the test passes, it means you have code that works as specified.
+    If you accidentally mess something up, the test will fail, and you'll notice.
 
 .. テストがpassということは、仕様を満たす動作するコードということです。
     おかしくしてしまったらテストがfailして気づけます。
@@ -165,7 +216,11 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 * 実装に加えてテストコードも書く
 * でも、デメリット **<< メリット** だと思うから、📣練習して書けるようになるんだ！
 
-.. だた、テストコードと実装と、両方書かなければなりません。（つらいところだな）
+.. However, you have to write both the test code and the implementation. (It's a bit tough.)
+    Everything has its pros and cons, and I believe the benefits far outweigh the drawbacks from my experience.
+    So, in this talk, I'm encouraging you to give writing test code a try.
+
+.. ただ、テストコードと実装と、両方書かなければなりません。（つらいところだな）
     どんなものにメリットとデメリットもあると思います。
     私は経験からメリットがデメリットを大きく上回ると思っているので、このトークではテストコードを書いてみましょうと伝えています
 
@@ -175,7 +230,11 @@ https://gihyo.jp/news/report/01/pyconjp2021/0002
 * テストコードにより、「この実装は仕様を満たす **動作** するコード」と **確認** できる
 * 新しく知った文法を試して書き換えるとき、 **誤** って振る舞いを変えてしまっても **気づける**
 
+.. To summarize what we've covered so far,
+    With test code, you can confirm that the implementation works as specified.
+    (Even when trying out new syntax you've learned and rewriting,)
+    you can catch if you unintentionally change the behavior.
+
 .. ここまでをまとめますと、
     テストコードがあると、実装は仕様を満たす動作するコードと確認できます。
     新しく知った文法を試して書き換えるとき、誤って振る舞いを変えてしまったときも気づけます。
-    こんないいことがあるよという話をしました
