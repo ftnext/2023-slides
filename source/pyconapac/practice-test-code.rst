@@ -16,7 +16,7 @@
 お前、誰よ
 ============================================================
 
-* nikkie（にっきー） ／ :fab:`twitter` `@ftnext <https://twitter.com/ftnext>`__
+* nikkie（にっきー） ／ :fab:`twitter` `@ftnext <https://twitter.com/ftnext>`__ ／ :fab:`github` `@ftnext <https://github.com/ftnext>`__
 * 株式会社ユーザベースのデータサイエンティスト（`We're hiring! <https://hrmos.co/pages/uzabase/jobs/1829077236709650481>`__）
 
 .. image:: https://drive.google.com/uc?id=19PMMnkqDiFMCJBPwoA1B51ltQBG0y4kL
@@ -60,6 +60,13 @@
 .. 大きく3つのことを話そうと思っています。
     まずテストコードが書けるとこんないいことがあるよという話をします。
     その後テストコードをどう書くのかに対して、2つのやり方を示します。
+
+動作環境
+--------------------------------------------------
+
+* Python 3.10.9 (TODO)
+* :fab:`github` `doctest-example <https://github.com/ftnext/2023-slides/tree/main/samplecode/python-testing/doctest-example>`__
+* :fab:`github` `pytest-example <https://github.com/ftnext/2023-slides/tree/main/samplecode/python-testing/pytest-example>`__
 
 .. include:: test-code-benefits.rst.txt
 
@@ -118,14 +125,12 @@
    もう1個がテストコードが書きやすくなるpytest。
    これらをぜひ使ってみてください。
 
-pytestはまだまだ序の口🏃‍♂️
+pytestはまだまだ序の口🏃‍♂️ (skip)
 --------------------------------------------------
 
 * パラメタ化テストを紹介
-* フィクスチャ
-* 『テスト駆動Python』
-
-.. One more thing?
+* *フィクスチャ*
+* 『`テスト駆動Python <https://www.shoeisha.co.jp/book/detail/9784798177458>`__』
 
 ご清聴ありがとうございました
 --------------------------------------------------
@@ -135,3 +140,17 @@ pytestはまだまだ序の口🏃‍♂️
 .. Thank you for your listening
 
 .. practice, practice, practice!!!
+
+References
+============================================================
+
+* 『`テスト駆動開発 <https://www.ohmsha.co.jp/book/9784274217883/>`__』（Kent Beck）
+
+    テストは不安を退屈に変える賢者の石だ。（第25章）
+
+* 『`ちょうぜつソフトウェア設計入門 <https://gihyo.jp/book/2022/978-4-297-13234-7>`__』（第6章）
+
+.. include:: appendix.rst.txt
+
+EOF
+============================================================
