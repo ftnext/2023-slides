@@ -3,7 +3,7 @@ pytest
 
 * サードパーティライブラリ https://pypi.org/project/pytest/
 * :command:`pip install pytest`
-* ヒミツ：古くは py.test だった
+* ヒミツ：古くは py.test だった（`Issue#1629 <https://github.com/pytest-dev/pytest/issues/1629>`__）
 
 .. pytestはサードパーティライブラリで、デファクトスタンダードと言えるかもしれません。
     pip installして使っていきます。
@@ -23,7 +23,7 @@ Step1 pytestの規則に従った **ファイル**
 
 * ``test_`` で始まるPythonファイルを作成
 
-.. code-block::
+.. code-block:: txt
 
     .
     ├── fizzbuzz.py
@@ -31,8 +31,6 @@ Step1 pytestの規則に従った **ファイル**
 
 .. まず、pytestの規則に従った名前のファイルを作ります。
     test_ で始まるPythonファイルを作ってください
-
-.. 一般のプロジェクトでは tests ディレクトリの下
 
 Step2 pytestの規則に従った **関数**
 --------------------------------------------------
@@ -61,21 +59,30 @@ https://docs.python.org/ja/3/reference/simple_stmts.html#the-assert-statement
     式が True と評価されるかを検証します。
     例を見てみましょう
 
-assert文の例
+assert文の例 1/2
 --------------------------------------------------
 
 .. code-block:: pycon
 
+    >>> 1 == 1
+    True
     >>> assert 1 == 1
+
+.. 式が 1 イコール 1 と置くと、これはTrueなので何も表示されません。
+
+assert文の例 2/2
+--------------------------------------------------
+
+.. code-block:: pycon
+
+    >>> 1 == 2
+    False
     >>> assert 1 == 2
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     AssertionError
 
-.. TODO ハイライト入れてスライド分けられる
-
-.. 式が 1 イコール 1 と置くと、これはTrueなので何も表示されません。
-    別の例で 1 イコール 2 という式はFalseと評価されるので、AssertionErrorが送出されます。
+.. 別の例で 1 イコール 2 という式はFalseと評価されるので、AssertionErrorが送出されます。
     以上の要素を使ってpytestのテストを書きます。
 
 3Aでとらえるpytest
@@ -131,7 +138,7 @@ failしたテスト（15でFizzを返した）
     E         - FizzBuzz
     E         + Fizz
 
-* assert文だが、 **diffが分かりやすい**
+* assert文だが、 **なぜAssertionErrorかが分かりやすい**
 
 .. 試しに失敗させてみましょう。
     とてもわかりやすくないですか？ pytest -vのおかげです。
@@ -141,15 +148,13 @@ pytestは **assert文を拡張**
 --------------------------------------------------
 
 * テストコードに使うのはassert文だけと **簡単**
-* failしたテストのdiffが **分かりやすい**
+* failしたテストの理由が **分かりやすい**
 
   * 秘密は *pytestがassert文を書き換え* ている（`assertion rewriting <https://docs.pytest.org/en/latest/how-to/writing_plugins.html#assertion-rewriting>`__）
 
-.. TODO diffの定義
-
 .. なぜこんなことができるかというと
     人が書くのはassert文だけです。
-    裏でpytestが頑張ってくれていて、failしたテストのdiffがとてもわかりやすいです。
+    裏でpytestが頑張ってくれていて、failしたテストの理由がとてもわかりやすいです。
     pytestの特徴の1つです
 
 pytestで **docstringの対話例も** 実行できる🏃‍♂️
@@ -283,8 +288,8 @@ tips (2/2) モック
 🥟pytest まとめ
 ============================================================
 
-* ``test_`` で始まるファイル
-* ``test_`` で始まる関数。assert文を使う
+* **test_** で始まるファイル
+* **test_** で始まる関数。 **assert文** を使う
 * テストに慣れてきたらぜひ試してみてください！
 
 .. pytestをまとめると
