@@ -5,6 +5,9 @@ pytest
 * :command:`pip install pytest`
 * ヒミツ：古くは py.test だった（`Issue#1629 <https://github.com/pytest-dev/pytest/issues/1629>`__）
 
+.. pytest is a third-party library, and it might be fair to say it's the de facto standard.
+    You can use it after installing it with pip.
+
 .. pytestはサードパーティライブラリで、デファクトスタンダードと言えるかもしれません。
     pip installして使っていきます。
 
@@ -14,6 +17,9 @@ pytestで書くテストは **3** ステップ
 1. テストコードのファイルを作る
 2. テストコードとして、関数を書く
 3. assert文
+
+.. As for how to use pytest, there are three main steps.
+    Let's go over each one.
 
 .. pytestをどう使うかですが、3つの手順をやればよいです。
     1つずつ見ていきましょう。
@@ -29,6 +35,9 @@ Step1 pytestの規則に従った **ファイル**
     ├── fizzbuzz.py
     └── test_fizzbuzz.py
 
+.. First, create a file following the pytest naming conventions.
+    Please create a Python file that starts with test_(underscore)
+
 .. まず、pytestの規則に従った名前のファイルを作ります。
     test_ で始まるPythonファイルを作ってください
 
@@ -43,6 +52,9 @@ Step2 pytestの規則に従った **関数**
     def test_3の倍数のときはFizzを返す():
         ...
 
+.. Next, inside the file starting with test_(underscore), you'll write functions that also start with test_.
+    This might be a personal preference, but I believe it's okay to use Japanese in the function names.
+
 .. 次に test_ で始まるファイルの中に test_ で始まる関数を書きます。
     私の意見ですが、関数名は日本語を使ってもよいと思います
 
@@ -53,6 +65,11 @@ Step3 Pythonの **assert文**
 * 式が ``True`` と評価されるかを検証
 
 https://docs.python.org/ja/3/reference/simple_stmts.html#the-assert-statement
+
+.. The contents of these functions will make use of the assert statement.
+    Place an expression after the assert keyword.
+    It will verify if the expression is evaluated as True.
+    Let's see an example.
 
 .. 関数の内容ですが、assert文を使います。
     assertというキーワードの後に式を置くだけます。
@@ -68,6 +85,8 @@ assert文の例 1/2
     True
     >>> assert 1 == 1
 
+.. If you set the expression as 1 equals 1, since it's True, nothing will be displayed.
+
 .. 式が 1 イコール 1 と置くと、これはTrueなので何も表示されません。
 
 assert文の例 2/2
@@ -82,6 +101,10 @@ assert文の例 2/2
       File "<stdin>", line 1, in <module>
     AssertionError
 
+.. On the other hand, if you set the expression as 1 equals 2,
+    it's evaluated as False, and an AssertionError will be raised.
+    Using the above steps, you'll write tests with pytest.
+
 .. 別の例で 1 イコール 2 という式はFalseと評価されるので、AssertionErrorが送出されます。
     以上の要素を使ってpytestのテストを書きます。
 
@@ -95,6 +118,11 @@ assert文の例 2/2
         number = 3  # Arrange
           # Act & Assert (actual == expected)
         assert fizzbuzz(number) == "Fizz"
+
+.. Here's a test verifying that Fizz is returned for multiples of 3.
+    We write the 3A within a function.
+    There's a line for 'Arrange',
+    and 'Act' and 'Assert' are combined into a single line.
 
 .. これは3の倍数のときにFizzが返るかを検証するテストです。
     1つの関数の中で3Aを行います。
@@ -119,6 +147,10 @@ assert文の例 2/2
 
     ============================== 5 passed in 0.01s ===============================
 
+.. Put the implementation file and the test file,
+    then run the tests using the pytest -v command.
+    In this case, all the tests have passed.
+
 .. fizzbuzzの実装のファイルとテストのファイルを配置し、pytest -v コマンドでテストを実行します。
     これはテストが全てpassしています
 
@@ -140,6 +172,10 @@ failしたテスト（15でFizzを返した）
 
 * assert文だが、 **なぜAssertionErrorかが分かりやすい**
 
+.. Let's deliberately make one test fail.
+    Isn't the output very clear? Thanks to pytest -v.
+    About AssertionError, you can easily see where the issue lies, such as expecting FizzBuzz but the actual value is Fizz.
+
 .. 試しに失敗させてみましょう。
     とてもわかりやすくないですか？ pytest -vのおかげです。
     AssertionErrorについても、期待値がFizzBuzzだが実際の値はFizzと、どこが間違っているか一目瞭然です。
@@ -152,6 +188,11 @@ pytestは **assert文を拡張**
 
   * 秘密は *pytestがassert文を書き換え* ている（`assertion rewriting <https://docs.pytest.org/en/latest/how-to/writing_plugins.html#assertion-rewriting>`__）
 
+.. What brings such clarity?
+    All we have to write are the assert statements.
+    Behind the scenes, pytest works hard to provide very understandable reasons when tests fail.
+    This is one of the features of pytest.
+
 .. なぜこんなことができるかというと
     人が書くのはassert文だけです。
     裏でpytestが頑張ってくれていて、failしたテストの理由がとてもわかりやすいです。
@@ -163,6 +204,9 @@ pytestで **docstringの対話例も** 実行できる🏃‍♂️
 * :command:`pytest --doctest-modules`
 * https://docs.pytest.org/en/stable/how-to/doctest.html
 
+.. You can also run the interactive examples inside the docstring,
+    so there's no need to rewrite tests you've created using doctest!
+
 .. docstring中の対話例も実行できるので、doctestで書いたテストを書き直す必要もないです！
 
 tips (1/2) パラメタ化テスト
@@ -173,7 +217,10 @@ tips (1/2) パラメタ化テスト
     def test_3の倍数のときはFizzを返す():
         ...
 
-.. tips的な話題としてパラメタ化テストを紹介します。
+.. As a tip, I'd like to introduce parameterized tests.
+    We want to check if Fizz is returned for multiples of 3.
+
+.. tipsとしてパラメタ化テストを紹介します。
     3の倍数のときにFizzを返すテストですが
 
 3の倍数ならFizz
@@ -184,6 +231,9 @@ tips (1/2) パラメタ化テスト
 * 3
 * 6
 * 9
+
+.. There are many values that are multiples of 3.
+    Among these, let's say we want to test for the cases of 3 and 6.
 
 .. 3の倍数の値は複数あります。
     その中で3と6のケースをテストするとします
@@ -199,6 +249,9 @@ tips (1/2) パラメタ化テスト
     def test_3の倍数のときはFizzを返す_6の場合():
         ...
 
+.. Would you write separate tests for each?
+    While you can, it's always nice to find a more efficient way.
+
 .. では個別にテストを書くのでしょうか？
     書いてもいいですが、楽はしたいですよね
 
@@ -208,6 +261,8 @@ tips (1/2) パラメタ化テスト
 .. literalinclude:: ../../samplecode/python-testing/pytest-example/test_fizzbuzz.py
     :language: python
     :pyobject: test_3の倍数のときはFizzを返す
+
+.. To streamline the process, there's a decorator called pytest.mark.parametrize.
 
 .. 楽をするテクニックとして pytest.mark.parametrize というデコレータがあります
 
@@ -223,6 +278,10 @@ tips (1/2) パラメタ化テスト
 
 **個別に書いたのと同じ** 結果が得られる
 
+.. By using this decorator, a single function is treated as if it has multiple test cases.
+    This means, for this example, there are two test cases, one for 3 and another for 6.
+    The outcome is the same as if you had written them separately.
+
 .. このデコレータを使うと、1つの関数だがテストケースとしては複数あるとして扱われます。
     3のケースと6のケースと2個分テストケースがあるということです。
     個別に書いたのと同じ結果です
@@ -232,6 +291,8 @@ tips (2/2) モック
 
 やや発展的話題（いまは分からなかったとしても大丈夫）
 
+.. Another tip, which might be advanced and may feel difficult, is the concept of "mock".
+
 .. もう1つのtipsとしては、発展的なので難しかった〜としても大丈夫ですが、
     モックという概念があります
 
@@ -239,36 +300,39 @@ tips (2/2) モック
 --------------------------------------------------
 
 * テストを書きたい関数 ``foo``
-* 処理A -> B -> Cの順で呼び出している
+* 処理A -> B -> Cの順で呼び出し
 
 .. literalinclude:: ../../samplecode/python-testing/pytest-example/test_with_mock.py
     :language: python
     :pyobject: foo
 
-.. fizzbuzzの例はとても単純でしたが、
-    ある関数の中で別の関数を順番に呼び出す場合、その関数はどうテストしましょう？
+.. How would you test a function that sequentially calls other functions?
 
-.. TODO 時間がかかる関数など
+.. ある関数の中で別の関数を順番に呼び出す場合はどうテストしましょう？
 
 どうテストコードを書くか？
 --------------------------------------------------
 
-* 全ての処理を通したテストも書ける
 * 推し：呼び出される処理を **ニセモノ（＝モック）に置き換え** てテスト
+* 全ての処理を通したテストも書ける
 
-.. 処理A,B,C全部を通してテストしてもよいと思います。
-    私の意見としては、呼び出される処理を偽物に置き換えてテストします。
+.. In my opinion, you would replace the called processes with fakes when testing.
+    These fakes are called "mocks".
+
+.. 私の意見としては、呼び出される処理を偽物に置き換えてテストします。
     この偽物がモックです
 
 モックを使ったテスト
 --------------------------------------------------
 
-* ``foo`` 関数で呼び出す各処理を *何もしない* （＝モック）に置き換える
+* ``foo`` 関数で呼び出す各処理をテストにおいて *何もしない* （＝モック）に置き換える
 * **モックは呼び出され方を記憶** している
-* 処理Aがこれこれを引数に呼び出されたかをAssertする
 
-.. モックというのは関数のように振る舞うが実態は何もしないというものです。
-    どういうふうに呼び出されたかを覚えていて、呼び出し方をassertします
+.. Mocks can be called, but they don't execute the actual functions.
+    They remember how they were called.
+
+.. モックは呼び出せるが、本物の関数の処理はしません。
+    どういうふうに呼び出されたかを覚えています
 
 モックを使ったテストの例
 --------------------------------------------------
@@ -280,17 +344,40 @@ tips (2/2) モック
 * 処理の **呼び出しを検証**
 * 処理A,B,C自体はいずれも別途、徹底的に検証
 
+.. While it might be overwhelming when you first encounter it,
+    the function a_func is mocked and the actual a_func isn't executed.
+    The test is only verifying that a_func is called with the argument 42(forty-two).
+    Additionally, each function that has been mocked is thoroughly verified within its respective test code.
+
 .. いきなり目にすると圧倒されるかもしれませんが、
-    a_funcはモックで実際にa_func関数は呼び出されません。
+    a_funcはモックで実際にa_func関数は実行されません。
     ただこの関数が42を引数に呼び出されることだけを検証しています。
     また、モックにした各関数はそれぞれのテストコードの中で徹底的に検証しています
+
+モックの使い所
+--------------------------------------------------
+
+* 時間のかかる関数（テストの実行時間が伸びる）
+* 外部と通信する関数（通信エラーでテストが落ちうる）
+* 出力が変わる関数（例：random）
+
+.. From experience, I tend to use mocks for functions that take a long time,
+    functions that communicate externally, and functions where the output varies.
+
+.. 経験上モックを積極的に使いたいのは、時間のかかる関数、外部と通信する関数、出力が変わる関数です。
 
 🥟pytest まとめ
 ============================================================
 
-* **test_** で始まるファイル
-* **test_** で始まる関数。 **assert文** を使う
+* **test_** で始まるファイル・ **test_** で始まる関数・ **assert文**
+* tips: パラメタ化 & モック
 * テストに慣れてきたらぜひ試してみてください！
+
+.. To summarize pytest,
+    You write functions starting with test_ inside files that also start with test_,
+    and you use the assert statement.
+    two tips: parametrize and mock.
+    Once you get familiar with testing, give pytest a try. I think you'll find it easy to write.
 
 .. pytestをまとめると
     test_で始まるファイルにtest_で始まる関数を書いて、中でassert文を使います。
