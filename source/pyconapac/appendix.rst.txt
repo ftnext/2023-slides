@@ -1,0 +1,66 @@
+Appendix
+============================================================
+
+お前、誰よ（詳細版）
+============================================================
+
+* `sphinx-new-tab-link <https://pypi.org/project/sphinx-new-tab-link/>`__ ・ `hayasaka <https://github.com/ftnext/hayasaka>`__ などを開発（感想・要望・スター待ってます！）
+* 毎日1エントリ継続中 https://nikkie-ftnext.hatenablog.com/
+
+補足コンテンツ
+============================================================
+
+プロジェクトにおけるpytest
+--------------------------------------------------
+
+* テストコードは tests ディレクトリの下にまとめるのが一般的
+
+.. code-block:: txt
+
+    .
+    ├── hayasaka
+    └── tests
+        ├── __init__.py
+        └── test_core.py
+
+https://github.com/ftnext/hayasaka/tree/0.2.0
+
+クラスも書けるなら、pytestで書くテストを **構造化** できる
+------------------------------------------------------------
+
+.. code-block:: python
+
+    class Test_FizzBuzz数列と変換規則を扱うFizzBuzzクラス:
+        class Test_convertメソッドは数を文字列に変換する:
+            class Test_3の倍数のときは数の代わりにFizzに変換する:
+                def test_3を渡すと文字列Fizzを返す(self, fizzBuzz):
+                    assert "Fizz" == fizzBuzz.convert(3)
+
+https://github.com/ftnext/tddbc-fizzbuzz/blob/8ea856c4c59780837410a44a858368047269f3c8/tests/test_fizzbuzz.py#L11-L15
+
+15分版では割愛した、標準ライブラリ unittest
+--------------------------------------------------
+
+* ``TestCase`` クラスを継承
+* ``assertXXX`` メソッドでAssert
+* モックは `unittest.mock <https://docs.python.org/ja/3/library/unittest.mock.html>`__ から
+* 拙ブログ `unittest おすすめリンク集 <https://nikkie-ftnext.hatenablog.com/entry/pycon-apac-2023-practice-test-talk-extra-awesome-unittest>`__
+
+テストを書いているあなたへ
+--------------------------------------------------
+
+拙ブログ TODO
+
+タイトルの秘密
+============================================================
+
+* Twitterで見かけた `ちよ父 <https://dic.nicovideo.jp/a/%E3%81%A1%E3%82%88%E7%88%B6>`__ の画像
+
+  * 元は「*トマトを食べるんだ*」🍅
+
+亜種
+--------------------------------------------------
+
+.. raw:: html
+
+    <blockquote class="twitter-tweet"><p lang="ja" dir="ltr">好きとか嫌いとかはいい。<br>テストを書くんだ<br><br>の亜種だ！ <a href="https://t.co/f17s6awgNB">https://t.co/f17s6awgNB</a></p>&mdash; nikkie にっきー (@ftnext) <a href="https://twitter.com/ftnext/status/1652328636970844161?ref_src=twsrc%5Etfw">April 29, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
