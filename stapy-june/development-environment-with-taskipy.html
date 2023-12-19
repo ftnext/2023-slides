@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>taskipyを使ったPython開発環境の一例</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/stapy-june/development-environment-with-taskipy.html">
+    <meta property="og:title" content="taskipyを使ったPython開発環境の一例">
+    <meta property="og:description" content="2023/06 みんなのPython勉強会#94 LT">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/stapy-june-taskipy.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>taskipyを使ったPython開発環境の一例</h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>みんなのPython勉強会#94 LT</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2023/06/15 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<section >
+<h2>お前、誰よ</h2>
+<ul class="simple">
+<li><p><strong>にっきー</strong> ／ <span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext">&#64;ftnext</a> ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext">&#64;ftnext</a></p></li>
+<li><p>みんなのPython勉強会 4代目LT王子・スタッフ</p></li>
+<li><p>株式会社ユーザベースのデータサイエンティスト（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481">We're hiring!</a>）</p></li>
+</ul>
+</section>
+<section >
+<h3>オーダー、鬼滅ネタ</h3>
+<blockquote class="twitter-tweet" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">鬼滅ネタ、いいね！今度LTしちゃう？</p>&mdash; Takeshi Akutsu (@akucchan_world) <a href="https://twitter.com/akucchan_world/status/1666449005797097477?ref_src=twsrc%5Etfw">June 7, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></section>
+</section>
+<section>
+<section >
+<h2>taskipyを使った <strong>Python開発環境</strong> の一例</h2>
+</section>
+<section >
+<h3>Python環境構築には <strong>流派</strong> がある</h3>
+<ul class="simple">
+<li><p>Python使い＝〇〇したくてPythonを使う＝ <em>鬼と闘う</em> （鬼殺隊の一員）</p></li>
+<li><p>Python開発環境構築はさまざま＝ <em>呼吸はさまざま</em> （霞、恋）</p>
+<ul>
+<li><p>今日のトークからも（Python本家、Anaconda）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>最近のnikkie： <strong>pyenv + venv</strong> の呼吸</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a> でPythonのバージョンを管理</p></li>
+<li><p>venv（仮想環境）でプロジェクトごとの依存ライブラリを管理</p></li>
+<li><p><a class="reference external" href="https://python-poetry.org/docs/">Poetry</a> の呼吸に憧れている（他には <a class="reference external" href="https://github.com/mitsuhiko/rye">rye</a> の呼吸）</p></li>
+</ul>
+</section>
+<section >
+<h3>IMO：紹介した方法を絶対採用、ではないです</h3>
+<ul class="simple">
+<li><p>Pythonを使うという共通点がある</p></li>
+<li><p><strong>好みはそれぞれ</strong>、文脈も各の持ち場で異なる</p></li>
+<li><p>オススメしますが、食指が動かなければ不採用でも全然OK🙆‍♂️</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>📌 <strong>pyenv + venv の呼吸 弐の型 taskipy</strong></h2>
+<p>本LTでの主張</p>
+</section>
+<section>
+<section >
+<h2>taskipyを使った <strong>Python開発</strong> 環境の一例</h2>
+</section>
+<section >
+<h3>先人の知恵： <strong>ツール</strong> を使って開発しやすく✨</h3>
+<ul class="simple">
+<li><p>PyCon JP 2019 <a class="reference external" href="https://pycon.jp/2019/schedule/?sessionId=151">Python開発を円滑に進めるためのツール設定</a></p></li>
+<li><p>PyCon JP 2020 <a class="reference external" href="https://pycon.jp/2020/timetable/?id=203858">チーム開発立ち上げにやっておいたほうがいいソース管理の方法</a></p></li>
+<li><p>PyCon Kyushu 2022 <a class="reference external" href="https://www.docswell.com/s/moonwalkerpoday/ZP4VE5-2022-01-22-133417">静的コード解析から見出す一人前Pythonistaへの道</a></p></li>
+</ul>
+</section>
+<section >
+<h3>スタイルガイド PEP 8</h3>
+<ul class="simple">
+<li><p>（守らなくてもコードは動くけど）「Pythonをこういうふうに書きましょう」</p></li>
+<li><p><a class="reference external" href="https://peps.python.org/pep-0008/">https://peps.python.org/pep-0008/</a></p></li>
+<li><p>人が頑張る道もあるけど、 <strong>ツールを使ってPEP 8に沿う</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>開発しやすくするツールの例</h3>
+<ul class="simple">
+<li><p>Black：Pythonコードを自動に <strong>整える</strong></p></li>
+<li><p>Flake8：Pythonコードの <strong>静的解析</strong></p></li>
+</ul>
+<p>最初の一歩『<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-12576-9">Python実践レシピ</a>』2章</p>
+</section>
+<section >
+<h3>Black</h3>
+<ul class="simple">
+<li><p>スタイルガイドに合うコードに <strong>有無を言わさず整形</strong></p></li>
+<li><p><a class="reference external" href="https://black.readthedocs.io/en/stable/">https://black.readthedocs.io/en/stable/</a></p></li>
+</ul>
+<pre data-id="black"><code data-trim data-noescape class="shell">% pip install black
+% # conda install -c conda-forge black</code></pre>
+<aside class="notes">
+https://anaconda.org/conda-forge/black</aside>
+</section>
+<section >
+<h3>Black</h3>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">example.py</span></div>
+<pre><code data-trim data-noescape class="python">import calendar
+
+print ( 'hello, world' )
+</code></pre>
+</div>
+<p><strong class="command">black -l 79 example.py</strong></p>
+<pre data-id="black"><code data-trim data-noescape class="diff">-print ( 'hello, world' )
++print(&quot;hello, world&quot;)</code></pre>
+</section>
+<section >
+<h3>Flake8</h3>
+<ul class="simple">
+<li><p>コードを実行せずに（＝静的）解析して、<strong>スタイルや問題を指摘</strong></p></li>
+<li><p><a class="reference external" href="https://flake8.pycqa.org/en/stable/">https://flake8.pycqa.org/en/stable/</a></p></li>
+</ul>
+<pre data-id="flake8"><code data-trim data-noescape class="shell">% pip install flake8
+% # conda install -c anaconda flake8</code></pre>
+<aside class="notes">
+https://anaconda.org/anaconda/flake8</aside>
+</section>
+<section >
+<h3>Flake8</h3>
+<p><strong class="command">flake8 example.py</strong></p>
+<pre data-id="flake8"><code data-trim data-noescape class="txt">example.py:1:1: F401 'calendar' imported but unused
+example.py:3:6: E211 whitespace before '('
+example.py:3:8: E201 whitespace after '('
+example.py:3:23: E202 whitespace before ')'</code></pre>
+</section>
+<section >
+<h3>nikkieは思った「コマンドをまとめたい」</h3>
+<ul class="simple">
+<li><p><strong class="command">black</strong> の後に <strong class="command">flake8</strong> だとスタイル関係は指摘されない（この順にしたい）</p></li>
+<li><p>ほかにも <strong class="command">pytest</strong> などなどたくさんのツール。便利だけど、覚えていられない🤯（実行漏れもある）</p></li>
+<li><p><em>順番も含めて、1つのコマンドにまとめられないかな？</em></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2><strong>taskipy</strong> を使ったPython開発環境の一例</h2>
+</section>
+<section >
+<h3>taskipy</h3>
+<ul class="simple">
+<li><p>Python向けの <strong>タスクランナー</strong></p></li>
+<li><p><a class="reference external" href="https://github.com/taskipy/taskipy/">https://github.com/taskipy/taskipy/</a></p></li>
+<li><p>書きました「<a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/start-taskipy-without-poetry">Python向けタスクランナーとして気になっていたtaskipy 素振りの記、Poetryのない環境でお試し</a>」</p></li>
+</ul>
+</section>
+<section >
+<h3>taskipy インストール</h3>
+<pre data-id="id7"><code data-trim data-noescape class="shell">% pip install taskipy</code></pre>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pypi.org/project/taskipy/">https://pypi.org/project/taskipy/</a></p></li>
+<li><p><strong class="command">conda</strong> コマンドでインストールできるかは未確認です🙏</p></li>
+</ul>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> を書く</h3>
+<pre data-id="pyproject-toml"><code data-trim data-noescape class="toml">[tool.taskipy.tasks]
+format = &quot;black -l 79 awesome_lib tests&quot;
+test = &quot;pytest&quot;
+check = &quot;flake8 awesome_lib tests&quot;</code></pre>
+</section>
+<section >
+<h3><strong class="command">task</strong> コマンド</h3>
+<pre data-id="task"><code data-trim data-noescape class="shell">% task format  # blackを使ったフォーマット
+% task test  # pytestで単体テスト実行
+% task check  # flake8を使った静的解析</code></pre>
+<p>コマンドのオプションを覚えておく必要、なくなった🙌</p>
+</section>
+<section >
+<h3>taskipyの <strong>フック</strong> ✨</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pre_test</span></code> は <code class="docutils literal notranslate"><span class="pre">test</span></code> の <strong>前</strong> に実行するタスクになる</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">post_test</span></code> で <code class="docutils literal notranslate"><span class="pre">test</span></code> の <strong>後</strong> に実行するタスクになる</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code> や <code class="docutils literal notranslate"><span class="pre">check</span></code> を設定すると...</p></li>
+</ul>
+</section>
+<section >
+<h3><strong class="command">task test</strong> ですべて流れる！</h3>
+<pre data-id="task-test"><code data-trim data-noescape class="toml" data-line-numbers="3,5,6">[tool.taskipy.tasks]
+format = &quot;black -l 79 awesome_lib tests&quot;
+test = &quot;pytest&quot;
+check = &quot;flake8 awesome_lib tests&quot;
+pre_test = &quot;task format&quot;
+post_test = &quot;task check&quot;</code></pre>
+<p>フォーマット➡️テスト➡️静的解析が <strong>1コマンド</strong> に！</p>
+</section>
+<section >
+<h3>実際のプロジェクトでの設定例</h3>
+<ul class="simple">
+<li><p><strong>もっとたくさんのツール</strong> をまとめています</p></li>
+<li><p><a class="reference external" href="https://github.com/ftnext/the-solitary-castle-in-the-mirror-cli/blob/a91d99167760af2213eda0f4867b7f63b97aad66/pyproject.toml#L23-L34">https://github.com/ftnext/the-solitary-castle-in-the-mirror-cli/blob/a91d99167760af2213eda0f4867b7f63b97aad66/pyproject.toml#L23-L34</a></p></li>
+<li><p>書きました「<a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/python-development-environment-taskipy-example-202306">Python開発環境共有、今の私はtaskipyで一連のコマンドをつないでいます</a>」</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>まとめ🌯 taskipyを使ったPython開発環境の一例</h2>
+<ul class="simple">
+<li><p>pyenv + venv の呼吸 弐の型 taskipy</p></li>
+<li><p>Pythonでの開発、ツールを使ってやりやすくできる</p></li>
+<li><p><strong>多様なツールをtaskipyでまとめ</strong> たらいい感じ（フック素晴らしい！）</p></li>
+</ul>
+</section>
+<section >
+<h3>ご清聴ありがとうございました</h3>
+<p>Enjoy Python!</p>
+</section>
+</section>
+<section >
+<h2>Appendix</h2>
+<ul class="simple">
+<li><p>オススメ <a class="reference external" href="https://blog.hirokiky.org/entry/2019/06/03/202745">もうPythonの細かい書き方で議論しない。blackで自動フォーマットしよう</a></p></li>
+<li><p>Flake8は今後Ruffに変わるかも？ <a class="reference external" href="https://gihyo.jp/article/2023/03/monthly-python-2303">新しい静的コード解析ツール「Ruff」をご紹介</a></p></li>
+</ul>
+</section>
+<section >
+<h2>EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

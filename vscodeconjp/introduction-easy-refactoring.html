@@ -1,0 +1,773 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>楽々入門！VS Codeで『リファクタリング』</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/vscodeconjp/introduction-easy-refactoring.html">
+    <meta property="og:title" content="楽々入門！VS Codeで『リファクタリング』">
+    <meta property="og:description" content="2023/01 VS Code Conference Japan 2022 - 2023 15分トークスライド">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/vscodeconjp-refactoring.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>楽々入門！VS Codeで『リファクタリング』</h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VS Code Conference Japan 2022 - 2023</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2023/01/21 nikkie 14:20-</p>
+</dd>
+</dl>
+</section>
+<section >
+<h2>お前、誰よ（※自己紹介）</h2>
+<ul class="simple">
+<li><p>にっきーって言います。VS Code使ってます</p></li>
+<li><p><span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext">&#64;ftnext</a> ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext">&#64;ftnext</a> ／ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/">はてなブログ</a></p></li>
+<li><p><strong>Python</strong> 大好き。コードは <strong>構造</strong> にもこだわりたい</p></li>
+<li><p>株式会社ユーザベースでデータサイエンティスト（自然言語処理、XP）</p></li>
+</ul>
+</section>
+<section >
+<h2>楽々入門！VS Codeで『リファクタリング』</h2>
+<blockquote>
+<div><p>このトークでは、書籍『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』で紹介されたテクニックをVS Codeの操作と結び付けて理解するのを目的とします。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://vscodejp.github.io/conference/2022-2023/ja/">イベントサイト</a> より</p>
+</section>
+<section>
+<section >
+<h2>📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』</h2>
+<blockquote>
+<div><p>リファクタリングは、ソフトウェアの外部的な振る舞いを保ったままで、内部の構造を改善する作業を指します。</p>
+</div></blockquote>
+<p>書籍サイト（リンク先）の「内容紹介」より</p>
+</section>
+<section >
+<h3>📘『リファクタリング』</h3>
+<ul class="simple">
+<li><p>Martin Fowler著、「<em>リファクタリングのガイドブック</em>」（「内容紹介」より）</p></li>
+<li><p>IMO：リファクタリングテクニックをたくさん載せた <strong>カタログ</strong></p></li>
+<li><p>Web版（英語） <a class="reference external" href="https://refactoring.com/catalog/">https://refactoring.com/catalog/</a></p></li>
+</ul>
+</section>
+<section >
+<h3>このトークでは</h3>
+<ul class="simple">
+<li><p>📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』のテクニックのいくつかを</p></li>
+<li><p><strong>VS Codeの操作と結びつけて</strong> 理解する</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>おことわり（nikkieの文脈共有兼ねて）</h2>
+<ul class="simple">
+<li><p>VS CodeのUIは <strong>英語</strong> で紹介</p></li>
+<li><p>本発表のコード例は <strong>Python</strong> （後述）</p></li>
+<li><p>「リファクタリング」のとらえ方（後述）</p></li>
+</ul>
+</section>
+<section >
+<h3>Pythonのコード例、ぜひ <strong>読み替え</strong> てください</h3>
+<ul class="simple">
+<li><p>Pythonの詳細には立ち入りません</p></li>
+<li><p>📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』ではJavaScript</p></li>
+<li><p>「<em>リファクタリングは異なる言語でもほぼ同じような形になります。</em>」（📘の「はじめに」「JavaScriptによる例」）</p></li>
+</ul>
+</section>
+<section >
+<h3>「私の知っている <em>リファクタリング</em> と異なる！」かも</h3>
+<ul class="simple">
+<li><p>異なる＝「小さい！」かもしれません</p></li>
+<li><p>このトークの「リファクタリング」は、<strong>開発中に絶えずやる、コードの構造の小さい改善</strong> を指しています</p></li>
+<li><p>数日〜数週かける規模のリファクタリングは想定していません（テクニックは適用できるかも）</p></li>
+</ul>
+</section>
+<section >
+<h3>開発中に絶えずやる、コードの構造の小さい改善 補足 🏃‍♂️== <strong>skip</strong></h3>
+<ul class="simple">
+<li><p>XPのプラクティスの1つ <strong>テスト駆動開発</strong></p></li>
+<li><p>「動作するきれいなコード」を目指す（Red-Green-Refactoring）</p></li>
+<li><p>まず動作させ（Green）、次にきれいにする（リファクタリング）。この <strong>小さいサイクルを何回も</strong> 繰り返す</p></li>
+</ul>
+</section>
+<section >
+<h3>楽々入門！VS Codeで『リファクタリング』</h3>
+<ol class="arabic simple">
+<li><p>トークの認識合わせ✅</p></li>
+<li><p>主張：リファクタリングテクニックをエディタと結び付けよう</p></li>
+<li><p>カタログ：VS Codeでリファクタリング（別目次）</p></li>
+</ol>
+</section>
+</section>
+<section >
+<h2>Part 2. リファクタリングテクニックをエディタと結び付けよう</h2>
+<ol class="arabic simple">
+<li><p>トークの認識合わせ</p></li>
+<li><p><strong>主張：リファクタリングテクニックをエディタと結び付けよう</strong></p></li>
+<li><p>カタログ：VS Codeでリファクタリング（別目次）</p></li>
+</ol>
+</section>
+<section>
+<section >
+<h2>リファクタリング、名詞と動詞</h2>
+<ul class="simple">
+<li><p>個々のテクニックは <strong>名詞のリファクタリング</strong></p></li>
+<li><p>※これをエディタと結び付けようと共有していきます</p></li>
+</ul>
+</section>
+<section >
+<h3>リファクタリング（名詞）</h3>
+<blockquote>
+<div><p>外部から見たときの振る舞いを保ちつつ、理解や修正が簡単になるように、ソフトウェアの内部構造を変化させること</p>
+</div></blockquote>
+<p>📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』第2章の中の「リファクタリングの定義」</p>
+</section>
+<section >
+<h3>リファクタリング（名詞） 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><strong>変えるのは構造だけ</strong></p></li>
+<li><p>振る舞いは変えない</p></li>
+<li><p>開発者がコードを理解しやすく・変更しやすくするために構造を変える</p></li>
+</ul>
+</section>
+<section >
+<h3>動詞のリファクタリング</h3>
+<ul class="simple">
+<li><p>名詞のリファクタリング <strong>複数を適用</strong> して構造を変えること</p></li>
+<li><p>1つ1つのテクニックは小さい。組合せて適用する</p></li>
+</ul>
+</section>
+<section >
+<h3>動詞のリファクタリング 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>名詞のリファクタリングの手順は、📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』6章以降で解説される</p></li>
+<li><p>6章が基本のリファクタリングテクニック。基本を <strong>組合せ</strong> たテクニックも存在する</p></li>
+</ul>
+</section>
+<section >
+<h3>一発で正解することが難しいからこそ</h3>
+<ul class="simple">
+<li><p><em>俺は弱い！</em> だから <strong>正解に近づけていく</strong> （リファクタリングもその一環）</p></li>
+<li><p>参考： <a class="reference external" href="https://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast">Make It Work Make It Right Make It Fast</a></p>
+<ul>
+<li><p>まず動かしてから正しくする順 （その後に速くするが来る）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>主張：リファクタリングテクニックをエディタと結び付けよう</h2>
+<ul class="simple">
+<li><p>リファクタリングを「知っている」の先「<strong>使える</strong>」状態になるには、</p></li>
+<li><p><strong>エディタの操作</strong> として身体で覚えよう</p></li>
+</ul>
+</section>
+<section >
+<h3>テクニックのいくつかはエディタの機能になっている</h3>
+<ul class="simple">
+<li><p><strong>VS Codeを操作</strong> してリファクタリングテクニックを適用できる</p></li>
+<li><p>サポートしているテクニックの範囲はエディタによって異なる</p>
+<ul>
+<li><p>IntelliJ IDEAはもっと広くサポート</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>IMO：リファクタリングを使えるようになるために知ること</h3>
+<ul class="simple">
+<li><p>「<strong>どんなとき</strong> に使うのか」</p></li>
+<li><p>「エディタでは <strong>どんな操作</strong> になるのか」</p></li>
+</ul>
+</section>
+<section >
+<h3>使える＝体で覚える＝&quot;<strong>常中</strong>&quot;</h3>
+<dl class="field-list simple">
+<dt class="field-odd">「どんなときに使うのか」<span class="colon">:</span></dt>
+<dd class="field-odd"><p>📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』から <strong>あるべき</strong> を紹介</p>
+</dd>
+<dt class="field-even">「VS Codeではどんな操作になるのか」<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>結び付け</strong> ます</p>
+</dd>
+</dl>
+</section>
+</section>
+<section >
+<h2>Part 3. カタログ：VS Codeでリファクタリング</h2>
+<ol class="arabic simple">
+<li><p>トークの認識合わせ</p></li>
+<li><p>主張：リファクタリングテクニックをエディタと結び付けよう</p></li>
+<li><p><strong>カタログ：VS Codeでリファクタリング（別目次）</strong></p></li>
+</ol>
+</section>
+<section>
+<section >
+<h2>VS Codeの操作と結び付けて紹介するテクニック</h2>
+<ul class="simple">
+<li><p>変数名の変更</p></li>
+<li><p>関数名の変更</p></li>
+<li><p>変数の抽出</p></li>
+<li><p>関数の抽出</p></li>
+<li><p>特性の移動に関する数テクニック</p></li>
+</ul>
+</section>
+<section >
+<h3>紹介フォーマット</h3>
+<ul class="simple">
+<li><p><strong>どんなとき</strong> に使うのか</p></li>
+<li><p>VS Codeでは <strong>どんな操作</strong> になるのか</p></li>
+</ul>
+<aside class="notes">
+includeの大元、introduction-easy-refactoring.rst から見た相対パスで指定する</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>Part 3. カタログ：VS Codeでリファクタリング</h2>
+<ul class="simple">
+<li><p><strong>変数名の変更</strong></p></li>
+<li><p><strong>関数名の変更</strong></p></li>
+<li><p>変数の抽出</p></li>
+<li><p>関数の抽出</p></li>
+<li><p>特性の移動に関する数テクニック</p></li>
+</ul>
+</section>
+<section >
+<h3>コンピュータサイエンスで最も難しい2つ</h3>
+<blockquote>
+<div><p>cache invalidation and <strong>naming things</strong> (Phil Karlton)</p>
+</div></blockquote>
+<p>ref: <a class="reference external" href="https://martinfowler.com/bliki/TwoHardThings.html">TwoHardThings</a></p>
+</section>
+<section >
+<h3>命名（naming things）は難しい🤯</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://プログラマが知るべき97のこと.com/%E3%82%A8%E3%83%83%E3%82%BB%E3%82%A4/%E5%90%8D%E5%89%8D%E9%87%8D%E8%A6%81/">名前重要</a> （by Matz）だけれど、激ムズ</p></li>
+<li><p>IMO：一発でいい命名ができないからこそ、 <strong>いい名前に気付いたらコードを更新</strong> して理解しやすくしたい</p></li>
+</ul>
+</section>
+<section >
+<h3>「{変数,関数}名の変更」の使い所</h3>
+<ul class="simple">
+<li><p><strong>適切な名前に気付いたとき</strong></p></li>
+<li><p>コードを明快にしたい（理解しやすい・変更しやすい）</p></li>
+<li><p>「<em>不可思議な名前</em>」 （📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』第3章）</p></li>
+</ul>
+</section>
+<section >
+<h3>テクニック：変数名の変更</h3>
+<ul class="simple">
+<li><p>「<em>変数への参照をくまなく探し、それらをすべて変更する。</em>」（📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』第6章）</p></li>
+<li><p>Webカタログ：<a class="reference external" href="https://refactoring.com/catalog/renameVariable.html">https://refactoring.com/catalog/renameVariable.html</a></p></li>
+</ul>
+<pre data-id="id24"><code data-trim data-noescape class="diff">- a = height * width
++ area = height * width</code></pre>
+</section>
+<section >
+<h3>テクニック：関数名の変更</h3>
+<ul class="simple">
+<li><p><em>関数宣言の変更</em> の非常に重要なユースケース</p></li>
+<li><p>Webカタログ：<a class="reference external" href="https://refactoring.com/catalog/changeFunctionDeclaration.html">https://refactoring.com/catalog/changeFunctionDeclaration.html</a></p></li>
+<li><p>一度に全部置き換える手順だけでなく、 <strong>漸進的に置き換える</strong> 手順がある</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>VS Codeを操作して名前を変更</h2>
+<ul class="simple">
+<li><p><strong>Rename Symbol</strong></p></li>
+<li><p><kbd class="kbd docutils literal notranslate">F2</kbd> キー（これだけ！）</p></li>
+</ul>
+</section>
+<section >
+<h3>Rename Symbol</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/editor/refactoring#_rename-symbol">https://code.visualstudio.com/docs/editor/refactoring#_rename-symbol</a></p></li>
+<li><p><em>検索や置換</em> でも変数名や関数名は変更できるが、確認も必要</p></li>
+<li><p>Rename Symbolは <strong>VS Codeに全部任せられる</strong> （同じ名前でもスコープを考慮！）</p></li>
+</ul>
+</section>
+<section >
+<h3>Rename Symbolによる「変数名の変更」のデモ</h3>
+<pre data-id="id27"><code data-trim data-noescape class="python"># 面積の計算。a を area にrenameする
+a = height * width
+</code></pre>
+</section>
+<section >
+<h3>スコープを考慮のデモ &amp; 「関数名の変更」のデモ</h3>
+<pre data-id="id28"><code data-trim data-noescape class="python"># 面積を計算する関数。calc を calc_area にrenameする
+def calc(height, weight):
+    # スコープを考慮してrenameされる例
+    a = height * weight
+    return a
+</code></pre>
+</section>
+</section>
+<section>
+<section >
+<h2>変数名の変更・関数名の変更</h2>
+<dl class="field-list simple">
+<dt class="field-odd">どんなときに使うのか<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>適切な名前</strong> に気付いたとき</p>
+</dd>
+<dt class="field-even">VS Codeではどんな操作になるのか<span class="colon">:</span></dt>
+<dd class="field-even"><p><kbd class="kbd docutils literal notranslate">F2</kbd> (Rename Symbol)</p>
+</dd>
+</dl>
+</section>
+<section >
+<h3>「{変数,関数}名の変更」で省略したこと 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>クラス名・属性名・メソッド名の変更もRename Symbolできます</p>
+<ul>
+<li><p><em>フィールド名の変更</em> （📘第9章・<a class="reference external" href="https://refactoring.com/catalog/renameField.html">Webカタログ</a>）</p></li>
+</ul>
+</li>
+<li><p>モジュール名（<code class="file docutils literal notranslate"><span class="pre">spam.py</span></code>）の変更はPython拡張がサポート</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>Part 3. カタログ：VS Codeでリファクタリング</h2>
+<ul class="simple">
+<li><p>変数名の変更</p></li>
+<li><p>関数名の変更</p></li>
+<li><p><strong>変数の抽出</strong></p></li>
+<li><p>関数の抽出</p></li>
+<li><p>特性の移動に関する数テクニック</p></li>
+</ul>
+</section>
+<section >
+<h3>すなわち、 <strong>式に名前を付ける</strong></h3>
+<ul class="simple">
+<li><p>初版では「説明用変数の導入」と呼ばれていた</p></li>
+<li><p>Webカタログ：<a class="reference external" href="https://refactoring.com/catalog/extractVariable.html">https://refactoring.com/catalog/extractVariable.html</a></p></li>
+</ul>
+</section>
+<section >
+<h3>「変数の抽出」の使い所</h3>
+<ul class="simple">
+<li><p><strong>式を説明するコメント</strong> を見つけた・書きたいとき</p></li>
+<li><p>「<em>コメントを書かなくとも内容がわかるようなコードを目指す</em>」（📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』第3章）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>VS Codeを操作して変数を抽出</h2>
+<ul class="simple">
+<li><p>式を選択</p></li>
+<li><p><strong>Extract variable</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>Extract variable</h3>
+<ul class="simple">
+<li><p>Pythonの場合はPython拡張が提供</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/python/editing#_extract-variable">https://code.visualstudio.com/docs/python/editing#_extract-variable</a></p></li>
+<li><p>VS Codeによって <code class="docutils literal notranslate"><span class="pre">new_var</span></code> が抽出されるので、renameする</p></li>
+</ul>
+</section>
+<section >
+<h3>Extract variableによる「変数の抽出」のデモ💡</h3>
+<pre data-id="id35"><code data-trim data-noescape class="python"># base_price = order.quantity * order.item_price のように抽出する例
+def price(order):
+    # price = base price - quantity discount + shipping
+    return (
+        order.quantity * order.item_price
+        - max(0, order.quantity - 500) * order.item_price * 0.05
+        + min(order.quantity * order.item_price * 0.1, 100)
+    )
+</code></pre>
+<p>「変数の抽出」を繰り返すと、この例のコメントは不要になります</p>
+</section>
+<section >
+<h3>エディタでExtract variableするメリット</h3>
+<ul class="simple">
+<li><p>📘『リファクタリング』はエディタのサポートを受けない手順</p></li>
+<li><p>式をコピーして変数を導入 ➡ 式を変数で置き換え</p></li>
+<li><p>IMO：エディタの機能を使うことで <strong>楽</strong> ができる（常中しやすい）</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>変数の抽出</h2>
+<dl class="field-list simple">
+<dt class="field-odd">どんなときに使うのか<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>式を説明するコメント</strong> がある・必要があると思われるとき</p>
+</dd>
+<dt class="field-even">VS Codeではどんな操作になるのか<span class="colon">:</span></dt>
+<dd class="field-even"><p>コードを選択して <span class="guilabel">Extract variable</span></p>
+</dd>
+</dl>
+</section>
+<section>
+<section >
+<h2>Part 3. カタログ：VS Codeでリファクタリング</h2>
+<ul class="simple">
+<li><p>変数名の変更</p></li>
+<li><p>関数名の変更</p></li>
+<li><p>変数の抽出</p></li>
+<li><p><strong>関数の抽出</strong></p></li>
+<li><p>特性の移動に関する数テクニック</p></li>
+</ul>
+</section>
+<section >
+<h3>関数の抽出</h3>
+<ul class="simple">
+<li><p>メソッドの抽出も含む（関数、メソッド、同じ意味）</p></li>
+<li><p>Webカタログ：<a class="reference external" href="https://refactoring.com/catalog/extractFunction.html">https://refactoring.com/catalog/extractFunction.html</a></p></li>
+</ul>
+</section>
+<section >
+<h3>「関数の抽出」の使い所 1</h3>
+<ul class="simple">
+<li><p>処理の一部が <strong>コメントで説明されている</strong> とき</p></li>
+<li><p>「<em>長い関数</em>」 （📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』第3章）</p></li>
+<li><p>コードの <em>自己文書化</em> （意図と実装を分離して、理解しやすく）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>VS Codeを操作して関数を抽出</h2>
+<ul class="simple">
+<li><p>処理を選択</p></li>
+<li><p><strong>Extract method</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>Extract method</h3>
+<ul class="simple">
+<li><p>Pythonの場合はPython拡張が提供</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/python/editing#_extract-method">https://code.visualstudio.com/docs/python/editing#_extract-method</a></p></li>
+<li><p>VS Codeによって <code class="docutils literal notranslate"><span class="pre">new_func</span></code> が抽出されるので、renameする</p></li>
+</ul>
+</section>
+<section >
+<h3>Extract methodによる「関数の抽出」のデモ💡</h3>
+<pre data-id="id42"><code data-trim data-noescape class="python" data-line-numbers="6,7,8"># print detailsというコメントで説明された処理を関数に抽出する例
+def print_owing(invoice):
+    print_banner()
+    outstanding = calculate_outstanding(invoice)
+
+    # print details (&lt;- 「関数を抽出」すると、このコメントは不要になる)
+    print(f&quot;name: {invoice.customer}&quot;)
+    print(f&quot;amount: {outstanding}&quot;)
+</code></pre>
+</section>
+<section >
+<h3>Extract methodは一足飛び⚠️</h3>
+<ul class="simple">
+<li><p>📘『リファクタリング』では <strong>まず</strong> は関数内関数（<strong>入れ子</strong>）として抽出する</p>
+<ul>
+<li><p>渡す必要がある引数を1つずつ調整していって、最後に外側のスコープに移す</p></li>
+</ul>
+</li>
+<li><p>IMO：エディタのサポートで楽をしたいが、一足飛びだと嬉しくない場面もあり、<strong>この手順が必要になることも</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>📘 まずは関数内関数に抽出 🏃‍♂️</h3>
+<pre data-id="id44"><code data-trim data-noescape class="python">def print_owing(invoice):
+    print_banner()
+    outstanding = calculate_outstanding(invoice)
+
+    print_details()
+
+    # まずは抽出だけ実施し、その後引数を調整します（関数宣言の変更）。最後に関数スコープの外へ
+    def print_details():
+        print(f&quot;name: {invoice.customer}&quot;)
+        print(f&quot;amount: {outstanding}&quot;)</code></pre>
+</section>
+</section>
+<section>
+<section >
+<h2>関数の抽出</h2>
+<dl class="field-list simple">
+<dt class="field-odd">どんなときに使うのか<span class="colon">:</span></dt>
+<dd class="field-odd"><p>長い関数で <strong>一部を説明するコメント</strong> があるとき</p>
+</dd>
+<dt class="field-even">VS Codeではどんな操作になるのか<span class="colon">:</span></dt>
+<dd class="field-even"><p>コードを選択して <span class="guilabel">Extract method</span></p>
+</dd>
+</dl>
+</section>
+<section >
+<h3>「関数の抽出」の使い所 2 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>何度も登場する同じ式（重複は変更を難しくする🥺）</p></li>
+<li><p>「<em>重複したコード</em>」（📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』第3章）</p></li>
+<li><p>重複した式を関数に抽出し、それで置き換えることで重複コードをなくす</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>Part 3. カタログ：VS Codeでリファクタリング</h2>
+<ul class="simple">
+<li><p>変数名の変更</p></li>
+<li><p>関数名の変更</p></li>
+<li><p>変数の抽出</p></li>
+<li><p>関数の抽出</p></li>
+<li><p><strong>特性の移動</strong> に関する数テクニック</p></li>
+</ul>
+</section>
+<section >
+<h3>特性の移動</h3>
+<ul class="simple">
+<li><p>📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』第8章</p></li>
+<li><p>文・フィールド・関数を <strong>移動</strong> するリファクタリングテクニックを紹介</p></li>
+</ul>
+</section>
+<section >
+<h3>特性の移動のテクニック（一部） 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://refactoring.com/catalog/moveFunction.html">関数の移動</a></p></li>
+<li><p><a class="reference external" href="https://refactoring.com/catalog/moveField.html">フィールドの移動</a></p></li>
+<li><p><em>ステートメント</em> （文）も移動</p></li>
+</ul>
+</section>
+<section >
+<h3>なぜ移動する？</h3>
+<ul class="simple">
+<li><p>関連する要素をまとめる</p></li>
+<li><p>一発で正解の関連を見つけることもまた難しい🥺</p></li>
+<li><p>関連についての理解が深まったら、<strong>移動してまとめ方を更新</strong> する</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>VS Codeで移動といったら <kbd class="kbd docutils literal notranslate">⌥↑</kbd> や <kbd class="kbd docutils literal notranslate">⌥↓</kbd></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/getstarted/tips-and-tricks#_move-line-up-and-down">Move line up and down</a></p></li>
+<li><p>行をまとめて移動もできて便利</p></li>
+</ul>
+</section>
+<section >
+<h3>Move line up and downのデモ</h3>
+</section>
+<section >
+<h3>Move line up and down</h3>
+<ul class="simple">
+<li><p>行を動かしただけで「特性の移動」が完了することは少ない</p>
+<ul>
+<li><p>移動先の文脈に位置づける（引数の追加・編集が必要）</p></li>
+</ul>
+</li>
+<li><p>IMO：リファクタリングの <strong>端緒</strong> として、簡単にできる操作という点がオススメ</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>特性の移動（文・フィールド・関数の移動テクニック）</h2>
+<dl class="field-list simple">
+<dt class="field-odd">どんなときに使うのか<span class="colon">:</span></dt>
+<dd class="field-odd"><p>深まった理解に基づき、関連する要素の <strong>まとめ方を変える</strong> とき</p>
+</dd>
+<dt class="field-even">VS Codeではどんな操作になるのか<span class="colon">:</span></dt>
+<dd class="field-even"><p><kbd class="kbd docutils literal notranslate">⌥↑</kbd> や <kbd class="kbd docutils literal notranslate">⌥↓</kbd> が最初の操作</p>
+</dd>
+</dl>
+</section>
+<section >
+<h2>Part 3. カタログ：VS Codeでリファクタリング まとめ🌯</h2>
+<ul class="simple">
+<li><p>変数名の変更➡️ <kbd class="kbd docutils literal notranslate">F2</kbd> (Rename Symbol)</p></li>
+<li><p>関数名の変更➡️（同上）</p></li>
+<li><p>変数の抽出➡️ <span class="guilabel">Extract variable</span></p></li>
+<li><p>関数の抽出➡️ <span class="guilabel">Extract method</span></p></li>
+<li><p>特性の移動に関する数テクニック➡️ <kbd class="kbd docutils literal notranslate">⌥↑</kbd> <kbd class="kbd docutils literal notranslate">⌥↓</kbd> で始めよう</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>落穂ひろい🌾：リファクタリングとテストコード</h2>
+</section>
+<section >
+<h3><strong>テストコード</strong> で、ますます捗るリファクタリング</h3>
+<ul class="simple">
+<li><p>振る舞いを変えずに構造を変えるのがリファクタリング</p></li>
+<li><p>テストコードがあると、 <strong>振る舞いを変えてしまったことに気付ける</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>テストは <strong>不安を退屈に変える</strong> 賢者の石</h3>
+<ul class="simple">
+<li><p>『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274217883/">テスト駆動開発</a>』第25章の言葉</p></li>
+<li><p>「リファクタリングで振る舞いを変えているんじゃないか」という不安がなくなった</p></li>
+<li><p>都度手動テストでも確認できるが、何度も繰り返すため、 <strong>テストコードが一番効果的</strong> と考えます</p></li>
+</ul>
+</section>
+<section >
+<h3>今回紹介したVS Codeのリファクタリング操作について（IMO）</h3>
+<ul class="simple">
+<li><p>VS Codeは信頼している。デモのような <strong>小さい範囲</strong> はガンガンリファクタリング</p></li>
+<li><p>ですが、テストコードがないとき、広い範囲に関わるならば私は見送ります</p>
+<ul>
+<li><p><strong>まずテストコード</strong> を用意しよう（武器『<a class="reference external" href="https://www.shoeisha.co.jp/book/detail/9784798116839">レガシーコード改善ガイド</a>』）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>今回紹介したリファクタリングテクニックはごく一部 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>📘『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング</a>』にはまだまだテクニックが載っている</p></li>
+<li><p>VS Codeがサポートしないテクニックは、テストコードを書いて、リファクタリング手順を練習して常中させていきましょう！</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>まとめ🌯：楽々入門！VS Codeで『リファクタリング』</h2>
+<ul class="simple">
+<li><p>Martin Fowler著『リファクタリング』のテクニックをVS Codeの操作と結び付けて紹介</p></li>
+<li><p>使い所（理論）とエディタの操作（身体）で覚えている <strong>常中</strong> 状態の提案</p></li>
+</ul>
+</section>
+<section >
+<h3>紹介したテクニックとVS Codeの操作</h3>
+<ul class="simple">
+<li><p>変数名・関数名の変更➡️ <kbd class="kbd docutils literal notranslate">F2</kbd> (Rename Symbol)</p></li>
+<li><p>変数の抽出➡️ <span class="guilabel">Extract variable</span></p></li>
+<li><p>関数の抽出➡️ <span class="guilabel">Extract method</span></p></li>
+<li><p>特性の移動に関する数テクニック➡️ <kbd class="kbd docutils literal notranslate">⌥↑</kbd> <kbd class="kbd docutils literal notranslate">⌥↓</kbd> で始めよう</p></li>
+</ul>
+<aside class="notes">
+リファクタリング読むのオススメ</aside>
+</section>
+<section >
+<h3>ご清聴ありがとうございました！</h3>
+<p>Enjoy development!</p>
+</section>
+</section>
+<section>
+<section >
+<h2>References</h2>
+</section>
+<section >
+<h3>VS Codeドキュメント</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/editor/refactoring">Refactoring</a></p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/python/editing">Editing Python in Visual Studio Code</a></p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/getstarted/keybindings">Key Bindings for Visual Studio Code</a></p></li>
+</ul>
+</section>
+<section >
+<h3>関連アウトプット</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/vscode-f2-easy-refactoring">入門F2 〜VS CodeのRename Symbolで楽々リファクタリング〜</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/vscode-extract-easy-refactoring">エディタの機能を知って身につけるリファクタリング 〜VS CodeでExtract編〜</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>Appendix</h2>
+<aside class="notes">
+TODO もう少し詳しいまとめ</aside>
+</section>
+<section >
+<h3>インライン化</h3>
+<ul class="simple">
+<li><p>抽出の <strong>逆操作</strong> （リファクタリングは可逆な操作）</p></li>
+<li><p>VS CodeやPython拡張ではサポートされないらしい（Marketplaceにあるかも）</p></li>
+</ul>
+</section>
+<section >
+<h3>も〜っとリファクタリング</h3>
+<ul class="simple">
+<li><p>VS Codeでできるリファクタリングには限界がある</p></li>
+<li><p>もっと多くのリファクタリングについてサポートを受けて開発したい場合</p></li>
+<li><p>👉IntelliJ IDEAやPyCharm</p></li>
+</ul>
+</section>
+<section >
+<h3>鬼滅の刃フィーチャー</h3>
+<ul class="simple">
+<li><p>「常中」</p></li>
+<li><p>リファクタリングテクニックは多数ある。まずは「ひとつのことを極め抜け」</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

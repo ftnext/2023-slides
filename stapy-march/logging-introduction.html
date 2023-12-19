@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>Pythonのlogging入門</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/stapy-march/logging-introduction.html">
+    <meta property="og:title" content="Pythonのlogging入門">
+    <meta property="og:description" content="2023/03 みんなのPython勉強会#91 10分トーク2本立て 2/2">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/stapy-march-logging.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>Pythonのlogging入門</h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>みんなのPython勉強会#91</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2023/03/16 nikkie</p>
+</dd>
+</dl>
+</section>
+<section >
+<h2>お前、誰よ（知ってる）</h2>
+<ul class="simple">
+<li><p><strong>にっきー</strong> ／ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/">はてなブログ</a> （毎日1記事書いてます）</p></li>
+<li><p>みんなのPython勉強会 4代目LT王子 スタッフ</p></li>
+<li><p>PyCon JP 2021 座長</p></li>
+<li><p><a class="reference external" href="https://github.com/Uberi/speech_recognition">SpeechRecognition</a> メンテナ</p></li>
+</ul>
+</section>
+<section >
+<h2>Pythonのlogging入門</h2>
+<ul class="simple">
+<li><p>2本立ての2本目です。引き続きChatGPTとお楽しみいただいても全然大丈夫</p></li>
+<li><p>loggingモジュールに苦手意識がありましたが、 <strong>理解が進んだポイントを共有</strong> します</p></li>
+<li><p>「なぜログが必要か」は今回は話しません</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>もっとも単純な例</h2>
+<aside class="notes">
+doctestを通すために標準出力を指定する（ここが唯一有効なbasicConfig）
+&gt;&gt;&gt; import logging, sys
+&gt;&gt;&gt; logging.basicConfig(stream=sys.stdout)</aside>
+<pre data-id="id3"><code data-trim data-noescape class="python">&gt;&gt;&gt; import logging
+&gt;&gt;&gt; logging.warning('Watch out!')
+WARNING:root:Watch out!</code></pre>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html">https://docs.python.org/ja/3/library/logging.html</a></p>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.warning</span></code></h3>
+<blockquote>
+<div><p>レベル WARNING のメッセージをルートロガーで記録します。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.warning">https://docs.python.org/ja/3/library/logging.html#logging.warning</a></p>
+</section>
+<section >
+<h3>もっとも単純な例で完全に理解😎</h3>
+<ul class="simple">
+<li><p>WARNING以外のレベルのメッセージも記録してみよう</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging-levels">ロギングレベル</a> を参照</p>
+<ul>
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/howto/logging.html#when-to-use-logging">logging を使うとき</a> の「レベル」もいいぞ</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>レベル ERROR</h3>
+<pre data-id="error"><code data-trim data-noescape class="python">&gt;&gt;&gt; logging.error('ヤバイよ。マジヤバイよ')
+ERROR:root:ヤバイよ。マジヤバイよ</code></pre>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.error">https://docs.python.org/ja/3/library/logging.html#logging.error</a></p>
+</section>
+<section >
+<h3>レベル INFO、あれ？😳</h3>
+<pre data-id="info"><code data-trim data-noescape class="python">&gt;&gt;&gt; logging.info('想定通り')</code></pre>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.info">https://docs.python.org/ja/3/library/logging.html#logging.info</a></p>
+</section>
+</section>
+<section>
+<section >
+<h2>1️⃣ロガーとロギングレベル</h2>
+<ul class="simple">
+<li><p>なぜレベル INFOのメッセージは画面に出力されなかったのでしょう？</p></li>
+</ul>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> はロガーを設定</h3>
+<ul class="simple">
+<li><p>ロガー＝ <code class="docutils literal notranslate"><span class="pre">logging.Logger</span></code> クラスのインスタンス</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> が設定するのは <em>ルート</em> ロガー</p></li>
+</ul>
+</section>
+<section >
+<h3>ルートロガー</h3>
+<pre data-id="id8"><code data-trim data-noescape class="python">&gt;&gt;&gt; # ルートロガーを取得
+&gt;&gt;&gt; root_logger = logging.getLogger()
+&gt;&gt;&gt; root_logger  # (WARNING) に注目
+&lt;RootLogger root (WARNING)&gt;</code></pre>
+</section>
+<section >
+<h3>なぜレベル INFOのメッセージは出力されなかった？</h3>
+<blockquote>
+<div><p>デフォルトのレベルは WARNING なので、INFO メッセージは現れません。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/howto/logging.html#a-simple-example">https://docs.python.org/ja/3/howto/logging.html#a-simple-example</a></p>
+</section>
+<section >
+<h3>高いレベル・低いレベルがある</h3>
+<ul class="simple">
+<li><p>(高) ERROR</p></li>
+<li><p>WARNING</p></li>
+<li><p>(低) INFO</p></li>
+</ul>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging-levels">ロギングレベル</a></p>
+</section>
+<section >
+<h3>ロギングレベルを設定する</h3>
+<ul class="simple">
+<li><p>ルートロガーのロギングレベルは <code class="docutils literal notranslate"><span class="pre">logging.basicConfig</span></code> で指定できる</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.basicConfig">https://docs.python.org/ja/3/library/logging.html#logging.basicConfig</a></p></li>
+</ul>
+</section>
+<section >
+<h3>ロギングレベルをINFOに指定（対話モード立ち上げ直し）</h3>
+<aside class="notes">
+basicConfigは一度だけ有効なので、doctestを通すために裏で設定する
+&gt;&gt;&gt; logging.getLogger().setLevel(logging.INFO)</aside>
+<pre data-id="id12"><code data-trim data-noescape class="python">&gt;&gt;&gt; import logging
+&gt;&gt;&gt; logging.basicConfig(level=logging.INFO)
+&gt;&gt;&gt; logging.getLogger()  # (INFO) になってます！
+&lt;RootLogger root (INFO)&gt;
+&gt;&gt;&gt; logging.info('想定通り')
+INFO:root:想定通り</code></pre>
+</section>
+<section >
+<h3>🥟ロガーとロギングレベル</h3>
+<ul class="simple">
+<li><p>ルートロガーはレベルがWARNING</p></li>
+<li><p>ルートロガーのレベルより下のレベルのINFOやDEBUGのメッセージは出力されない</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logging.basicConfig(level=...)</span></code> で <strong>ルートロガーのレベルを変えられる</strong></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>2️⃣ログメッセージの書式</h2>
+<ul class="simple">
+<li><p>なぜ「WARNING:root:Watch out!」という書式なのでしょう？</p></li>
+</ul>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.info</span></code> や <code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> の秘密</h3>
+<blockquote>
+<div><p>ルートロガーにハンドラが接続されていない場合、この関数 (および info(), warning(), error() そして critical()) は basicConfig() を呼び出します。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.debug">https://docs.python.org/ja/3/library/logging.html#logging.debug</a></p>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.basicConfig()</span></code> が呼び出されていた！</h3>
+<ul>
+<li><p><strong>引数無し</strong> での呼び出し</p></li>
+<li><p>書式に関わるのは <code class="docutils literal notranslate"><span class="pre">format</span></code> 引数（<a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.basicConfig">ドキュメント</a>）</p>
+<blockquote>
+<div><p>デフォルトは levelname, name, message 属性をコロン区切りにしたものです。</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section >
+<h3>デフォルトのログメッセージの書式</h3>
+<ul class="simple">
+<li><p>「WARNING:root:Watch out!」</p></li>
+<li><p><strong>レベル:ロガーの名前:メッセージ</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;%(levelname)s:%(name)s:%(message)s&quot;</span></code></p></li>
+</ul>
+</section>
+<section >
+<h3>書式を変えてみよう（対話モード立ち上げ直し）</h3>
+<aside class="notes">
+basicConfigは一度だけ有効なので、doctestを通すために裏で設定する
+&gt;&gt;&gt; logging.getLogger().setLevel(logging.INFO)</aside>
+<pre data-id="id16"><code data-trim data-noescape class="python">&gt;&gt;&gt; import logging
+&gt;&gt;&gt; log_format = &quot;%(asctime)s | %(levelname)s | %(name)s:%(funcName)s:%(lineno)d - %(message)s&quot;
+&gt;&gt;&gt; logging.basicConfig(level=logging.INFO, format=log_format)
+&gt;&gt;&gt; logging.info('想定通り')  
+2023-03-15 21:03:40,253 | INFO | root:&lt;module&gt;:1 - 想定通り</code></pre>
+</section>
+<section >
+<h3>書式の指定</h3>
+<ul class="simple">
+<li><p>ドキュメントの <a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logrecord-attributes">LogRecord 属性</a> 参照</p></li>
+<li><p><cite>%(asctime)s</cite>: LogRecord が生成された時刻を人間が読める書式で表したもの</p></li>
+<li><p><cite>%(funcName)s</cite>: ロギングの呼び出しを含む関数の名前</p></li>
+</ul>
+</section>
+<section >
+<h3>🥟ログメッセージの書式</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logging.basicConfig(format=...)</span></code> で <strong>ログメッセージの書式を変えられる</strong></p></li>
+<li><p>ログメッセージの書式はドキュメントの <a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logrecord-attributes">LogRecord 属性</a> に一覧あり</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>3️⃣ログの出力先</h2>
+<ul class="simple">
+<li><p>画面以外にも出力するには？（ファイル）</p></li>
+<li><p><em>ハンドラ</em> が関わります</p></li>
+</ul>
+</section>
+<section >
+<h3>ルートロガーのハンドラ（対話モード立ち上げ直し）</h3>
+<pre data-id="id20"><code data-trim data-noescape class="python">&gt;&gt;&gt; import logging
+&gt;&gt;&gt; logging.warning('Watch out!')
+WARNING:root:Watch out!
+&gt;&gt;&gt; logging.getLogger().handlers  
+[&lt;StreamHandler &lt;stderr&gt; (NOTSET)&gt;]</code></pre>
+</section>
+<section >
+<h3>ハンドラとは</h3>
+<blockquote>
+<div><p>ハンドラは、(ロガーによって生成された) ログ記録を適切な送信先に送ります。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.basicConfig">https://docs.python.org/ja/3/library/logging.html#logging.basicConfig</a></p>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.StreamHandler</span></code></h3>
+<ul class="simple">
+<li><p>ストリームにログを送るハンドラ</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.handlers.html#logging.StreamHandler">https://docs.python.org/ja/3/library/logging.handlers.html#logging.StreamHandler</a></p></li>
+<li><p>ログは <strong>標準エラー出力</strong> に出力される</p></li>
+</ul>
+</section>
+<section >
+<h3>脱線：標準出力も指定可能（対話モード立ち上げ直し）</h3>
+<pre data-id="id22"><code data-trim data-noescape class="python">&gt;&gt;&gt; import logging
+&gt;&gt;&gt; import sys
+&gt;&gt;&gt; logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+&gt;&gt;&gt; logging.getLogger().handlers  
+[&lt;StreamHandler &lt;stdout&gt; (NOTSET)&gt;]</code></pre>
+</section>
+<section >
+<h3>ファイルにログ出力したい</h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">basicConfig</span></code> の <code class="docutils literal notranslate"><span class="pre">filename</span></code> 引数を指定する</p>
+<blockquote>
+<div><p>StreamHandler ではなく指定された名前で FileHandler が作られます。</p>
+</div></blockquote>
+</li>
+</ul>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.basicConfig">https://docs.python.org/ja/3/library/logging.html#logging.basicConfig</a></p>
+</section>
+<section >
+<h3>ファイルにログ出力したい</h3>
+<pre data-id="id24"><code data-trim data-noescape class="python">&gt;&gt;&gt; import logging
+&gt;&gt;&gt; logging.basicConfig(level=logging.INFO, filename=&quot;awesome.log&quot;)
+&gt;&gt;&gt; logging.warning('Watch out!')  
+&gt;&gt;&gt; logging.info('想定通り')  </code></pre>
+<pre data-id="id24"><code data-trim data-noescape class="shell">$ cat awesome.log
+WARNING:root:Watch out!
+INFO:root:想定通り</code></pre>
+</section>
+</section>
+<section >
+<h2>🥟ログの出力先</h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logging.basicConfig(filename=...)</span></code> でファイルにログ出力できる</p></li>
+<li><p>ハンドラ <code class="docutils literal notranslate"><span class="pre">StreamHandler</span></code> や <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code></p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>🥟 <code class="docutils literal notranslate"><span class="pre">basicConfig</span></code> で <strong>ルートロガーを設定</strong> できる</h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">level</span></code>: ロギングレベル</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">format</span></code>: ログメッセージ書式</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filename</span></code>: FileHandler</p></li>
+</ul>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">logging;</span> <span class="pre">logging.info(&quot;想定通り&quot;)</span></code> が出力されないのは</h3>
+<ul class="simple">
+<li><p>（ルートロガー未設定なので） <code class="docutils literal notranslate"><span class="pre">logging.info</span></code> は <code class="docutils literal notranslate"><span class="pre">logging.basicConfig()</span></code> を呼び出す</p></li>
+<li><p>ルートロガーがレベル <strong>WARNING</strong> で設定される</p></li>
+<li><p>WARNINGより低いINFOレベルは出力されない</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>深堀り <code class="docutils literal notranslate"><span class="pre">logging.warning</span></code></h2>
+<blockquote>
+<div><p>ルートロガーにハンドラが接続されていない場合、この関数 (および info(), warning(), error() そして critical()) は basicConfig() を呼び出します。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.debug">https://docs.python.org/ja/3/library/logging.html#logging.debug</a></p>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.basicConfig</span></code></h3>
+<blockquote>
+<div><p>デフォルトの Formatter を持つ StreamHandler を生成してルートロガーに追加し、ロギングシステムの基本的な環境設定を行います。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.basicConfig">https://docs.python.org/ja/3/library/logging.html#logging.basicConfig</a></p>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> が呼び出した <code class="docutils literal notranslate"><span class="pre">logging.basicConfig</span></code> で</h3>
+<ul class="simple">
+<li><p>Formatterを生成</p></li>
+<li><p>StreamHandlerを生成</p></li>
+<li><p>これらを <strong>ルートロガーに追加</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>画面に「WARNING:root:Watch out!」と現れたのは</h3>
+<ul class="simple">
+<li><p>ルートロガーのロギングレベルは <strong>WARNING</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;%(levelname)s:%(name)s:%(message)s&quot;</span></code> <strong>書式</strong> のFormatter</p></li>
+<li><p>StreamHandlerは <strong>標準エラー出力</strong> に出力</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>ロガーの階層構造</h2>
+<ul class="simple">
+<li><p>ルートロガー以外のロガーについて</p></li>
+<li><p>ポイントは階層構造（<strong>親子関係</strong>）</p></li>
+</ul>
+</section>
+<section >
+<h3>ルートロガー以外のロガー</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logging.getLogger</span></code> にロガーの名を渡せる</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">logging.getLogger(&quot;awesome&quot;)</span></code></p></li>
+</ul>
+</li>
+<li><p>モジュールレベルロガー <code class="docutils literal notranslate"><span class="pre">logging.getLogger(__name__)</span></code></p></li>
+</ul>
+</section>
+<section >
+<h3>ロガーの親子関係（階層構造）</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">getLogger(&quot;foo.bar&quot;)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getLogger(&quot;foo&quot;)</span></code> foo.barの親</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getLogger()</span></code> ルートロガー、 <strong>すべての親</strong></p></li>
+</ul>
+<p><a class="reference external" href="https://docs.python.org/ja/3/howto/logging.html#advanced-logging-tutorial">https://docs.python.org/ja/3/howto/logging.html#advanced-logging-tutorial</a></p>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">propagate</span></code> 属性</h3>
+<blockquote>
+<div><p>この属性が真と評価された場合、このロガーに記録されたイベントは、このロガーに取り付けられた全てのハンドラに加え、上位 (祖先) ロガーのハンドラにも渡されます。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html#logging.Logger.propagate">https://docs.python.org/ja/3/library/logging.html#logging.Logger.propagate</a></p>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">propagate</span></code> 属性（承前）</h3>
+<blockquote>
+<div><p>A.B.C という名前のロガーの propagate 属性が真と評価された場合、(略)</p>
+<p>最初に A.B.C に接続されたハンドラに渡され、その後 A.B, A という名前のロガー、そしてルートロガーという順番で各ロガーに接続されたハンドラに渡されます。</p>
+</div></blockquote>
+</section>
+<section >
+<h3>子のロガーから親のロガーに伝播する</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">getLogger(&quot;foo.bar&quot;)</span></code> で記録されるログは</p></li>
+<li><p>親の <code class="docutils literal notranslate"><span class="pre">getLogger(&quot;foo&quot;)</span></code> にも伝播し</p></li>
+<li><p>すべての親 ルートロガー <code class="docutils literal notranslate"><span class="pre">getLogger()</span></code> にも伝播する</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>例 <code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> したばっかりに</h2>
+<ul class="simple">
+<li><p>奇妙な挙動ですが、 <strong>階層構造</strong> を押さえていると理解できると思います</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> は <code class="docutils literal notranslate"><span class="pre">basicConfig</span></code> で <em>ルートロガーにハンドラを設定</em></p></li>
+</ul>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> したばっかりに</h3>
+<pre data-id="id34"><code data-trim data-noescape class="python">&gt;&gt;&gt; import logging
+&gt;&gt;&gt; logging.warning('Watch out!')
+WARNING:root:Watch out!</code></pre>
+<p>ルートロガーが設定された（フォーマッタとStreamHandler）</p>
+</section>
+<section >
+<h3>子ロガー用のフォーマッタ、ハンドラ設定</h3>
+<pre data-id="id35"><code data-trim data-noescape class="python">&gt;&gt;&gt; log_format = &quot;%(asctime)s | %(levelname)s | %(name)s:%(funcName)s:%(lineno)d - %(message)s&quot;
+&gt;&gt;&gt; formatter = logging.Formatter(log_format)
+&gt;&gt;&gt; handler = logging.StreamHandler()
+&gt;&gt;&gt; handler.setFormatter(formatter)</code></pre>
+</section>
+<section >
+<h3>子ロガー <code class="docutils literal notranslate"><span class="pre">practice</span></code> の設定</h3>
+<pre data-id="practice"><code data-trim data-noescape class="python">&gt;&gt;&gt; logger = logging.getLogger(&quot;practice&quot;)
+&gt;&gt;&gt; logger.setLevel(logging.INFO)
+&gt;&gt;&gt; logger.addHandler(handler)</code></pre>
+<p>レベルはINFO、StreamHandlerも設定</p>
+</section>
+<section >
+<h3>奇妙な挙動？ propagateによる</h3>
+<pre data-id="id36"><code data-trim data-noescape class="python">&gt;&gt;&gt; logger.info('想定通り')  
+2023-03-15 22:21:43,880 | INFO | practice:&lt;module&gt;:1 - 想定通り
+INFO:practice:想定通り</code></pre>
+<p><strong>2行出力</strong> されてしまう</p>
+</section>
+<section >
+<h3>ロガーの階層構造</h3>
+<ul class="simple">
+<li><p>日付で始まる行</p>
+<ul>
+<li><p>子ロガー（practice）による出力</p></li>
+</ul>
+</li>
+<li><p>もう1行</p>
+<ul>
+<li><p>親の <strong>ルートロガーによる出力</strong></p></li>
+<li><p>子ロガーが記録するINFOレベルが伝播した</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>参考：子ロガーにハンドラがなくても出力される！</h3>
+<pre data-id="id38"><code data-trim data-noescape class="python">&gt;&gt;&gt; logger = logging.getLogger(&quot;practice&quot;)
+&gt;&gt;&gt; logger.setLevel(logging.INFO)
+&gt;&gt;&gt; # logger.addHandler(handler)
+&gt;&gt;&gt; logger.info('想定通り')  
+INFO:practice:想定通り</code></pre>
+<p>ルートロガーに伝播して出力</p>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> がないだけで</h3>
+<pre data-id="id39"><code data-trim data-noescape class="python">&gt;&gt;&gt; # logging.warning がない以外は共通のコード
+&gt;&gt;&gt; logger.info('想定通り')  
+2023-03-15 22:27:32,375 | INFO | practice:&lt;module&gt;:1 - 想定通り</code></pre>
+<p><strong>子ロガー</strong> に設定した <strong>ハンドラ</strong> による1行のみ出力</p>
+</section>
+<section >
+<h3>実体験に基づく例でした</h3>
+<ul class="simple">
+<li><p>子ロガーにFileHandlerを指定して、この体験を味わいました</p></li>
+<li><p>ルートロガーからStreamHandlerを <em>引き剥がす実装</em> が必要でした...</p></li>
+<li><p>詳しくは <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/python-logging-root-logger-and-chain-propagation">https://nikkie-ftnext.hatenablog.com/entry/python-logging-root-logger-and-chain-propagation</a></p></li>
+</ul>
+</section>
+<section >
+<h3>IMO ライブラリ開発でのlogging利用</h3>
+<ul class="simple">
+<li><p>ライブラリで <code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> や <code class="docutils literal notranslate"><span class="pre">logging.basicConfig</span></code> は、利用者に苦労をかけるので望ましくないと考えます</p></li>
+<li><p>自戒を込めて、<a class="reference external" href="https://docs.python.org/ja/3/library/logging.handlers.html#logging.NullHandler">NullHandler</a> を使っていきたい（教えてChatGPT🙏）</p></li>
+</ul>
+</section>
+<section >
+<h3>Logging クックブックより</h3>
+<blockquote>
+<div><p>もしあなたがライブラリのメンテナンスをしているのであれば、 NullHandler インスタンス以外のロガーを追加してはいけない、ということを意味します。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/howto/logging-cookbook.html#adding-handlers-other-than-nullhandler-to-a-logger-in-a-library">https://docs.python.org/ja/3/howto/logging-cookbook.html#adding-handlers-other-than-nullhandler-to-a-logger-in-a-library</a></p>
+</section>
+</section>
+<section>
+<section >
+<h2>まとめ🌯 Pythonのlogging入門</h2>
+<ul class="simple">
+<li><p>もっとも単純な例 <code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> は <code class="docutils literal notranslate"><span class="pre">logging.basicConfig</span></code> を <strong>呼んでいた</strong></p>
+<ul>
+<li><p>ルートロガーにStreamHandlerを設定</p></li>
+</ul>
+</li>
+<li><p>ライブラリの中で <code class="docutils literal notranslate"><span class="pre">logging.warning</span></code> や <code class="docutils literal notranslate"><span class="pre">logging.basicConfig</span></code> はNG🙅‍♂️です</p></li>
+</ul>
+</section>
+<section >
+<h3>2本ご清聴ありがとうございました</h3>
+<p>Happy development!</p>
+</section>
+</section>
+<section>
+<section >
+<h2>References</h2>
+</section>
+<section >
+<h3>オススメのリソース</h3>
+<ul class="simple">
+<li><p>『<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-12576-9">Python実践レシピ</a>』17.4 ログを出力する―logging</p></li>
+<li><p>PyCon JP 2021 <a class="reference external" href="https://2021.pycon.jp/time-table?id=272259">Loggingモジュールではじめるログ出力入門</a></p></li>
+</ul>
+</section>
+<section >
+<h3>公式ドキュメント</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/howto/logging.html">Logging HOWTO</a> （基本／上級チュートリアル）</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/howto/logging-cookbook.html">Logging クックブック</a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/library/logging.html">https://docs.python.org/ja/3/library/logging.html</a></p></li>
+</ul>
+</section>
+<section >
+<h3>nikkieのアウトプット</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/python-logging-root-logger-and-chain-propagation">Pythonのloggingを よ う や く 完全に理解しました 〜revChatGPTでdebugレベルログを出そうとした試行錯誤を題材に〜</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/python-logging-the-simplest-example-under-the-hood">Pythonのloggingモジュールのドキュメントの「もっとも単純な例」を説明する 〜logging.warningの裏側で起こっていること〜</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

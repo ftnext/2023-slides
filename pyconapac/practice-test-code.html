@@ -1,0 +1,1367 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>好きとか嫌いとかはいい、練習してテストを書けるようになるんだ</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/pyconapac/practice-test-code.html">
+    <meta property="og:title" content="好きとか嫌いとかはいい、練習してテストを書けるようになるんだ">
+    <meta property="og:description" content="2023/10 PyCon APAC 2023">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/pyconapac.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>好きとか嫌いとかはいい、練習してテストを書けるようになるんだ</h1>
+</section>
+<section >
+<h2>好きとか嫌いとかはいい、 <strong>練習してテストを書けるよ</strong> うになるんだ</h2>
+<p>日本語資料・ <strong>English talk</strong> です</p>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PyCon APAC 2023</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2023/10/27 nikkie</p>
+</dd>
+</dl>
+<aside class="notes">
+The title is &quot;Like It or Not, Practice Until You Can Write Tests&quot;.
+Thank you for choosing this talk. Enjoy it!</aside>
+<aside class="notes">
+アニメのスラングすぎて、英語で伝えるのが難しい
+15分話していきます</aside>
+</section>
+<section>
+<section >
+<h2>お前、誰よ</h2>
+<ul class="simple">
+<li><p>nikkie（にっきー） ／ <span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext">&#64;ftnext</a> ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext">&#64;ftnext</a></p></li>
+<li><p>株式会社ユーザベースのデータサイエンティスト（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481">We're hiring!</a>）</p></li>
+</ul>
+<img alt="https://drive.google.com/uc?id=19PMMnkqDiFMCJBPwoA1B51ltQBG0y4kL" src="https://drive.google.com/uc?id=19PMMnkqDiFMCJBPwoA1B51ltQBG0y4kL" />
+<aside class="notes">
+Please call me nikkie.
+I usually write Python as a data scientist at a company &quot;Uzabase&quot;.</aside>
+<aside class="notes">
+にっきーと申します。
+ふだんはユーザベースという会社でデータサイエンティストとしてPythonを書いています</aside>
+</section>
+<section >
+<h3>お前、誰よ 続）Pythonとアニメが好き</h3>
+<blockquote>
+<div><div class="line-block">
+<div class="line">いまはまだできなくても大丈夫。</div>
+<div class="line"><strong>これからできるようになればいい</strong></div>
+</div>
+</div></blockquote>
+<p>最近ハマってる #ミリアニネタバレ感想</p>
+<aside class="notes">
+(Continuing with self-introduction,) I love Python and anime.
+Here's a quote from a show I've recently become engrossed in:
+&quot;It's okay if you can't do it now.
+With practice, you'll be able to in the future&quot;
+Now, let's dive into the main topic.</aside>
+<aside class="notes">
+自己紹介の続きですが、Pythonとアニメが好きです。
+最近ハマっている作品の一節なのですが、
+いまはまだできなくても大丈夫。
+これからできるようになればいい。
+本編に入っていきましょう</aside>
+<aside class="notes">
+https://twitter.com/ftnext/status/1715665132804841707</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>練習してテストを書けるようになるんだ</h2>
+<ul class="simple">
+<li><p>前提：Pythonの <strong>関数</strong> が書ける</p></li>
+<li><p>いまはまだテストコードを書いたことがなくて大丈夫</p></li>
+</ul>
+<aside class="notes">
+This talk is intended for those of you who can write Python functions.
+Don't worry if you've never written test code before!
+Let's practice and get to the point where we can write tests.</aside>
+<aside class="notes">
+このトークはPythonの関数が書ける方に聞いていただけたらいいなと思っています。
+いまはまだテストコードを書いたことがなくて大丈夫です！
+練習してテストを書けるようになっていきましょう</aside>
+</section>
+<section >
+<h3>お品書き（兼 持ち帰れるもの）</h3>
+<ol class="arabic simple">
+<li><p>テストコードが書けるメリット</p></li>
+<li><p>doctestの使い方</p></li>
+<li><p>pytestの使い方</p></li>
+</ol>
+<aside class="notes">
+I'm planning to cover three main points.
+First, I'll discuss the benefits of writing test code.
+After that, I'll show you two methods to write test codes.</aside>
+<aside class="notes">
+大きく3つのことを話そうと思っています。
+まずテストコードが書けるとこんないいことがあるよという話をします。
+その後テストコードをどう書くのかに対して、2つのやり方を示します。</aside>
+</section>
+<section >
+<h3>動作環境 &amp; サンプルコード</h3>
+<ul class="simple">
+<li><p>Python 3.12.0 (latest🙌)</p></li>
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext/2023-slides/tree/main/samplecode/python-testing/doctest-example">doctest-example</a></p></li>
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext/2023-slides/tree/main/samplecode/python-testing/pytest-example">pytest-example</a></p></li>
+</ul>
+<aside class="notes">
+Sample codes work at Python 3.12.0!</aside>
+<aside class="notes">
+コマンド控え
+python -m doctest fizzbuzz.py example_repr.py
+pytest --doctest-modules -v
+python -m doctest ../../../source/pyconapac/doctest.rst.txt ../../../source/pyconapac/pytest.rst.txt</aside>
+</section>
+</section>
+<section >
+<h2>テストコードが書けるメリット</h2>
+<aside class="notes">
+First, let's talk about the benefits of being able to write test code.</aside>
+<aside class="notes">
+まず、テストコードが書けるとどんないいことがあるかを話していきます</aside>
+</section>
+<section>
+<section >
+<h2>一度書いたコードは改善（変更）を免れない</h2>
+<ul class="simple">
+<li><p>持てる知識を全て動員して書いたが、より適切な文法を知らなかった</p></li>
+<li><p><strong>新しく知った書き方</strong> で書き直したい ➡️ 学びになり、Pythonの力がつく💪</p></li>
+</ul>
+<aside class="notes">
+Personally, I don't think there's ever a time when you shouldn't improve the code you've written.
+You might have written the code using all the knowledge you have, but you may not have known a more appropriate syntax.
+I often find that rewriting code to be more efficient is a great learning experience, and it builds your proficiency in Python.</aside>
+<aside class="notes">
+私、思うんですけど、一度書いたコードを改善しないことってないんじゃないかなと。
+持てる知識を全て使って書いたコードだが、より適切な文法を知らなかった。
+よりよいやり方で書き直したいと思いますし、実際書き直すと学びになり、Pythonの力がつくと経験してきました。</aside>
+<aside class="notes">
+Pythonがバージョンアップして文法自体が進化</aside>
+</section>
+<section >
+<h3>例：FizzBuzz</h3>
+<pre data-id="fizzbuzz"><code data-trim data-noescape class="python">def fizzbuzz(number: int) -&gt; str:
+    if number % 3 == 0 and number % 5 == 0:
+        return &quot;FizzBuzz&quot;
+    elif number % 3 == 0:
+        return &quot;Fizz&quot;
+    elif number % 5 == 0:
+        return &quot;Buzz&quot;
+    else:
+        return str(number)</code></pre>
+<p><a class="reference external" href="https://pycamp.pycon.jp/textbook/2_intro.html#fizzbuzz">https://pycamp.pycon.jp/textbook/2_intro.html#fizzbuzz</a> リスト2.14</p>
+<aside class="notes">
+Let's take the example of the FizzBuzz program.
+It's a familiar programming task where you return &quot;Fizz&quot; for multiples of 3 and so on.</aside>
+<aside class="notes">
+例はFizzBuzzのプログラムです。
+3の倍数のときはFizz、5の倍数のときはBuzzと返すという、プログラミングではおなじみの課題ですね</aside>
+</section>
+<section >
+<h3>Structural Pattern Matching (Python 3.10〜)</h3>
+<pre data-id="structural-pattern-matching-python-3-10"><code data-trim data-noescape class="python">def fizzbuzz(number: int) -&gt; str:
+    match number % 3, number % 5:
+        case 0, 0: return &quot;FizzBuzz&quot;
+        case 0, _: return &quot;Fizz&quot;
+        case _, 0: return &quot;Buzz&quot;
+        case _, _: return str(number)</code></pre>
+<p><a class="reference external" href="https://gihyo.jp/news/report/01/pyconjp2021/0002">https://gihyo.jp/news/report/01/pyconjp2021/0002</a></p>
+<p>裏で「<a class="reference external" href="https://2023-apac.pycon.jp/timetable?id=DXWXGJ">Introduction to Structural Pattern Matching</a>」</p>
+<aside class="notes">
+With Python 3.10's Structural Pattern Matching, you can write it like this! It's quite surprising.</aside>
+<aside class="notes">
+このFizzBuzzですが、Python 3.10から使えるようになったStructural Pattern Matchingを使うと
+こんな感じでスッキリ書けちゃう！ びっくりですよね</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>書き換えで振る舞いを変えていないだろうか？</h2>
+<p><strong>不安</strong> に対処するいくつかのアプローチ</p>
+<aside class="notes">
+However, there's a fear that you might change the behavior unintentionally with the rewrite.
+There are various approaches to address this fear.</aside>
+<aside class="notes">
+ですが、書き換えで振る舞いを変えちゃっているかもという不安を感じます。
+この不安にはいろんなアプローチがあると思います。</aside>
+<aside class="notes">
+fear（不安）</aside>
+</section>
+<section >
+<h3>(A) 祈る 🙏</h3>
+<ul class="simple">
+<li><p>🙏🙏「どうか変わっていませんように」🙏🙏</p></li>
+<li><p>振る舞いを変えていないか不安だが、 <em>何も確認はしない</em></p></li>
+</ul>
+<aside class="notes">
+One approach is to pray for the fear.
+&quot;I'm rewriting it, but please don't change anything!&quot;
+(While the fear might diminish,) IN fact you're not really confirming anything.</aside>
+<aside class="notes">
+例えば祈りで不安にアプローチ。
+書き換えるんだけど変わっていないでくれ！という祈りです。
+不安は薄まるかもしれませんが、何も確認していませんね</aside>
+</section>
+<section >
+<h3>(B) 手で動作確認 ✋</h3>
+<ul class="simple">
+<li><p>例えば対話的に <code class="docutils literal notranslate"><span class="pre">fizzbuzz</span></code> 関数を実行</p></li>
+</ul>
+<pre data-id="b"><code data-trim data-noescape class="pycon">&gt;&gt;&gt; from fizzbuzz import fizzbuzz  
+&gt;&gt;&gt; fizzbuzz(15)  
+'FizzBuzz'</code></pre>
+<ul class="simple">
+<li><p>安心できるが、 <em>関数の数が増えて</em> いくと現実的ではなさそう</p></li>
+</ul>
+<aside class="notes">
+Another approach is to manually check.
+Start the interpreter, import fizzbuzz, pass 15(fifteen), and see if it returns &quot;FizzBuzz&quot;.
+(If it behaves as expected, you can feel at ease.
+However,) as the number of functions you want to check increases, it might become challenging.</aside>
+<aside class="notes">
+別のアプローチとして、手で動作確認です。
+インタプリタを立ち上げて、fizzbuzzをimportして15を渡してFizzBuzzと返る。
+これは期待通りの動きだ！と安心できると思います。
+ですが、確認したい関数の数が増えていくと大変そうですね</aside>
+</section>
+<section >
+<h3>(C) コードを書いて動作確認 🤖</h3>
+<ul class="simple">
+<li><p>この発表の本題</p></li>
+<li><p>「手で動作確認」の <strong>自動化</strong> （テストコードを書く）</p></li>
+<li><p>プログラムで使う部品のコードは、プログラムを書いて動作確認するという考え方</p></li>
+</ul>
+<aside class="notes">
+Third approach is to write code to automate the manual check.
+This is the main topic of this presentation.
+We'll write what's called test code.
+(Considering it as a component that the program uses, we'll use the program to confirm its behavior.)</aside>
+<aside class="notes">
+3つのアプローチ、コードを書いて動作確認しましょう。
+これがこの発表の本題です。
+手での確認を自動化していく。テストコードと呼ばれるコードを書いていきます。
+プログラムが使う部品なので、プログラムで使って動作確認すると考えています</aside>
+<aside class="notes">
+「単体テスト」はAppendix？</aside>
+</section>
+<section >
+<h3>用語紹介(1/2) 実行結果</h3>
+<p>テストコードを実行すると、いずれか</p>
+<ul class="simple">
+<li><p><strong>pass</strong> （全て通る・成功）</p></li>
+<li><p>fail （1つでも失敗・落ちる）</p></li>
+</ul>
+<aside class="notes">
+Let's introduce some terminology here.
+When you execute a set of test codes, there are only two outcomes: pass or fail.
+&quot;Pass&quot; means all tests have succeeded.
+If even one test fails, the entire set is marked as &quot;fail&quot;.</aside>
+<aside class="notes">
+ここで用語を紹介しましょう。
+テストコードの集合を全部実行したらpassかfailしかありません。
+passはテストが全て成功したということです。
+テストが1つでも失敗するとテストもfailとなります。</aside>
+</section>
+<section >
+<h3>用語紹介(2/2) 値</h3>
+<div class="literal-block-wrapper docutils container" id="id45">
+<div class="code-block-caption"><span class="caption-text">かしこまった書き方</span></div>
+<pre><code data-trim data-noescape class="pycon">&gt;&gt;&gt; actual = fizzbuzz(15)  # テスト対象を実行した値 
+&gt;&gt;&gt; expected = &quot;FizzBuzz&quot;  # 期待結果
+&gt;&gt;&gt; actual == expected
+True</code></pre>
+</div>
+<aside class="notes">
+In formal way, The value returned by the subject you want to test is called &quot;actual&quot;,
+and the result you expect is called &quot;expected&quot;.
+You verify that actual and expected are equal.</aside>
+<aside class="notes">
+もう1つ、かしこまった書き方ですが（formal way）、
+テストしたい対象を実行した値はactual、
+期待する結果をexpectedと呼んで、
+actualとexpectedが等しいことを検証しています</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>テストコードがあると</h2>
+<table class="docutils align-default" id="id46">
+<caption><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">actual</span> <span class="pre">==</span> <span class="pre">expected</span></code> を <strong>簡単に確認</strong> できる</span></caption>
+<tbody>
+<tr class="row-odd"><td><p>actual</p></td>
+<td><p>expected</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fizzbuzz(3)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;Fizz&quot;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fizzbuzz(5)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;Buzz&quot;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fizzbuzz(15)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;FizzBuzz&quot;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+I'll tell you a bit later how to write test code,
+but even if you imagine having test code, it brings so many benefits.
+For example, there's a test that checks if passing 3 to fizzbuzz returns the string &quot;Fizz&quot;.</aside>
+<aside class="notes">
+テストコードをどう書くかはもう少し先でお伝えしますが、
+仮にテストコードがあるとこんなにいいことがありますよ。
+例えば、fizzbuzzに3を渡すと文字列のFizz</aside>
+</section>
+<section >
+<h3>不安は退屈に変わる</h3>
+<ul class="simple">
+<li><p>実装中、仕様を満たす <strong>動作するコード</strong> であると確認できる🙌</p></li>
+<li><p>書き換える際も、おかしくしていたら気付ける 🙌（<em>回帰テスト</em>）</p></li>
+</ul>
+<aside class="notes">
+When the test passes, it means you have code that works as specified.
+If you accidentally mess something up, the test will fail, and you'll notice.</aside>
+<aside class="notes">
+テストがpassということは、仕様を満たす動作するコードということです。
+おかしくしてしまったらテストがfailして気づけます。
+「不安は退屈に変わる」とはよく言ったものだと思います</aside>
+<aside class="notes">
+テストが全てpassすれば、書き換えで変更していない</aside>
+<aside class="notes">
+テストが1つでもfailしたら、書き換えで何かおかしくしてしまった（気づける）</aside>
+</section>
+<section >
+<h3>書くコードは増えている、けれど</h3>
+<ul class="simple">
+<li><p>実装に加えてテストコードも書く</p></li>
+<li><p>でも、デメリット <strong>&lt;&lt; メリット</strong> だと思うから、📣練習して書けるようになるんだ！</p></li>
+</ul>
+<aside class="notes">
+However, you have to write both the test code and the implementation. (It's a bit tough.)
+Everything has its pros and cons, and I believe the benefits far outweigh the drawbacks from my experience.
+So, in this talk, I'm encouraging you to give writing test code a try.</aside>
+<aside class="notes">
+ただ、テストコードと実装と、両方書かなければなりません。（つらいところだな）
+どんなものにメリットとデメリットもあると思います。
+私は経験からメリットがデメリットを大きく上回ると思っているので、このトークではテストコードを書いてみましょうと伝えています</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>🥟テストコードはPythonの力をつける下地（N=1）</h2>
+<ul class="simple">
+<li><p>テストコードにより、「この実装は仕様を満たす <strong>動作</strong> するコード」と <strong>確認</strong> できる</p></li>
+<li><p>新しく知った文法を試して書き換えるとき、 <strong>誤</strong> って振る舞いを変えてしまっても <strong>気づける</strong></p></li>
+</ul>
+<aside class="notes">
+To summarize what we've covered so far,
+With test code, you can confirm that the implementation works as specified.
+(Even when trying out new syntax you've learned and rewriting,)
+you can catch if you unintentionally change the behavior.</aside>
+<aside class="notes">
+ここまでをまとめますと、
+テストコードがあると、実装は仕様を満たす動作するコードと確認できます。
+新しく知った文法を試して書き換えるとき、誤って振る舞いを変えてしまったときも気づけます。</aside>
+</section>
+<section >
+<h3>お品書き</h3>
+<ol class="arabic simple">
+<li><p>テストコードが書けるメリット</p></li>
+<li><p><strong>doctestの使い方</strong></p></li>
+<li><p>pytestの使い方</p></li>
+</ol>
+<p>テストコードをどう書くか Part 1/2</p>
+<aside class="notes">
+I'll introduce two methods to write tests.
+This is the first part of our discussion on how to write test code.
+🙋‍♂️ Has anyone here heard of the term &quot;doctest&quot;?</aside>
+<aside class="notes">
+ここまでをもとにテストを書いてみたい方に、テストの書き方を2つ紹介します。
+テストコードをどう書くかという話の前半です。
+🙋‍♂️doctestという名称を聞いたことがある方？</aside>
+</section>
+</section>
+<section >
+<h2>doctest</h2>
+<ul>
+<li><p>標準ライブラリ</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/library/doctest.html">https://docs.python.org/ja/3/library/doctest.html</a></p>
+<blockquote>
+<div><p>対話的な実行例をテストする</p>
+</div></blockquote>
+</li>
+</ul>
+<aside class="notes">
+doctest is part of the standard library.
+It's one of my favorite libraries.
+What kind of library is it? It's for &quot;Testing interactive Python examples.&quot;</aside>
+<aside class="notes">
+doctestは標準ライブラリにあります。
+私は好きなライブラリです。
+どんなライブラリかというと「Test interactive Python examples」</aside>
+</section>
+<section>
+<section >
+<h2>関数のdocstring</h2>
+<blockquote>
+<div><p>クラス、関数、モジュールの最初の式である文字列リテラル</p>
+<p>オブジェクトのドキュメントを書く標準的な場所</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/glossary.html#term-docstring">https://docs.python.org/ja/3/glossary.html#term-docstring</a></p>
+<aside class="notes">
+We can write something called a docstring in functions, right?
+If we look it up in the glossary,
+it's described as &quot;A string literal which appears as the first expression in a function.
+it(docstring) is the canonical place for documentation of the object.&quot;</aside>
+<aside class="notes">
+関数にはdocstringというものがありますよね。
+用語集を引くと、
+A string literal which appears as the first expression in a function.
+it(docstring) is the canonical place for documentation of the object.</aside>
+</section>
+<section >
+<h3>ドキュメンテーション文字列 とも</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/ja/3/tutorial/controlflow.html#tut-docstrings">https://docs.python.org/ja/3/tutorial/controlflow.html#tut-docstrings</a></p></li>
+<li><p><strong>三連引用符</strong> を用い、複数行にまたがった文字列リテラルとすることがほとんど</p></li>
+</ul>
+<aside class="notes">
+docstring is also referred to as Documentation Strings.
+It's written using three consecutive quotes.
+Most of the time, it spans multiple lines since it can include line breaks.
+Let's look an example. Seeing is believing.</aside>
+<aside class="notes">
+docstringはドキュメンテーション文字列(Documentation Strings)とも呼ばれます。
+クォートを3つ連続させた文字列にします。
+改行を含められるので、複数行にまたがった文字列がほとんどです（TODO スライド組み換え？）
+百聞は一見にしかずです。</aside>
+<aside class="notes">
+https://docs.python.org/ja/3/tutorial/introduction.html#text</aside>
+</section>
+<section >
+<h3>docstringの例</h3>
+<pre data-id="id17"><code data-trim data-noescape class="python">def fizzbuzz(number: int) -&gt; str:
+    &quot;&quot;&quot;FizzBuzzゲームを解く関数（：1行要約）
+
+    ...（後述）...
+    &quot;&quot;&quot;</code></pre>
+<aside class="notes">
+I've written a docstring for the fizzbuzz function.
+After the function definition (def keyword), I've written a string using three consecutive quotes.</aside>
+<aside class="notes">
+fizzbuzz関数にdocstringを書きました。
+関数定義（def）の直後に三連引用符を使った文字列を書いています</aside>
+<aside class="notes">
+テストを通すための定義
+&gt;&gt;&gt; def fizzbuzz(number: int) -&gt; str:
+...     if number % 3 == 0 and number % 5 == 0:
+...         return &quot;FizzBuzz&quot;
+...     elif number % 3 == 0:
+...         return &quot;Fizz&quot;
+...     elif number % 5 == 0:
+...         return &quot;Buzz&quot;
+...     else:
+...         return str(number)</aside>
+</section>
+<section >
+<h3>Python対話モードの <strong>実行例をdocstringに書く</strong></h3>
+<pre data-id="python-docstring"><code data-trim data-noescape class="python">def fizzbuzz(number: int) -&gt; str:
+    &quot;&quot;&quot;FizzBuzzゲームを解く関数
+
+    &gt;&gt;&gt; fizzbuzz(1)
+    '1'
+    &gt;&gt;&gt; fizzbuzz(3)
+    'Fizz'
+    &quot;&quot;&quot;
+</code></pre>
+<aside class="notes">
+In the docstring, I've written examples of what it would look like when you run the fizzbuzz function in Python's interactive mode.
+Given 1, it returns the string &quot;1&quot;, and Given 3, it returns &quot;Fizz.&quot;</aside>
+<aside class="notes">
+docstringの続きには、Pythonの対話モードでfizzbuzz関数を実行したときの実行例を書きます。
+1のときは文字列1、3のときはFizz</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>対話モードの実行例を <strong>テストとして実行</strong></h2>
+<pre data-id="id18"><code data-trim data-noescape class="txt">.
+└── fizzbuzz.py</code></pre>
+<ul class="simple">
+<li><p><strong class="command">python -m doctest fizzbuzz.py</strong></p></li>
+</ul>
+<aside class="notes">
+You have a file with tests written in the docstring,
+then run it using command python -m doctest followed by the relative path to the file.
+If the tests pass, there's no output.</aside>
+<aside class="notes">
+docstringに実行例を書いたファイルだけを作り、python -m doctestに相対パスを渡してテストを実行します。
+passするときは何も出力しません</aside>
+</section>
+<section >
+<h3>実行結果の確認（<strong class="command">-v</strong> オプション）</h3>
+<pre data-id="v"><code data-trim data-noescape class="shell">$ python -m doctest fizzbuzz.py -v
+Trying:
+    fizzbuzz(1)
+Expecting:
+    '1'
+ok
+
+4 passed and 0 failed.
+Test passed.</code></pre>
+<aside class="notes">
+When you run doctest with the -v option, detailed test results are displayed.
+Four tests passed, no failures. All tests have passed!</aside>
+<aside class="notes">
+-vオプションを付けてdoctestを実行すると、実行結果が詳細に出力されます。
+テスト4つが通り、失敗はなし。テスト全体はpassしました</aside>
+</section>
+<section >
+<h3>関数のdocstringに限らず使えます</h3>
+<p>nikkieはテキストファイル（特にreStructuredText）で頻繁に使用</p>
+<ul class="simple">
+<li><p>書籍執筆</p></li>
+<li><p><strong>発表資料</strong> 作成（本資料含む）</p></li>
+</ul>
+<aside class="notes">
+I use doctest not just in Python files.
+The interactive Python examples in this slide have passed doctest, so I can present without any worries.</aside>
+<aside class="notes">
+私はPythonファイルに限らずdoctestを使います。
+このスライドのPythonの対話例はdoctestが通っているので、不安を感じずに登壇できています</aside>
+</section>
+<section >
+<h3>利用シーン：ライブラリのドキュメントにも</h3>
+<ul class="simple">
+<li><p>例：scikit-learn</p></li>
+</ul>
+<pre data-id="id20"><code data-trim data-noescape class="pycon">&gt;&gt;&gt; from sklearn.metrics import f1_score  
+&gt;&gt;&gt; f1_score(y_true, y_pred, average='macro')  
+0.26...</code></pre>
+<p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html">https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html</a></p>
+<aside class="notes">
+doctest is also used in the documentation of popular libraries.
+Here's an example from scikit-learn.</aside>
+<aside class="notes">
+doctestは有名なライブラリのドキュメントでも使われています。
+これはscikit-learnの例です（TODO ソースコード？）
+？PyTorch</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>doctestの注意点</h2>
+<aside class="notes">
+There are some nuances you should be aware of when using doctest.
+The only difference between the code we looked at earlier and this one is that the string is enclosed with double quotes.</aside>
+<aside class="notes">
+doctestには気をつけなければならない点があります。
+先ほどのコードとの違いは文字列がダブルクォートという点だけです</aside>
+<aside class="notes">
+以下のコードのdoctestを通すだけのコード（doctest: +SKIPがtrimされないため）
+&gt;&gt;&gt; def fizzbuzz(number):
+...     print('&quot;Fizz&quot;')</aside>
+<pre data-id="id21"><code data-trim data-noescape class="python">def fizzbuzz(number: int) -&gt; str:
+    &quot;&quot;&quot;FizzBuzzゲームを解く関数
+
+    &gt;&gt;&gt; fizzbuzz(3)
+    &quot;Fizz&quot;
+
+    &quot;&quot;&quot;</code></pre>
+<aside class="notes">
+残りのテストを通すための定義
+&gt;&gt;&gt; def fizzbuzz(number: int) -&gt; str:
+...     if number % 3 == 0 and number % 5 == 0:
+...         return &quot;FizzBuzz&quot;
+...     elif number % 3 == 0:
+...         return &quot;Fizz&quot;
+...     elif number % 5 == 0:
+...         return &quot;Buzz&quot;
+...     else:
+...         return str(number)</aside>
+</section>
+<section >
+<h3>文字列に <strong>ダブルクォート</strong> を使ったらテストがfail😱</h3>
+<pre data-id="fail"><code data-trim data-noescape class="shell">$ python -m doctest fizzbuzz.py
+Failed example:
+    fizzbuzz(3)
+Expected:
+    &quot;Fizz&quot;
+Got:
+    'Fizz'
+
+***Test Failed*** 1 failures.</code></pre>
+<aside class="notes">
+This test will fail.
+The expected value is &quot;Fizz&quot; enclosed with double quotes, but the actual value is 'Fizz' enclosed with single quotes.
+doctest treats these two as distinct, resulting in a failed test.</aside>
+<aside class="notes">
+このテストは落ちてしまいます。
+期待値はダブルクォートで囲まれたFizz、実際の値はシングルクォートで囲まれたFizz。
+doctestはこの2つを別物として扱うので、テストが落ちます</aside>
+</section>
+<section >
+<h3>焦点：対話モードの出力結果として一致するか</h3>
+<ul class="simple">
+<li><p>対話モードでは <strong>文字列</strong> は基本 <strong>シングルクォート</strong> で囲まれる</p></li>
+</ul>
+<pre data-id="id22"><code data-trim data-noescape class="pycon">&gt;&gt;&gt; &quot;Fizz&quot;
+'Fizz'</code></pre>
+<ul class="simple">
+<li><p>doctestでも文字列はシングルクォートにする必要がある</p></li>
+</ul>
+<aside class="notes">
+The key takeaway is that doctest checks for matches against the interactive mode's output.
+When you input a string enclosed with double quotes in interactive mode, the output will be enclosed with single quotes.
+In doctest, strings should be enclosed with single quotes.</aside>
+<aside class="notes">
+ポイントとしては、doctestは対話モードの出力結果として一致するかを見ているので、それを念頭に考えるということです。
+対話モードでダブルクォートで囲んだ文字列を入力しても、出力はシングルクォート囲みですね。
+doctestでは文字列はシングルクォートにする必要がある</aside>
+</section>
+<section >
+<h3>対話モードは <code class="docutils literal notranslate"><span class="pre">repr</span></code> 関数の返り値</h3>
+<blockquote>
+<div><p>repr() 関数はインタープリタに読める（略）表現を返すためのもの</p>
+</div></blockquote>
+<p><a class="reference external" href="https://docs.python.org/ja/3/tutorial/inputoutput.html#fancier-output-formatting">https://docs.python.org/ja/3/tutorial/inputoutput.html#fancier-output-formatting</a></p>
+<aside class="notes">
+There's a built-in function called repr.
+You can think of the output in interactive examples as the return value of repr.</aside>
+<aside class="notes">
+reprという組み込み関数があります。
+対話例の出力は、reprの返り値と思っていただければと思います</aside>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">repr</span></code> 関数の返り値であることを利用した例 🏃‍♂️ (skip)</h3>
+<pre data-id="repr-skip"><code data-trim data-noescape class="python">class Awesome:
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; Awesome(&quot;PyCon APAC&quot;)
+    Awesome('PyCon APAC')
+    &quot;&quot;&quot;
+
+    def __init__(self, string: str) -&gt; None:
+        self.string = string
+
+    def __repr__(self) -&gt; str:
+        return f&quot;{self.__class__.__name__}({self.string!r})&quot;
+</code></pre>
+<p>（クラスのdocstringでdoctestの例にもなってます）</p>
+</section>
+</section>
+<section>
+<section >
+<h2>doctestから見るテストコードの構成要素</h2>
+<pre data-id="id23"><code data-trim data-noescape class="python">def fizzbuzz(number: int) -&gt; str:
+    &quot;&quot;&quot;FizzBuzzゲームを解く関数
+
+    &gt;&gt;&gt; fizzbuzz(3)
+    'Fizz'
+    &quot;&quot;&quot;
+</code></pre>
+<ul class="simple">
+<li><p>実行例を書くだけで、関数に <strong>ある値を入力したときの出力</strong> を検証できた</p></li>
+<li><p><em>3A</em> という見方を導入</p></li>
+</ul>
+<aside class="notes">
+Shifting gears to another topic: components of test codes from doctest examples.
+By just writing the interactive example, we can verify the output of the function, given certain value.
+Here, I'd like to introduce the 3A approach.</aside>
+<aside class="notes">
+別の話題、doctestから見るテストコードの構成要素
+実行例を書くだけで、関数にある値を入力したときの出力を検証できましたが、
+ここで3A(three A)という見方を導入します</aside>
+</section>
+<section >
+<h3>3A</h3>
+<ul class="simple">
+<li><p>Arrange 準備</p></li>
+<li><p>Act 実行</p></li>
+<li><p>Assert 検証</p></li>
+</ul>
+<p><a class="reference external" href="https://xp123.com/articles/3a-arrange-act-assert/">https://xp123.com/articles/3a-arrange-act-assert/</a></p>
+<aside class="notes">
+The three A's stand for Arrange, Act, and Assert.</aside>
+<aside class="notes">
+3つのAでして、Arrange・Act・Assertです。</aside>
+</section>
+<section >
+<h3>3Aで見るdoctest</h3>
+<p>※コメントを使って説明するため、対話モードで示します</p>
+<pre data-id="adoctest"><code data-trim data-noescape class="pycon">&gt;&gt;&gt; number = 3
+&gt;&gt;&gt; fizzbuzz(number)
+'Fizz'</code></pre>
+<aside class="notes">
+To explain the 3A, I use interactive mode instead of using a docstring,</aside>
+<aside class="notes">
+docstringではなく対話モードを使って、3Aとは何かを示していきます</aside>
+</section>
+<section >
+<h3>Arrange</h3>
+<p>テストの <strong>準備</strong> （データの用意など）</p>
+<pre data-id="arrange"><code data-trim data-noescape class="pycon" data-line-numbers="1">&gt;&gt;&gt; number = 3
+&gt;&gt;&gt; fizzbuzz(number)
+'Fizz'</code></pre>
+<aside class="notes">
+'Arrange' is about setting up for the test.
+In this case, we just assign 3 to the variable number.</aside>
+<aside class="notes">
+Arrangeはテストの準備です。ここでは簡単ですが、number変数に3を代入しました</aside>
+</section>
+<section >
+<h3>Act</h3>
+<p>テスト対象の関数を <strong>実行</strong></p>
+<pre data-id="act"><code data-trim data-noescape class="pycon" data-line-numbers="2">&gt;&gt;&gt; number = 3
+&gt;&gt;&gt; fizzbuzz(number)
+'Fizz'</code></pre>
+<aside class="notes">
+'Act' refers to executing the function being tested.
+We pass number to the fizzbuzz function.</aside>
+<aside class="notes">
+テスト対象の関数の実行がAct
+numberをfizzbuzz関数に渡す</aside>
+</section>
+<section >
+<h3>Assert</h3>
+<p>実行結果が期待値と等しいかを <strong>検証</strong></p>
+<pre data-id="assert"><code data-trim data-noescape class="pycon" data-line-numbers="3">&gt;&gt;&gt; number = 3
+&gt;&gt;&gt; fizzbuzz(number)
+'Fizz'</code></pre>
+<aside class="notes">
+'Assert' is about verifying if the returned value matches the expected.
+When writing tests, I always keep these 3A in mind.</aside>
+<aside class="notes">
+返り値が期待値と一致するかを検証するのがAssert
+この3Aをテストを書くときに意識しています。</aside>
+</section>
+<section >
+<h3>第4のA：Annihilate 🏃‍♂️ (skip)</h3>
+<ul class="simple">
+<li><p>クリーンアップ</p></li>
+<li><p>『<a class="reference external" href="https://www.oreilly.co.jp/books/9784814400171/">ロバストPython</a>』第21章より</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>🥟doctest まとめ</h2>
+<ul class="simple">
+<li><p>対話モードの <strong>実行例を、docstringに書くだけ</strong>！</p></li>
+<li><p><strong class="command">python -m doctest</strong> にPythonファイルを渡してテスト実行</p></li>
+<li><p>テストコードの一歩目として非常にオススメです</p></li>
+</ul>
+<aside class="notes">
+To summarize doctest:
+You can test by writing the interactive mode's example in the docstring!
+The command is python -m doctest.
+If you're thinking of trying your hand at writing test codes, I believe doctest is the easiest place to start.</aside>
+<aside class="notes">
+doctestをまとめますと
+対話モードの実行例を、docstringに書くだけで、テストできちゃう！
+コマンドはpython -m doctestです。
+テストコードを書いてみようと思ったらdoctestが一番書きやすいと思います</aside>
+</section>
+<section>
+<section >
+<h2>閑話休題🍵 お前、誰よ 続</h2>
+<p>関わっているコミュニティの <strong>ポスター</strong> &#64;20F</p>
+<ul class="simple">
+<li><p>Start Python Club (#stapy)</p></li>
+<li><p>読書py</p></li>
+</ul>
+<aside class="notes">
+This is a slide for a break.（給水）
+I hope to see you at the poster session on the 20th floor!</aside>
+<aside class="notes">
+breakのスライドです（給水する）
+20Fのポスターセッションでもお会いしましょう！</aside>
+</section>
+<section >
+<h3>お品書き</h3>
+<ol class="arabic simple">
+<li><p>テストコードが書けるメリット</p></li>
+<li><p>doctestの使い方</p></li>
+<li><p><strong>pytestの使い方</strong></p></li>
+</ol>
+<p>テストコードをどう書くか Part 2/2</p>
+<aside class="notes">
+This is the final part.
+I will introduce another method called pytest.
+🙋‍♂️ Is anyone familiar with the name &quot;pytest&quot;?</aside>
+<aside class="notes">
+最後のパートです。
+テストコードをどう書くかに対して、pytestという別のやり方を紹介していきます。
+🙋‍♂️pytestという名称を聞いたことがある方？</aside>
+</section>
+</section>
+<section >
+<h2>pytest</h2>
+<ul class="simple">
+<li><p>サードパーティライブラリ <a class="reference external" href="https://pypi.org/project/pytest/">https://pypi.org/project/pytest/</a></p></li>
+<li><p><strong class="command">pip install pytest</strong></p></li>
+<li><p>ヒミツ：古くは py.test だった（<a class="reference external" href="https://github.com/pytest-dev/pytest/issues/1629">Issue#1629</a>）</p></li>
+</ul>
+<aside class="notes">
+pytest is a third-party library, and it might be fair to say it's the de facto standard.
+You can use it after installing it with pip.</aside>
+<aside class="notes">
+pytestはサードパーティライブラリで、デファクトスタンダードと言えるかもしれません。
+pip installして使っていきます。</aside>
+</section>
+<section>
+<section >
+<h2>pytestで書くテストは <strong>3</strong> ステップ</h2>
+<ol class="arabic simple">
+<li><p>テストコードのファイルを作る</p></li>
+<li><p>テストコードとして、関数を書く</p></li>
+<li><p>assert文</p></li>
+</ol>
+<aside class="notes">
+As for how to use pytest, there are three main steps.
+Let's go over each one.</aside>
+<aside class="notes">
+pytestをどう使うかですが、3つの手順をやればよいです。
+1つずつ見ていきましょう。</aside>
+</section>
+<section >
+<h3>Step1 pytestの規則に従った <strong>ファイル</strong></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test_</span></code> で始まるPythonファイルを作成</p></li>
+</ul>
+<pre data-id="step1-pytest"><code data-trim data-noescape class="txt">.
+├── fizzbuzz.py
+└── test_fizzbuzz.py</code></pre>
+<aside class="notes">
+First, create a file following the pytest naming conventions.
+Please create a Python file that starts with test_(underscore)</aside>
+<aside class="notes">
+まず、pytestの規則に従った名前のファイルを作ります。
+test_ で始まるPythonファイルを作ってください</aside>
+</section>
+<section >
+<h3>Step2 pytestの規則に従った <strong>関数</strong></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test_</span></code> で始まる関数を書く</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id47">
+<div class="code-block-caption"><span class="caption-text">test_fizzbuzz.py</span></div>
+<pre><code data-trim data-noescape class="python">def test_3の倍数のときはFizzを返す():
+    ...</code></pre>
+</div>
+<aside class="notes">
+Next, inside the file starting with test_(underscore), you'll write functions that also start with test_.
+This might be a personal preference, but I believe it's okay to use Japanese in the function names.</aside>
+<aside class="notes">
+次に test_ で始まるファイルの中に test_ で始まる関数を書きます。
+私の意見ですが、関数名は日本語を使ってもよいと思います</aside>
+</section>
+<section >
+<h3>Step3 Pythonの <strong>assert文</strong></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">assert</span> <span class="pre">式</span></code></p></li>
+<li><p>式が <code class="docutils literal notranslate"><span class="pre">True</span></code> と評価されるかを検証</p></li>
+</ul>
+<p><a class="reference external" href="https://docs.python.org/ja/3/reference/simple_stmts.html#the-assert-statement">https://docs.python.org/ja/3/reference/simple_stmts.html#the-assert-statement</a></p>
+<aside class="notes">
+The contents of these functions will make use of the assert statement.
+Place an expression after the assert keyword.
+It will verify if the expression is evaluated as True.
+Let's see an example.</aside>
+<aside class="notes">
+関数の内容ですが、assert文を使います。
+assertというキーワードの後に式を置くだけます。
+式が True と評価されるかを検証します。
+例を見てみましょう</aside>
+</section>
+<section >
+<h3>assert文の例 1/2</h3>
+<pre data-id="assert-1-2"><code data-trim data-noescape class="pycon">&gt;&gt;&gt; 1 == 1
+True
+&gt;&gt;&gt; assert 1 == 1</code></pre>
+<aside class="notes">
+If you set the expression as 1 equals 1, since it's True, nothing will be displayed.</aside>
+<aside class="notes">
+式が 1 イコール 1 と置くと、これはTrueなので何も表示されません。</aside>
+</section>
+<section >
+<h3>assert文の例 2/2</h3>
+<pre data-id="assert-2-2"><code data-trim data-noescape class="pycon">&gt;&gt;&gt; 1 == 2
+False
+&gt;&gt;&gt; assert 1 == 2
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AssertionError</code></pre>
+<aside class="notes">
+On the other hand, if you set the expression as 1 equals 2,
+it's evaluated as False, and an AssertionError will be raised.
+Using the above steps, you'll write tests with pytest.</aside>
+<aside class="notes">
+別の例で 1 イコール 2 という式はFalseと評価されるので、AssertionErrorが送出されます。
+以上の要素を使ってpytestのテストを書きます。</aside>
+</section>
+<section >
+<h3>3Aでとらえるpytest</h3>
+<div class="literal-block-wrapper docutils container" id="id48">
+<div class="code-block-caption"><span class="caption-text">test_fizzbuzz.py</span></div>
+<pre><code data-trim data-noescape class="python">def test_3の倍数のときはFizzを返す():
+    number = 3  # Arrange
+      # Act &amp; Assert (actual == expected)
+    assert fizzbuzz(number) == &quot;Fizz&quot;</code></pre>
+</div>
+<aside class="notes">
+Here's a test verifying that Fizz is returned for multiples of 3.
+We write the 3A within a function.
+There's a line for 'Arrange',
+and 'Act' and 'Assert' are combined into a single line.</aside>
+<aside class="notes">
+これは3の倍数のときにFizzが返るかを検証するテストです。
+1つの関数の中で3Aを行います。
+Arrangeの行があり、
+ActとAssertは1つの行にまとまっています。</aside>
+</section>
+<section >
+<h3>テスト実行 <strong class="command">pytest -v</strong></h3>
+<pre data-id="pytest-v"><code data-trim data-noescape class="default">.
+├── fizzbuzz.py
+└── test_fizzbuzz.py</code></pre>
+<pre data-id="pytest-v"><code data-trim data-noescape class="shell">$ pytest -v
+============================= test session starts ==============================
+
+collected 5 items
+
+============================== 5 passed in 0.01s ===============================</code></pre>
+<aside class="notes">
+Put the implementation file and the test file,
+then run the tests using the pytest -v command.
+In this case, all the tests have passed.</aside>
+<aside class="notes">
+fizzbuzzの実装のファイルとテストのファイルを配置し、pytest -v コマンドでテストを実行します。
+これはテストが全てpassしています</aside>
+</section>
+<section >
+<h3>failしたテスト（15でFizzを返した）</h3>
+<pre data-id="fail-15fizz"><code data-trim data-noescape class="shell">test_fizzbuzz.py::test_15の倍数のときはFizzBuzzを返す FAILED             [ 20%]
+
+=================================== FAILURES ===================================
+__________________________ test_15の倍数のときはFizzBuzzを返す ___________________________
+
+    def test_15の倍数のときはFizzBuzzを返す():
+&gt;       assert fizzbuzz(15) == &quot;FizzBuzz&quot;
+E       AssertionError: assert 'Fizz' == 'FizzBuzz'
+E         - FizzBuzz
+E         + Fizz</code></pre>
+<ul class="simple">
+<li><p>assert文だが、 <strong>なぜAssertionErrorかが分かりやすい</strong></p></li>
+</ul>
+<aside class="notes">
+Let's deliberately make one test fail.
+Isn't the output very clear? Thanks to pytest -v.
+About AssertionError, you can easily see where the issue lies, such as expecting FizzBuzz but the actual value is Fizz.</aside>
+<aside class="notes">
+試しに失敗させてみましょう。
+とてもわかりやすくないですか？ pytest -vのおかげです。
+AssertionErrorについても、期待値がFizzBuzzだが実際の値はFizzと、どこが間違っているか一目瞭然です。</aside>
+</section>
+<section >
+<h3>pytestは <strong>assert文を拡張</strong></h3>
+<ul class="simple">
+<li><p>テストコードに使うのはassert文だけと <strong>簡単</strong></p></li>
+<li><p>failしたテストの理由が <strong>分かりやすい</strong></p>
+<ul>
+<li><p>秘密は <em>pytestがassert文を書き換え</em> ている（<a class="reference external" href="https://docs.pytest.org/en/latest/how-to/writing_plugins.html#assertion-rewriting">assertion rewriting</a>）</p></li>
+</ul>
+</li>
+</ul>
+<aside class="notes">
+What brings such clarity?
+All we have to write are the assert statements.
+Behind the scenes, pytest works hard to provide very understandable reasons when tests fail.
+This is one of the features of pytest.</aside>
+<aside class="notes">
+なぜこんなことができるかというと
+人が書くのはassert文だけです。
+裏でpytestが頑張ってくれていて、failしたテストの理由がとてもわかりやすいです。
+pytestの特徴の1つです</aside>
+</section>
+<section >
+<h3>pytestで <strong>docstringの対話例も</strong> 実行できる🏃‍♂️</h3>
+<ul class="simple">
+<li><p><strong class="command">pytest --doctest-modules</strong></p></li>
+<li><p><a class="reference external" href="https://docs.pytest.org/en/stable/how-to/doctest.html">https://docs.pytest.org/en/stable/how-to/doctest.html</a></p></li>
+</ul>
+<aside class="notes">
+You can also run the interactive examples inside the docstring,
+so there's no need to rewrite tests you've created using doctest!</aside>
+<aside class="notes">
+docstring中の対話例も実行できるので、doctestで書いたテストを書き直す必要もないです！</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>tips (1/2) パラメタ化テスト</h2>
+<pre data-id="tips-1-2"><code data-trim data-noescape class="python">def test_3の倍数のときはFizzを返す():
+    ...</code></pre>
+<aside class="notes">
+As a tip, I'd like to introduce parameterized tests.
+We want to check if Fizz is returned for multiples of 3.</aside>
+<aside class="notes">
+tipsとしてパラメタ化テストを紹介します。
+3の倍数のときにFizzを返すテストですが</aside>
+</section>
+<section >
+<h3>3の倍数ならFizz</h3>
+<p><code class="docutils literal notranslate"><span class="pre">number</span></code> の <strong>取りうる値は複数</strong></p>
+<ul class="simple">
+<li><p>3</p></li>
+<li><p>6</p></li>
+<li><p>9</p></li>
+</ul>
+<aside class="notes">
+There are many values that are multiples of 3.
+Among these, let's say we want to test for the cases of 3 and 6.</aside>
+<aside class="notes">
+3の倍数の値は複数あります。
+その中で3と6のケースをテストするとします</aside>
+</section>
+<section >
+<h3>個別にテストの関数を書く？</h3>
+<pre data-id="id28"><code data-trim data-noescape class="python">def test_3の倍数のときはFizzを返す_3の場合():
+    ...
+
+def test_3の倍数のときはFizzを返す_6の場合():
+    ...</code></pre>
+<aside class="notes">
+Would you write separate tests for each?
+While you can, it's always nice to find a more efficient way.</aside>
+<aside class="notes">
+では個別にテストを書くのでしょうか？
+書いてもいいですが、楽はしたいですよね</aside>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.parametrize</span></code> を使おう</h3>
+<pre data-id="pytest-mark-parametrize"><code data-trim data-noescape class="python">&#64;pytest.mark.parametrize(&quot;number&quot;, [3, 6])
+def test_3の倍数のときはFizzを返す(number):
+    assert fizzbuzz(number) == &quot;Fizz&quot;
+</code></pre>
+<aside class="notes">
+To streamline the process, there's a decorator called pytest.mark.parametrize.</aside>
+<aside class="notes">
+楽をするテクニックとして pytest.mark.parametrize というデコレータがあります</aside>
+</section>
+<section >
+<h3>1つの関数、複数のテストケース</h3>
+<pre data-id="id29"><code data-trim data-noescape class="shell">$ pytest -v
+
+test_fizzbuzz.py::test_3の倍数のときはFizzを返す[3] PASSED               [ 40%]
+test_fizzbuzz.py::test_3の倍数のときはFizzを返す[6] PASSED               [ 60%]</code></pre>
+<p><strong>個別に書いたのと同じ</strong> 結果が得られる</p>
+<aside class="notes">
+By using this decorator, a single function is treated as if it has multiple test cases.
+This means, for this example, there are two test cases, one for 3 and another for 6.
+The outcome is the same as if you had written them separately.</aside>
+<aside class="notes">
+このデコレータを使うと、1つの関数だがテストケースとしては複数あるとして扱われます。
+3のケースと6のケースと2個分テストケースがあるということです。
+個別に書いたのと同じ結果です</aside>
+</section>
+</section>
+<section>
+<section >
+<h2>tips (2/2) モック</h2>
+<p>やや発展的話題（いまは分からなかったとしても大丈夫）</p>
+<aside class="notes">
+Another tip, which might be advanced and may feel difficult, is the concept of &quot;mock&quot;.</aside>
+<aside class="notes">
+もう1つのtipsとしては、発展的なので難しかった〜としても大丈夫ですが、
+モックという概念があります</aside>
+</section>
+<section >
+<h3>複数の処理を呼び出す実装のテストコードを書く</h3>
+<ul class="simple">
+<li><p>テストを書きたい関数 <code class="docutils literal notranslate"><span class="pre">foo</span></code></p></li>
+<li><p>処理A -&gt; B -&gt; Cの順で呼び出し</p></li>
+</ul>
+<pre data-id="id30"><code data-trim data-noescape class="python">def foo():
+    a_func(42)
+    b_func(&quot;ham&quot;, &quot;egg&quot;)
+    c_func()
+</code></pre>
+<aside class="notes">
+How would you test a function that sequentially calls other functions?</aside>
+<aside class="notes">
+ある関数の中で別の関数を順番に呼び出す場合はどうテストしましょう？</aside>
+</section>
+<section >
+<h3>どうテストコードを書くか？</h3>
+<ul class="simple">
+<li><p>推し：呼び出される処理を <strong>ニセモノ（＝モック）に置き換え</strong> てテスト</p></li>
+<li><p>全ての処理を通したテストも書ける</p></li>
+</ul>
+<aside class="notes">
+In my opinion, you would replace the called processes with fakes when testing.
+These fakes are called &quot;mocks&quot;.</aside>
+<aside class="notes">
+私の意見としては、呼び出される処理を偽物に置き換えてテストします。
+この偽物がモックです</aside>
+</section>
+<section >
+<h3>モックを使ったテスト</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">foo</span></code> 関数で呼び出す各処理をテストにおいて <em>何もしない</em> （＝モック）に置き換える</p></li>
+<li><p><strong>モックは呼び出され方を記憶</strong> している</p></li>
+</ul>
+<aside class="notes">
+Mocks can be called, but they don't execute the actual functions.
+They remember how they were called.</aside>
+<aside class="notes">
+モックは呼び出せるが、本物の関数の処理はしません。
+どういうふうに呼び出されたかを覚えています</aside>
+</section>
+<section >
+<h3>モックを使ったテストの例</h3>
+<pre data-id="id33"><code data-trim data-noescape class="python">&#64;patch(&quot;test_with_mock.c_func&quot;)
+&#64;patch(&quot;test_with_mock.b_func&quot;)
+&#64;patch(&quot;test_with_mock.a_func&quot;)
+def test_foo(a_func, b_func, c_func):
+    foo()
+
+    a_func.assert_called_once_with(42)
+    b_func.assert_called_once_with(&quot;ham&quot;, &quot;egg&quot;)
+    c_func.assert_called_once_with()
+</code></pre>
+<ul class="simple">
+<li><p>処理の <strong>呼び出しを検証</strong></p></li>
+<li><p>処理A,B,C自体はいずれも別途、徹底的に検証</p></li>
+</ul>
+<aside class="notes">
+While it might be overwhelming when you first encounter it,
+the function a_func is mocked and the actual a_func isn't executed.
+The test is only verifying that a_func is called with the argument 42(forty-two).
+Additionally, each function that has been mocked is thoroughly verified within its respective test code.</aside>
+<aside class="notes">
+いきなり目にすると圧倒されるかもしれませんが、
+a_funcはモックで実際にa_func関数は実行されません。
+ただこの関数が42を引数に呼び出されることだけを検証しています。
+また、モックにした各関数はそれぞれのテストコードの中で徹底的に検証しています</aside>
+</section>
+<section >
+<h3>モックの使い所</h3>
+<ul class="simple">
+<li><p>時間のかかる関数（テストの実行時間が伸びる）</p></li>
+<li><p>外部と通信する関数（通信エラーでテストが落ちうる）</p></li>
+<li><p>出力が変わる関数（例：random）</p></li>
+</ul>
+<aside class="notes">
+From experience, I tend to use mocks for functions that take a long time,
+functions that communicate externally, and functions where the output varies.</aside>
+<aside class="notes">
+経験上モックを積極的に使いたいのは、時間のかかる関数、外部と通信する関数、出力が変わる関数です。</aside>
+</section>
+</section>
+<section >
+<h2>🥟pytest まとめ</h2>
+<ul class="simple">
+<li><p><strong>test_</strong> で始まるファイル・ <strong>test_</strong> で始まる関数・ <strong>assert文</strong></p></li>
+<li><p>tips: パラメタ化 &amp; モック</p></li>
+<li><p>テストに慣れてきたらぜひ試してみてください！</p></li>
+</ul>
+<aside class="notes">
+To summarize pytest,
+You write functions starting with test_ inside files that also start with test_,
+and you use the assert statement.
+two tips: parametrize and mock.
+Once you get familiar with testing, give pytest a try. I think you'll find it easy to write.</aside>
+<aside class="notes">
+pytestをまとめると
+test_で始まるファイルにtest_で始まる関数を書いて、中でassert文を使います。
+テストに慣れてきたら試してみてください。書きやすいと思います</aside>
+</section>
+<section>
+<section >
+<h2>まとめ🌯 練習してテストを書けるようになるんだ</h2>
+<ul class="simple">
+<li><p>テストを書くと、動作する？ 間違えてない？という不安は <strong>退屈</strong> に変わる</p></li>
+<li><p>関数の呼び出しと返り値を <strong>docstringに書くだけ</strong> で、doctestでテストできる！（一歩目）</p></li>
+<li><p>（拡張された）assert文をはじめ、 <strong>テストコードが書きやすいpytest</strong> もぜひ！</p></li>
+</ul>
+<aside class="notes">
+To summarize:
+Writing tests transforms the fear of &quot;Is it working? Did I make a mistake?&quot; into boredom.
+I've introduced two methods:
+The first, doctest, involves simply writing the function call and its return value in the docstring.
+The second is pytest, which makes writing test code easier.
+I encourage you to try out both of these approaches.</aside>
+<aside class="notes">
+まとめます。
+テストを書くと、動作する？ 間違えてない？という不安は **退屈** に変わる
+やり方を2つ紹介しました。
+関数の呼び出しと返り値をdocstringに書くだけのdoctest、
+もう1個がテストコードが書きやすくなるpytest。
+これらをぜひ使ってみてください。</aside>
+</section>
+<section >
+<h3>pytestはまだまだ序の口🏃‍♂️ (skip)</h3>
+<ul class="simple">
+<li><p>パラメタ化テストを紹介</p></li>
+<li><p><em>フィクスチャ</em></p></li>
+<li><p>『<a class="reference external" href="https://www.shoeisha.co.jp/book/detail/9784798177458">テスト駆動Python</a>』</p></li>
+</ul>
+</section>
+<section >
+<h3>ご清聴ありがとうございました</h3>
+<p>好きとか嫌いとかはいい、練習してテストを書けるようになるんだ</p>
+<p>Practice, practice, practice!!!</p>
+<aside class="notes">
+Thank you for your listening</aside>
+</section>
+</section>
+<section >
+<h2>References</h2>
+<ul>
+<li><p>『<a class="reference external" href="https://www.ohmsha.co.jp/book/9784274217883/">テスト駆動開発</a>』（Kent Beck）</p>
+<blockquote>
+<div><p>テストは不安を退屈に変える賢者の石だ。（第25章）</p>
+</div></blockquote>
+</li>
+<li><p>『<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-13234-7">ちょうぜつソフトウェア設計入門</a>』（第6章）</p></li>
+</ul>
+</section>
+<section >
+<h2>Appendix</h2>
+</section>
+<section >
+<h2>お前、誰よ（詳細版）</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pypi.org/project/sphinx-new-tab-link/">sphinx-new-tab-link</a> ・ <a class="reference external" href="https://github.com/ftnext/hayasaka">hayasaka</a> などを開発（感想・要望・スター待ってます！）</p></li>
+<li><p>毎日1エントリ継続中 <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/">https://nikkie-ftnext.hatenablog.com/</a></p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>補足コンテンツ</h2>
+</section>
+<section >
+<h3>プロジェクトにおけるpytest</h3>
+<ul class="simple">
+<li><p>テストコードは tests ディレクトリの下にまとめるのが一般的</p></li>
+</ul>
+<pre data-id="id40"><code data-trim data-noescape class="txt">.
+├── hayasaka
+└── tests
+    ├── __init__.py
+    └── test_core.py</code></pre>
+<p><a class="reference external" href="https://github.com/ftnext/hayasaka/tree/0.2.0">https://github.com/ftnext/hayasaka/tree/0.2.0</a></p>
+</section>
+<section >
+<h3>クラスも書けるなら、pytestで書くテストを <strong>構造化</strong> できる</h3>
+<pre data-id="id41"><code data-trim data-noescape class="python">class Test_FizzBuzz数列と変換規則を扱うFizzBuzzクラス:
+    class Test_convertメソッドは数を文字列に変換する:
+        class Test_3の倍数のときは数の代わりにFizzに変換する:
+            def test_3を渡すと文字列Fizzを返す(self, fizzBuzz):
+                assert &quot;Fizz&quot; == fizzBuzz.convert(3)</code></pre>
+<p><a class="reference external" href="https://github.com/ftnext/tddbc-fizzbuzz/blob/8ea856c4c59780837410a44a858368047269f3c8/tests/test_fizzbuzz.py#L11-L15">https://github.com/ftnext/tddbc-fizzbuzz/blob/8ea856c4c59780837410a44a858368047269f3c8/tests/test_fizzbuzz.py#L11-L15</a></p>
+</section>
+<section >
+<h3>15分版では割愛した、標準ライブラリ unittest</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TestCase</span></code> クラスを継承</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">assertXXX</span></code> メソッドでAssert</p></li>
+<li><p>モックは <a class="reference external" href="https://docs.python.org/ja/3/library/unittest.mock.html">unittest.mock</a> から</p></li>
+<li><p>拙ブログ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/pycon-apac-2023-practice-test-talk-extra-awesome-unittest">unittest おすすめリンク集</a></p></li>
+</ul>
+</section>
+<section >
+<h3>テストを書いているあなたへ</h3>
+<p>拙ブログ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/pycon-apac-2023-practice-test-talk-extra-test-topics-commentary">テストを書くようになったあなたと語りたいトピック集</a></p>
+</section>
+</section>
+<section>
+<section >
+<h2>タイトルの秘密</h2>
+<ul class="simple">
+<li><p>Twitterで見かけた <a class="reference external" href="https://dic.nicovideo.jp/a/%E3%81%A1%E3%82%88%E7%88%B6">ちよ父</a> の画像</p>
+<ul>
+<li><p>元は「<em>トマトを食べるんだ</em>」🍅</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>亜種</h3>
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">好きとか嫌いとかはいい。<br>テストを書くんだ<br><br>の亜種だ！ <a href="https://t.co/f17s6awgNB">https://t.co/f17s6awgNB</a></p>&mdash; nikkie にっきー (@ftnext) <a href="https://twitter.com/ftnext/status/1652328636970844161?ref_src=twsrc%5Etfw">April 29, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></section>
+</section>
+<section >
+<h2>EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

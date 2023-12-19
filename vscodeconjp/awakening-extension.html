@@ -1,0 +1,1162 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>Awakening Extension (拡張開発はじまるよ🔰)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/vscodeconjp/awakening-extension.html">
+    <meta property="og:title" content="Awakening Extension (拡張開発はじまるよ🔰)">
+    <meta property="og:description" content="2023/01 VS Code Conference Japan 2022 - 2023 15分トークスライド">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/vscodeconjp-extension.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>Awakening Extension (拡張開発はじまるよ🔰)</h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VS Code Conference Japan 2022 - 2023</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2023/01/21 nikkie 14:35-</p>
+</dd>
+</dl>
+</section>
+<section >
+<h2>Thank you VSCodeConJP❤️</h2>
+<ul class="simple">
+<li><p>㊗️ハイブリッド開催🎉</p></li>
+<li><p>15分2本発表の機会をありがとうございます</p></li>
+<li><p>2021開催がなければ、この発表は実現していません！</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>拡張開発はじまるよ🔰</h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line">過去のVS Code Conferenceのハンズオンテキストの内容を改造し、その拡張機能を公開するまでの</div>
+<div class="line">ありのまま（成功も失敗も両方）の記録である。</div>
+</div>
+</div></blockquote>
+<p><a class="reference external" href="https://vscodejp.github.io/conference/2022-2023/ja/">イベントサイト</a> より</p>
+</section>
+<section >
+<h3>拡張開発の流れを追体験</h3>
+<ul class="simple">
+<li><p>VS Code拡張開発の経験がない方（<em>過去の私</em> 含む）向け</p></li>
+<li><p><strong>開発〜公開までの流れ</strong>・全体感を共有</p></li>
+<li><p>「拡張開発やってみよう」と思っていただけたら🙌</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>お前、誰よ（知ってる）</h2>
+<ul class="simple">
+<li><p>わわわ、わたし、にっきー</p></li>
+<li><p><span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext">&#64;ftnext</a> ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext">&#64;ftnext</a> ／ <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/">はてなブログ</a></p></li>
+<li><p>Python大好き（<strong>TypeScriptほぼ経験無し</strong>）</p></li>
+<li><p>株式会社ユーザベースでデータサイエンティスト（自然言語処理、XP）</p></li>
+</ul>
+</section>
+<section >
+<h3>突然の「VS Code拡張を作りたい！」</h3>
+<ul class="simple">
+<li><p>それは2022年9月のこと</p></li>
+<li><p>作るために必要な <strong>情報には見当</strong> がついていた</p></li>
+<li><p>「うまくいけば作れるんじゃないか」と拡張開発に体当たり</p></li>
+</ul>
+</section>
+<section >
+<h3>自作した <strong>TOKIMEKI editing</strong></h3>
+<p><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-editing">https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-editing</a></p>
+<p>砕けなかった🙌</p>
+</section>
+<section >
+<h3>環境情報</h3>
+<ul class="simple">
+<li><p>VS Code 1.74.3</p></li>
+<li><p>Node.js v16.14.2</p></li>
+<li><p>npm 8.5.0</p></li>
+</ul>
+<pre data-id="id4"><code data-trim data-noescape class="json">    &quot;&#64;vscode/vsce&quot;: &quot;^2.16.0&quot;,
+    &quot;generator-code&quot;: &quot;^1.7.2&quot;,
+    &quot;yo&quot;: &quot;^4.3.1&quot;
+</code></pre>
+</section>
+<section >
+<h3>経験のない拡張開発の旅路</h3>
+<ol class="arabic simple">
+<li><p>テキストをベースに写経 &amp; 改造（メインパート）</p></li>
+<li><p>拡張のE2Eテストを書く</p></li>
+<li><p>拡張を公開</p></li>
+</ol>
+</section>
+</section>
+<section>
+<section >
+<h2>Part 1. テキストを写経 &amp; 改造しよう</h2>
+<ol class="arabic simple">
+<li><p><strong>テキストをベースに写経 &amp; 改造</strong> （メインパート）</p></li>
+<li><p>拡張のE2Eテストを書く</p></li>
+<li><p>拡張を公開</p></li>
+</ol>
+</section>
+<section >
+<h3>知っていたテキスト</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://vscodejp.github.io/conf2021/ja/">VSCode Conference Japan 2021</a> (2021/11) ハンズオン</p></li>
+<li><p>VS Codeの拡張機能を作ろう❗ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension">vscodejp/handson-hello-vscode-extension</a></p></li>
+<li><p>LSP（Language Server Protocol）を使った拡張を作る</p></li>
+</ul>
+</section>
+<section >
+<h3>拡張機能の基礎を学びたい人（<strong>beginner</strong>）向け</h3>
+<ul class="simple">
+<li><p>Hello World（<strong>簡単な拡張</strong> を作って起動する）</p></li>
+<li><p><em>コードレンズ</em> のボタンから <strong>ドキュメントを編集</strong> する拡張を作る</p></li>
+</ul>
+<p>経験のない試みなので、ハードルを下げた（これでもできるか分からなかった）</p>
+</section>
+<section >
+<h3>時を戻そう（当時のnikkieに助言するなら）</h3>
+<ul class="simple">
+<li><p><strong>beginner向けテキスト</strong> を改造する（変更なし）</p></li>
+<li><p>英語のドキュメントにあたったが、拡張開発までカバーした書籍（参考文献参照）より早道（<strong>日本語で多くの情報を得る</strong>）</p></li>
+</ul>
+</section>
+<section >
+<h3>テキストを写経 &amp; 改造</h3>
+<ol class="arabic simple">
+<li><p>写経：Hello Worldを動かす</p></li>
+<li><p>写経：ドキュメントを編集する拡張を動かす</p></li>
+<li><p>ドキュメントの編集を自分がやりたい編集の仕方に改造する</p></li>
+</ol>
+<aside class="notes">
+ref: https://scrapbox.io/nikkie-memos/%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E3%81%AE%E5%9F%BA%E7%A4%8E%E3%82%92%E5%AD%A6%E3%81%B3%E3%81%9F%E3%81%84%E4%BA%BA%E5%90%91%E3%81%91</aside>
+</section>
+</section>
+<section >
+<h2>1-1 Hello World</h2>
+<ol class="arabic simple">
+<li><p><strong>写経：Hello Worldを動かす</strong></p></li>
+<li><p>写経：ドキュメントを編集する拡張を動かす</p></li>
+<li><p>ドキュメントの編集を自分がやりたい編集の仕方に改造する</p></li>
+</ol>
+</section>
+<section>
+<section >
+<h2>Hello Worldを動かす</h2>
+<ul class="simple">
+<li><p><strong>開発環境構築</strong></p>
+<ul>
+<li><p>ツールのセットアップ</p></li>
+<li><p>scaffold（拡張開発に必要なファイル一式の生成）</p></li>
+</ul>
+</li>
+<li><p>開発中の拡張を動かす</p></li>
+</ul>
+</section>
+<section >
+<h3>インストールしたもの</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nodejs.org/">Node.js</a> のLTSバージョン</p>
+<ul>
+<li><p>ハンズオンテキストでは16.13.0</p></li>
+</ul>
+</li>
+<li><p>VS Codeに <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint">ESLint拡張機能</a></p>
+<ul>
+<li><p>拡張開発中のバグ混入を防ぐ</p></li>
+</ul>
+</li>
+</ul>
+<p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/00_prepare.md">事前準備 必要な開発環境を整えよう</a></p>
+</section>
+<section >
+<h3><strong class="command">npm install yo generator-code</strong></h3>
+<dl class="field-list simple">
+<dt class="field-odd">yo<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://yeoman.io/">Yeoman</a> scaffold＝足場（テンプレートに沿ったファイル群）を作ってくれるツール</p>
+</dd>
+<dt class="field-even">generator-code<span class="colon">:</span></dt>
+<dd class="field-even"><p>YeomanのVS Code拡張向けテンプレート</p>
+</dd>
+</dl>
+<p>ref: <a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/00_prepare.md">事前準備 必要な開発環境を整えよう</a></p>
+</section>
+<section >
+<h3><strong class="command">yo code</strong> でscaffoldするんだYO</h3>
+<p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext/2023-slides/tree/main/samplecode/awakening-extension/hello-vscode">hello-vscode</a></p>
+<aside class="notes">
+https://tree.nathanfriend.io/
+hello-vscode
+ .vscode/
+ src/
+  extension.ts
+ package.json
+ package-lock.json</aside>
+<pre data-id="yo-code-scaffoldyo"><code data-trim data-noescape class="none">hello-vscode/
+├── .vscode/
+├── src/
+│   └── extension.ts
+├── package.json
+└── package-lock.json</code></pre>
+<p>上記は抜粋版。 <a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/01_init.md">Hello Worldを作成しよう</a> に詳細な説明あります</p>
+</section>
+</section>
+<section>
+<section >
+<h2>Hello Worldを動かす</h2>
+<ul class="simple">
+<li><p>開発環境構築✅</p></li>
+<li><p><strong>開発中の拡張を動かす</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>Hello World拡張がscaffoldされている</h3>
+<ul class="simple">
+<li><p><strong class="command">yo code</strong> しただけ。 <strong>実装は不要</strong></p></li>
+<li><p>VS Codeで <kbd class="kbd docutils literal notranslate">F5</kbd> で拡張をビルド（新しいVS CodeのWindow）</p></li>
+</ul>
+</section>
+<section >
+<h3>Hello World!（デモ）</h3>
+<ul class="simple">
+<li><p><em>コマンド</em> パレット（<kbd class="kbd docutils literal notranslate">F1</kbd>）を開いて</p></li>
+<li><p>「Hello World」コマンドを呼び出す</p></li>
+</ul>
+<p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/02_build.md">Hello Worldを起動しよう</a></p>
+</section>
+<section >
+<h3>コマンド実行結果、右下から来るぞ！</h3>
+<figure class="align-default">
+<img alt="../_images/01extension-hello-world.png" src="../_images/01extension-hello-world.png" />
+</figure>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">src/extension.ts</span></code></h3>
+<pre data-id="src-extension-ts"><code data-trim data-noescape class="ts" data-line-numbers="4">import * as vscode from 'vscode';
+export function activate(context: vscode.ExtensionContext) {
+	let disposable = vscode.commands.registerCommand('hello-vscode.helloWorld', () =&gt; {
+		vscode.window.showInformationMessage('Hello World from Hello VSCode!');
+	});
+export function deactivate() {}
+</code></pre>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">showInformationMessage</span></code> でVS CodeのWindow右下にメッセージが出た</p></li>
+</ul>
+<p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/02_build.md">Hello Worldを起動しよう</a></p>
+</section>
+<section >
+<h3>メッセージの内容を変えてみる</h3>
+<ul class="simple">
+<li><p><strong>ソースを編集</strong> したら <kbd class="kbd compound docutils literal notranslate"><kbd class="kbd docutils literal notranslate">Shift</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">Command</kbd> <kbd class="kbd docutils literal notranslate"></kbd>+<kbd class="kbd docutils literal notranslate"></kbd> <kbd class="kbd docutils literal notranslate">F5</kbd></kbd> でRestart</p></li>
+<li><p>コマンドパレットから「Hello World」コマンドを呼び出すと、メッセージが変わっている！</p></li>
+<li><p>「拡張開発できている！！」🙌</p></li>
+</ul>
+</section>
+<section >
+<h3>Hello Worldではユーザが呼び出せる <em>コマンド</em> を追加した</h3>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">package.json</span></code></p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">src/extension.ts</span></code></p></li>
+</ul>
+<p>ユーザが使えるコマンドの秘密は、この2つのファイル</p>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">package.json</span></code> にコマンドのID 🏃‍♂️== <strong>skip</strong></h3>
+<p><code class="docutils literal notranslate"><span class="pre">hello-vscode.helloWorld</span></code> という識別子のコマンドを宣言</p>
+<pre data-id="package-json-id-skip"><code data-trim data-noescape class="json">  &quot;contributes&quot;: {
+    &quot;commands&quot;: [
+      {
+        &quot;command&quot;: &quot;hello-vscode.helloWorld&quot;,
+        &quot;title&quot;: &quot;Hello World&quot;
+      }
+    ]
+  },
+</code></pre>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">src/extension.ts</span></code> にコマンドの実装 🏃‍♂️</h3>
+<p><code class="docutils literal notranslate"><span class="pre">commands.registerCommand</span></code> で <code class="docutils literal notranslate"><span class="pre">hello-vscode.helloWorld</span></code> コマンドを実装と紐付けた</p>
+<pre data-id="id18"><code data-trim data-noescape class="ts" data-line-numbers="3,4,5">import * as vscode from 'vscode';
+export function activate(context: vscode.ExtensionContext) {
+	let disposable = vscode.commands.registerCommand('hello-vscode.helloWorld', () =&gt; {
+		vscode.window.showInformationMessage('Hello World from Hello VSCode!');
+	});
+export function deactivate() {}
+</code></pre>
+</section>
+</section>
+<section >
+<h2>🥟Hello World 小まとめ</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/00_prepare.md">事前準備 必要な開発環境を整えよう</a> に沿って環境構築</p></li>
+<li><p>Yeomanでscaffold（拡張開発に必要なファイル一式を作成）</p></li>
+<li><p>Hello World拡張を動かせている！</p></li>
+</ul>
+</section>
+<section >
+<h2>1-2 マークダウンを編集する拡張</h2>
+<ol class="arabic simple">
+<li><p>写経：Hello Worldを動かす</p></li>
+<li><p><strong>写経：ドキュメントを編集する拡張を動かす</strong></p></li>
+<li><p>ドキュメントの編集を自分がやりたい編集の仕方に改造する</p></li>
+</ol>
+</section>
+<section>
+<section >
+<h2>やりたいことは、日付の挿入</h2>
+<ul class="simple">
+<li><p>マークダウンファイル</p></li>
+<li><p><strong>見出しに日付を挿入</strong> したい</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id78">
+<div class="code-block-caption"><span class="caption-text">before</span></div>
+<pre><code data-trim data-noescape class="markdown">## VSCodeConJP</code></pre>
+</div>
+<div class="literal-block-wrapper docutils container" id="id79">
+<div class="code-block-caption"><span class="caption-text">after</span></div>
+<pre><code data-trim data-noescape class="markdown">## 2023/01/21 VSCodeConJP</code></pre>
+</div>
+</section>
+<section >
+<h3>日付挿入ロジック</h3>
+<ul class="simple">
+<li><p>1つ以上の <code class="docutils literal notranslate"><span class="pre">#</span></code> を「同じ数の <code class="docutils literal notranslate"><span class="pre">#</span></code> とその日の日付」で <strong>置き換え</strong> る</p></li>
+<li><p>例 <code class="docutils literal notranslate"><span class="pre">##</span> <span class="pre">VSCodeConJP</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">##(空白)</span></code> ➡️ <code class="docutils literal notranslate"><span class="pre">##</span> <span class="pre">2023/01/21(空白)</span></code></p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="id23"><code data-trim data-noescape class="diff">- ## VSCodeConJP
++ ## 2023/01/21 VSCodeConJP</code></pre>
+</section>
+<section >
+<h3>ハンズオンにおける実装：CodeLens（コードレンズ）</h3>
+<p><a class="reference external" href="https://code.visualstudio.com/api/language-extensions/programmatic-language-features#codelens-show-actionable-context-information-within-source-code">CodeLens - Show Actionable Context Information Within Source Code</a></p>
+<p><em>ソースコード中に表示される、ユーザがアクションできるリンク</em></p>
+</section>
+<section >
+<h3>CodeLensを使った日付挿入（デモ）</h3>
+<figure class="align-default">
+<img alt="../_images/01extension-add-date-codelens-example.png" src="../_images/01extension-add-date-codelens-example.png" />
+</figure>
+</section>
+<section >
+<h3>CodeLensを使った日付挿入 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><span class="guilabel">add date</span> がCodeLens。ユーザはクリックできる</p></li>
+<li><p><strong>クリックすると日付挿入</strong>： <code class="docutils literal notranslate"><span class="pre">##(空白)</span></code> を <code class="docutils literal notranslate"><span class="pre">##</span> <span class="pre">2023/01/21(空白)</span></code> に置き換え</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>CodeLensを使った日付挿入を実現する要素</h2>
+<ul class="simple">
+<li><p>CodeLens</p></li>
+<li><p>コマンド</p>
+<ul>
+<li><p>ユーザがCodeLensをクリックしたら、<strong>コマンドが呼び出され</strong>、日付挿入される</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>ファイルにCodeLensを用意するには</h3>
+<ul class="simple">
+<li><p>今回はマークダウンファイル中にCodeLensを設定する</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vscode.CodeLensProvider</span></code></p>
+<ul>
+<li><p>実装して独自の <code class="docutils literal notranslate"><span class="pre">CodeLensProvider</span></code> クラスを定義</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">CodeLensProvider</span></code> で複数のCodeLensを作る</h3>
+<ul class="simple">
+<li><p>CodeLens1つ1つは「何行目の何文字目から何文字目まで」（<strong>range</strong>）に作られる</p></li>
+<li><p>rangeを求めるのに正規表現を使う（後述）</p></li>
+</ul>
+</section>
+<section >
+<h3>マークダウンの見出しの行を <strong>正規表現</strong> で見つける</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/^#+\s/g</span></code> と一致するrange（すべて）にCodeLensを作成</p></li>
+<li><p>例：1行目が <code class="docutils literal notranslate"><span class="pre">##</span> <span class="pre">VSCodeConJP</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">##(空白)</span></code> にCodeLensを作る（<span class="guilabel">add date</span> というリンク）</p></li>
+</ul>
+</li>
+</ul>
+<aside class="notes">
+正規表現が^から始まるので、マークダウンファイル1つに1個あるかないか</aside>
+<aside class="notes">
+1行目以外はCodeLensが作られない実装</aside>
+</section>
+<section >
+<h3>コマンドを呼び出すようにCodeLensを作成</h3>
+<div class="literal-block-wrapper docutils container" id="id80">
+<div class="code-block-caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">provideCodeLenses</span></code> メソッド（<code class="docutils literal notranslate"><span class="pre">CodeLensProvider</span></code> クラス）</span></div>
+<pre><code data-trim data-noescape class="ts">        codeLenses.push(
+          new vscode.CodeLens(range, {
+            title: &quot;add date&quot;,
+            tooltip: &quot;add date&quot;,
+            command: &quot;markdown-date.addDate&quot;,
+            arguments: [range],
+          })
+        );
+</code></pre>
+</div>
+<pre data-id="id29"><code data-trim data-noescape class="ts">return codeLenses;</code></pre>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">markdown-date.addDate</span></code> コマンド</h3>
+<pre data-id="markdown-date-adddate"><code data-trim data-noescape class="ts">commands.registerCommand(&quot;markdown-date.addDate&quot;, (range: Range) =&gt; {
+  if (vscode.window.activeTextEditor) {
+    // ## VSCodeConJP の場合、textが「## 」
+    const text = vscode.window.activeTextEditor.document.getText(range);
+
+    const today = dayjs().format(&quot;YYYY-MM-DD&quot;);
+
+    vscode.window.activeTextEditor.edit((editBuilder) =&gt; {
+      // ## VSCodeConJP の場合、「## 」を表すrangeを「## 2023/01/21 」で置き換える
+      editBuilder.replace(range, text + today + &quot; &quot;);
+    });
+  }
+});</code></pre>
+</section>
+<section >
+<h3>この拡張が機能するのはマークダウンだけに設定 🏃‍♂️</h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Markdown を開いたときに拡張機能が起動するようにする</p></li>
+<li><p>拡張機能が起動したときに CodeLensProvider を起動する</p></li>
+</ol>
+</div></blockquote>
+<p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/04_edit.md">ドキュメントを編集しよう</a></p>
+</section>
+<section >
+<h3>Markdown を開いたときに拡張機能が起動 🏃‍♂️</h3>
+<blockquote>
+<div><p>拡張機能が起動するタイミングを、対象の言語 ID のファイルを開いたときにまで遅らせる</p>
+</div></blockquote>
+<pre data-id="markdown"><code data-trim data-noescape class="json">  &quot;activationEvents&quot;: [
+    &quot;onLanguage:markdown&quot;
+  ],
+</code></pre>
+</section>
+<section >
+<h3>拡張機能が起動したときに CodeLensProvider を起動 🏃‍♂️</h3>
+<pre data-id="codelensprovider"><code data-trim data-noescape class="ts" data-line-numbers="4,5,6,7">export function activate(context: ExtensionContext) {
+  const codelensProvider = new CodelensProvider();
+
+  let disposable = languages.registerCodeLensProvider(
+    { language: &quot;markdown&quot; },
+    codelensProvider
+  );
+  disposables.push(disposable);
+}</code></pre>
+</section>
+</section>
+<section>
+<section >
+<h2>🥟マークダウンを編集する拡張 小まとめ</h2>
+<ul class="simple">
+<li><p>1行目の見出しに日付を挿入できるようにしたい</p></li>
+<li><p>CodeLensと、CodeLensクリックでコマンド呼び出し</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vscode.CodeLensProvider</span></code> を実装（正規表現にマッチしたrangeに <code class="docutils literal notranslate"><span class="pre">CodeLens</span></code> を作る）</p></li>
+</ul>
+</section>
+<section >
+<h3>テキストの実装をもっと詳しく知りたい方向け 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-create-codelens-with-regex">VS Code拡張ハンズオン基礎編のテキストの中の、正規表現を使ってCodeLensを設定する実装を理解する</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-provide-codelens-with-vscode-api">VS Code拡張ハンズオン基礎編のテキストの中の、VSCode APIを駆使してドキュメントに対してCodeLensを作成する実装を理解する</a></p></li>
+</ul>
+</section>
+<section >
+<h3>IMO：VS Codeの操作、内部的にはすべてはコマンド 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>Hello Worldコマンド（ユーザが <strong>コマンドパレット</strong> から呼び出せる）</p></li>
+<li><p>CodeLensでマークダウン編集（<strong>コマンド</strong> を呼び出して編集を実現）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>1-3 マークダウン編集ロジックを改造</h2>
+<ol class="arabic simple">
+<li><p>写経：Hello Worldを動かす</p></li>
+<li><p>写経：ドキュメントを編集する拡張を動かす</p></li>
+<li><p><strong>ドキュメントの編集を自分がやりたい編集の仕方に改造する</strong></p></li>
+</ol>
+</section>
+<section >
+<h3>実は <strong>無限</strong> に日付を挿入できる</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">##</span> <span class="pre">VSCodeConJP</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">##</span> <span class="pre">2023/01/21</span> <span class="pre">VSCodeConJP</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">##(空白)</span></code> の部分にCodeLensが作成される</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">##</span> <span class="pre">2023/01/21</span> <span class="pre">2023/01/21</span> <span class="pre">VSCodeConJP</span></code></p></li>
+</ul>
+</section>
+<section >
+<h3>改造案を着想</h3>
+<ul class="simple">
+<li><p>見出しに限らず、特定の文字列の後ろにemojiを挿入できるのでは！？</p></li>
+<li><p>文字列「歩夢」の後ろに「🎀」を挿入（「歩夢」を「歩夢🎀」で置換）</p></li>
+<li><p>歩夢 ➡️ 歩夢🎀 ➡️ 歩夢🎀🎀 ➡️ 歩夢🎀🎀🎀 🤩</p></li>
+</ul>
+</section>
+<section >
+<h3>これを実装し、公開したのが</h3>
+<p><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=everlasting-diary.tokimeki-editing">TOKIMEKI Editing🌈</a></p>
+<p>公開までの手順は続くパートで</p>
+</section>
+</section>
+<section>
+<section >
+<h2>🌯Part 1. テキストを写経 &amp; 改造しよう まとめ</h2>
+<ul class="simple">
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension">vscodejp/handson-hello-vscode-extension</a> beginner向けをベースに、マークダウンを編集する拡張を写経・改造</p></li>
+<li><p>VS Codeの概念：「コマンド」「CodeLens」</p>
+<ul>
+<li><p>CodeLensからコマンドを呼び出し、<strong>CodeLensが設定されている範囲を編集</strong> できる</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>関連アウトプット 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-development-101-command-codelens">VSCode拡張開発 素振りの記：ハンズオンテキストを元に「歩夢」を「歩夢🎀」に置き換える拡張を自作し、コマンドとコードレンズを完全に理解</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>Part 2. 拡張のE2Eテストを書こう</h2>
+<ol class="arabic simple">
+<li><p>テキストをベースに写経 &amp; 改造（メインパート）</p></li>
+<li><p><strong>拡張のE2Eテストを書く</strong></p></li>
+<li><p>拡張を公開</p></li>
+</ol>
+</section>
+<section >
+<h3>テストを書きたい！</h3>
+<ul class="simple">
+<li><p>改造がうまくいき、<strong>公開が見え</strong> てきた✨</p></li>
+<li><p>IMO「自分が作ったもので、自分以外が使う可能性があるなら、テストを書きたい」</p></li>
+</ul>
+</section>
+<section >
+<h3>VS Codeを操作するE2Eテスト、どう書くんだ？</h3>
+<ul class="simple">
+<li><p>この発表ではテスト＝ <strong>End to End</strong> テスト</p></li>
+<li><p>参照：<a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/testing-extension">Testing Extensions</a></p></li>
+<li><p><span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext/vscode-tokimeki-editing/blob/v0.0.2/src/test/suite/extension.test.ts">書いたテスト</a></p></li>
+</ul>
+</section>
+<section >
+<h3>実はテストはscaffoldされてるYO</h3>
+<ul class="simple">
+<li><p>Yeomanにより <code class="file docutils literal notranslate"><span class="pre">src/test</span></code> 以下にテストに使うファイルが生成されています</p></li>
+</ul>
+<aside class="notes">
+https://tree.nathanfriend.io
+src/
+ test/
+  suite/
+   extension.test.ts
+   index.ts
+  runTest.ts
+ extension.ts</aside>
+<pre data-id="scaffoldyo"><code data-trim data-noescape class="none">src/
+├── test/
+│   ├── suite/
+│   │   ├── extension.test.ts
+│   │   └── index.ts
+│   └── runTest.ts
+└── extension.ts</code></pre>
+</section>
+<section >
+<h3>テスト実行（以下のどちらか）</h3>
+<ul class="simple">
+<li><p><strong class="command">npm run test</strong></p></li>
+<li><p><strong class="command">yarn test</strong></p></li>
+<li><p>ref: <a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/testing-extension">Testing Extensions</a> の「Overview」</p></li>
+</ul>
+<pre data-id="id40"><code data-trim data-noescape class="none">Downloading VS Code [==============================] 100%</code></pre>
+</section>
+<section >
+<h3>テストを繰り返し実行できるように設定</h3>
+<p>開発環境（macOS）で、テストの2回めが実行できなかったのに対処</p>
+<div class="literal-block-wrapper docutils container" id="id81">
+<div class="code-block-caption"><span class="caption-text">src/test/runTest.ts</span></div>
+<pre><code data-trim data-noescape class="ts" data-line-numbers="7">async function main() {
+    // ... 省略 ...
+    await runTests(
+        {
+            extensionDevelopmentPath,
+            extensionTestsPath,
+            launchArgs: ['--user-data-dir', `${tmpdir()}`]
+        });
+    // ... 省略 ...
+}</code></pre>
+</div>
+</section>
+</section>
+<section >
+<h2>マークダウンを編集する拡張のテスト（IMO）</h2>
+<ol class="arabic simple">
+<li><p>マークダウンファイルに対するCodeLensの <strong>設定</strong> （個数や行）</p></li>
+<li><p>ユーザがCodeLensをクリックしたのをエミュレートした <strong>コマンド実行</strong></p></li>
+</ol>
+<p>1のref: <a class="reference external" href="https://github.com/microsoft/vscode/blob/1.74.3/extensions/typescript-language-features/src/test/smoke/referencesCodeLens.test.ts">typescript-language-featuresのCodeLensのE2E</a></p>
+</section>
+<section>
+<section >
+<h2>2-1 CodeLensの設定をテスト</h2>
+<ul class="simple">
+<li><p>🅰️テストに使うマークダウンファイル（<strong>フィクスチャ</strong>）</p></li>
+<li><p>🅱️テストコードでCodeLensを取得する</p></li>
+</ul>
+</section>
+<section >
+<h3>🅰️フィクスチャの設定</h3>
+<ol class="arabic simple">
+<li><p>フィクスチャを配置</p></li>
+<li><p>フィクスチャを使うように設定（<code class="file docutils literal notranslate"><span class="pre">src/test/runTest.ts</span></code>）</p></li>
+</ol>
+</section>
+<section >
+<h3>🅰️-1 フィクスチャを配置</h3>
+<aside class="notes">
+https://tree.nathanfriend.io/
+src/
+test-fixtures/
+ markdown/
+  example.md
+package.json
+package-lock.json</aside>
+<pre data-id="id44"><code data-trim data-noescape class="none">.
+├── src/
+├── test-fixtures/
+│   └── markdown/
+│       └── example.md
+├── package.json
+└── package-lock.json</code></pre>
+</section>
+<section >
+<h3>フィクスチャ</h3>
+<div class="literal-block-wrapper docutils container" id="id82">
+<div class="code-block-caption"><span class="caption-text">test-fixtures/markdown/example.md</span></div>
+<pre><code data-trim data-noescape class="markdown"># Test of tokimeki-editing
+
+## テスト歩夢
+
+歩夢の行にemojiを追加できる
+
+この行には何もしません</code></pre>
+</div>
+</section>
+<section >
+<h3>🅰️-2 フィクスチャを使うように設定</h3>
+<div class="literal-block-wrapper docutils container" id="id83">
+<div class="code-block-caption"><span class="caption-text">src/test/runTest.ts</span></div>
+<pre><code data-trim data-noescape class="ts" data-line-numbers="3,8">async function main() {
+    // ... 省略 ...
+    const testWorkspace = path.resolve(__dirname, '../../test-fixtures');
+    await runTests(
+        {
+            extensionDevelopmentPath,
+            extensionTestsPath,
+            launchArgs: [testWorkspace, '--user-data-dir', `${tmpdir()}`]
+        });
+    // ... 省略 ...
+}</code></pre>
+</div>
+</section>
+<section >
+<h3>テストコードでフィクスチャのマークダウンファイルを <strong>開く</strong></h3>
+<div class="literal-block-wrapper docutils container" id="id84">
+<div class="code-block-caption"><span class="caption-text">src/test/suite/extension.test.ts</span></div>
+<pre><code data-trim data-noescape class="ts">const testFileLocation = '/markdown/example.md';
+
+suite('Extension Test Suite', () =&gt; {
+    let fileUri: vscode.Uri;
+    let editor: vscode.TextEditor;
+
+    setup(async () =&gt; {
+        fileUri = vscode.Uri.file(vscode.workspace.workspaceFolders![0].uri.fsPath + testFileLocation);
+        const document = await vscode.workspace.openTextDocument(fileUri);
+        editor = await vscode.window.showTextDocument(document);
+    });
+});</code></pre>
+</div>
+</section>
+<section >
+<h3>🅱️テストコードで <strong>CodeLensを取得</strong> する</h3>
+<pre data-id="id48"><code data-trim data-noescape class="ts">vscode.commands.executeCommand&lt;readonly vscode.CodeLens[]&gt;('vscode.executeCodeLensProvider', fileUri, 100);</code></pre>
+<p>ref: <a class="reference external" href="https://github.com/microsoft/vscode/blob/1.74.3/extensions/typescript-language-features/src/test/smoke/referencesCodeLens.test.ts">typescript-language-featuresのCodeLensのE2E</a></p>
+</section>
+<section >
+<h3>CodeLensの設定をテスト</h3>
+<div class="literal-block-wrapper docutils container" id="id85">
+<div class="code-block-caption"><span class="caption-text">src/test/suite/extension.test.ts</span></div>
+<pre><code data-trim data-noescape class="ts">const codeLenses = await vscode.commands.executeCommand&lt;readonly vscode.CodeLens[]&gt;('vscode.executeCodeLensProvider', fileUri, 100);
+
+// フィクスチャのファイルでCodeLensはいくつ設定されるか - 2個
+assert.strictEqual(codeLenses?.length, 2);
+// フィクスチャのファイルでCodeLensは何行目に設定されるか - 2行目と4行目（歩夢がある行）
+assert.strictEqual(codeLenses?.[0].range.start.line, 2);
+assert.strictEqual(codeLenses?.[1].range.start.line, 4);</code></pre>
+</div>
+</section>
+</section>
+<section>
+<section >
+<h2>2-2 コマンド実行のテスト</h2>
+<p>ユーザがCodeLensをクリックしたのをエミュレートする意図</p>
+</section>
+<section >
+<h3>コマンド実行するテストコード</h3>
+<div class="literal-block-wrapper docutils container" id="id86">
+<div class="code-block-caption"><span class="caption-text">src/test/suite/extension.test.ts</span></div>
+<pre><code data-trim data-noescape class="ts">test('Insert 🎀 after 歩夢', async () =&gt; {
+    const COMMAND_NAME = &quot;tokimeki-editing.addOshiEmoji&quot;;
+    await sleep(1500);  // sleepはユーザ定義関数でブロッキングする（VS CodeのWindowのロード待ちの意図）
+    // 4行目「歩夢の行にemojiを追加できる」の「歩夢」にCodeLensが設定されている。
+    // このCodeLensがユーザにクリックされたときに呼び出されるのと同様のコマンド呼び出し（「歩夢」のrangeも渡す）
+    await vscode.commands.executeCommand(COMMAND_NAME, new vscode.Range(new vscode.Position(4, 0), new vscode.Position(4, 2)));
+    await sleep(500);
+
+    const actual = editor.document.lineAt(4).text;
+    assert.strictEqual(actual, '歩夢🎀の行にemojiを追加できる');
+});</code></pre>
+</div>
+</section>
+<section >
+<h3>テストの実行時間が伸びたことでテストが落ちないようにする</h3>
+<div class="literal-block-wrapper docutils container" id="id87">
+<div class="code-block-caption"><span class="caption-text">src/test/suite/index.ts</span></div>
+<pre><code data-trim data-noescape class="ts" data-line-numbers="5">export function run(): Promise&lt;void&gt; {
+    const mocha = new Mocha({
+        ui: 'tdd',
+        color: true,
+        timeout: 5000  // 2000msから伸ばした（60000msまで伸ばしてもよいかも）
+    });
+
+    // ... 省略 ...
+}</code></pre>
+</div>
+<p><a class="reference external" href="https://mochajs.org/#timeouts">Mochaのtimeout設定</a> を変更</p>
+</section>
+</section>
+<section>
+<section >
+<h2>🌯Part 2. 拡張のE2Eテストを書こう まとめ</h2>
+<ul class="simple">
+<li><p>マークダウンを編集できるCodeLensを提供する拡張について、E2Eテストを書いた</p>
+<ul>
+<li><p>CodeLensの <strong>設定</strong> を検証</p></li>
+<li><p>ユーザがCodeLensをクリックして呼び出される <strong>コマンド</strong> を実行して検証</p></li>
+</ul>
+</li>
+<li><p>runTestsの <code class="docutils literal notranslate"><span class="pre">launchArgs</span></code> ・Mochaの設定</p></li>
+</ul>
+</section>
+<section >
+<h3>関連アウトプット 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/vscode-extension-codelens-e2e-beginner">私は、VS Code拡張のE2E、書いてみたい！ 〜今はこれが精一杯🔰、中間報告編〜</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>Part 3. 拡張を公開しよう</h2>
+<ol class="arabic simple">
+<li><p>テキストをベースに写経 &amp; 改造（メインパート）</p></li>
+<li><p>拡張のE2Eテストを書く</p></li>
+<li><p><strong>拡張を公開</strong></p></li>
+</ol>
+</section>
+<section >
+<h3><a class="reference external" href="https://marketplace.visualstudio.com/vscode">Marketplace</a> へ公開！</h3>
+<ol class="arabic simple">
+<li><p>ブラウザからアップロードして公開</p></li>
+<li><p>コマンドラインで操作して公開</p></li>
+</ol>
+<p>ドキュメント <a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension">Publishing Extensions</a> を参照</p>
+</section>
+</section>
+<section >
+<h2>3-1 ブラウザからアップロードして公開</h2>
+<ul class="simple">
+<li><p>Visual Studio Marketplace publisher management page</p></li>
+<li><p><strong class="command">vsce</strong> コマンド</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>Visual Studio Marketplace publisher management page</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://marketplace.visualstudio.com/manage">https://marketplace.visualstudio.com/manage</a></p></li>
+<li><p>マイクロソフトアカウントでサインイン（GitHubアカウントは未検証）</p></li>
+<li><p>Create publisher（<strong>publisherを作る</strong>）</p></li>
+</ul>
+</section>
+<section >
+<h3>Nameだけ入力すればpublisherは作れる</h3>
+<figure class="align-default">
+<img alt="../_images/01extension-create-publisher.png" src="../_images/01extension-create-publisher.png" />
+</figure>
+</section>
+</section>
+<section>
+<section >
+<h2><strong class="command">vsce</strong> コマンド</h2>
+<p><strong class="command">npm install &#64;vscode/vsce</strong></p>
+<p>ref: <a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension#installation">ドキュメントの「vsce &gt; Installation」</a></p>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">package.json</span></code> を編集</h3>
+<pre data-id="package-json"><code data-trim data-noescape class="json">{
+  // nameはMarketplaceで一意になるように変えるのがオススメ（チュートリアルのままだとかぶってしまう）
+  &quot;name&quot;: &quot;tokimeki-editing&quot;,
+  // publisher management pageで作ったpublisherのIDを書く
+  &quot;publisher&quot;: &quot;everlasting-diary&quot;,
+  // ... 省略 ....
+}</code></pre>
+</section>
+<section >
+<h3><strong class="command">vsce package</strong></h3>
+<ul class="simple">
+<li><p>拡張のソースコードを <code class="docutils literal notranslate"><span class="pre">vsix</span></code> ファイルにまとめる</p>
+<ul>
+<li><p><code class="file docutils literal notranslate"><span class="pre">tokimeki-editing-0.0.1.vsix</span></code> 🙌</p></li>
+</ul>
+</li>
+<li><p>Yeomanでscaffoldした <code class="file docutils literal notranslate"><span class="pre">README.md</span></code> のままだとpackageでエラー。編集する（内容を削った）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>ブラウザからアップロード</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://marketplace.visualstudio.com/manage">Visual Studio Marketplace publisher management page</a> を操作</p></li>
+<li><p>publisherにvsixファイルをアップロード</p>
+<ul>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension#publish-an-extension">ドキュメントの「Publish an extension」</a> に画像あり（次スライド）</p></li>
+</ul>
+</li>
+</ul>
+<aside class="notes">
+画像は以下から
+https://github.com/microsoft/vscode-docs/tree/5e40432c324328cdedd2cb6d62e8e3d5ff3a4c66/api/working-with-extensions/images/publishing-extension</aside>
+</section>
+<section >
+<img alt="https://media.githubusercontent.com/media/microsoft/vscode-docs/5e40432c324328cdedd2cb6d62e8e3d5ff3a4c66/api/working-with-extensions/images/publishing-extension/add-extension.png" src="https://media.githubusercontent.com/media/microsoft/vscode-docs/5e40432c324328cdedd2cb6d62e8e3d5ff3a4c66/api/working-with-extensions/images/publishing-extension/add-extension.png" />
+</section>
+<section >
+<h3><a class="reference external" href="https://marketplace.visualstudio.com/vscode">Marketplace</a> に公開🙌</h3>
+<ul class="simple">
+<li><p>アップロード後、verifyされるまで少し待つ</p>
+<ul>
+<li><p>パスしたらメールが来た📧 <em>Extension publish on Visual Studio Marketplace</em></p></li>
+</ul>
+</li>
+<li><p>公開後、拡張を右クリックして表示されるメニューから、非公開にも切り替えられる</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>3-2 コマンドラインで操作して公開</h2>
+<pre data-id="id60"><code data-trim data-noescape class="sh">vsce package
+vsce login &lt;publisher name&gt;
+vsce publish</code></pre>
+</section>
+<section >
+<h3><strong class="command">vsce login</strong> にはトークンが必要</h3>
+<pre data-id="vsce-login"><code data-trim data-noescape class="sh">$ vsce login everlasting-diary
+Personal Access Token for publisher 'everlasting-diary':</code></pre>
+</section>
+</section>
+<section>
+<section >
+<h2>Personal Access Token作成</h2>
+<ol class="arabic simple">
+<li><p>Azure DevOpsの組織（organization）を作る</p></li>
+<li><p>Azure DevOpsの組織でPersonal Access Tokenを作る</p></li>
+</ol>
+</section>
+<section >
+<h3>Azure DevOpsの <strong>組織</strong> を作る</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://go.microsoft.com/fwlink/?LinkId=307137">https://go.microsoft.com/fwlink/?LinkId=307137</a> からサインイン</p>
+<ul>
+<li><p>Visual Studio Marketplace publisher management pageと <strong>同じ</strong> マイクロソフトアカウント</p></li>
+</ul>
+</li>
+<li><p>組織（organization）だけを作る</p></li>
+<li><p>画像つきの手順： <a class="reference external" href="https://learn.microsoft.com/ja-jp/azure/devops/organizations/accounts/create-organization?view=azure-devops">組織の作成</a></p></li>
+</ul>
+</section>
+<section >
+<h3>Azure DevOpsの組織でPersonal Access Tokenを作る</h3>
+<figure class="align-default">
+<img alt="../_images/01extension-azure-devops-create-token.png" src="../_images/01extension-azure-devops-create-token.png" />
+</figure>
+<p>User settings（右上のアイコン） &gt; Personal access tokens</p>
+</section>
+<section >
+<h3>Personal Access Token作成時の必須項目</h3>
+<dl class="field-list simple">
+<dt class="field-odd">Name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>トークンの名前</p>
+</dd>
+<dt class="field-even">Organization<span class="colon">:</span></dt>
+<dd class="field-even"><p>everlasting-diary</p>
+</dd>
+<dt class="field-odd">Scopes<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MarketplaceのManageだけ</p>
+</dd>
+</dl>
+<p><a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token">ドキュメントの「Get a Personal Access Token」</a> に画像あり（次スライド）</p>
+</section>
+<section >
+<img alt="https://media.githubusercontent.com/media/microsoft/vscode-docs/5e40432c324328cdedd2cb6d62e8e3d5ff3a4c66/api/working-with-extensions/images/publishing-extension/token2.png" src="https://media.githubusercontent.com/media/microsoft/vscode-docs/5e40432c324328cdedd2cb6d62e8e3d5ff3a4c66/api/working-with-extensions/images/publishing-extension/token2.png" />
+</section>
+<section >
+<h3>控えたトークンで <strong class="command">vsce login</strong> が通ります</h3>
+<pre data-id="id63"><code data-trim data-noescape class="sh">vsce package
+vsce login &lt;publisher name&gt;
+vsce publish</code></pre>
+</section>
+</section>
+<section>
+<section >
+<h2>🌯Part 3. 拡張を公開しよう まとめ</h2>
+<ul class="simple">
+<li><p>ブラウザからアップロードしてMarketplaceに公開：<strong>初めて</strong> の方🔰にオススメ</p>
+<ul>
+<li><p>publisher management pageの操作 &amp; <strong class="command">vsce</strong> コマンド</p></li>
+</ul>
+</li>
+<li><p>コマンドラインで操作して公開： <strong>慣れてきたら</strong> こちらを</p>
+<ul>
+<li><p>Azure DevOpsでPersonal Access Tokenを作る</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>この先：楽にリリースするために 🏃‍♂️</h3>
+<ul class="simple">
+<li><p>GitHub ActionsなどCIツール上で、Marketplaceに公開するためのコマンドを実行</p></li>
+<li><p>👉 <a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/continuous-integration">Continuous Integration</a></p></li>
+</ul>
+</section>
+<section >
+<h3>関連アウトプット 🏃‍♂️</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/publish-vscode-extensions-with-minimum-new-concepts">新しい概念を最小限にして、自作VS Code拡張をMarketplaceに公開する</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/publish-vscode-extensions-using-vsce-command-well">vsceコマンドで、自作VS Code拡張をMarketplaceに公開する</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>まとめ🌯：Awakening Extension (拡張開発はじまるよ🔰)</h2>
+<ol class="arabic simple">
+<li><p>テキストをベースに写経 &amp; 改造</p></li>
+<li><p>拡張のE2Eテストを書く</p></li>
+<li><p>拡張を公開</p></li>
+</ol>
+</section>
+<section >
+<h3>テキストをベースに写経 &amp; 改造</h3>
+<ul class="simple">
+<li><p><strong>Yeoman</strong> によるscaffold</p></li>
+<li><p><strong>CodeLens</strong> で編集</p>
+<ul>
+<li><p>正規表現にマッチする箇所に作成</p></li>
+<li><p><strong>コマンド</strong> 呼び出し</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>拡張のE2Eテストを書く</h3>
+<p>フィクスチャのファイルに対して以下を検証</p>
+<ul class="simple">
+<li><p>CodeLensの <strong>設定</strong></p></li>
+<li><p>CodeLensから実行される <strong>コマンド</strong> を直接実行した結果</p></li>
+</ul>
+</section>
+<section >
+<h3>拡張を公開</h3>
+<ul class="simple">
+<li><p><strong>はじめは手動アップロード</strong> がオススメ</p></li>
+<li><p>慣れたら <strong class="command">vsce</strong> コマンドを</p></li>
+</ul>
+</section>
+<section >
+<h3>ご清聴ありがとうございました！</h3>
+<p>Enjoy extension! 🎀🌈</p>
+</section>
+</section>
+<section>
+<section >
+<h2>References</h2>
+</section>
+<section >
+<h3>vscodejp/handson-hello-vscode-extension 1/2</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/00_prepare.md">事前準備 必要な開発環境を整えよう</a></p></li>
+<li><p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/01_init.md">Hello Worldを作成しよう</a></p></li>
+<li><p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/02_build.md">Hello Worldを起動しよう</a></p></li>
+</ul>
+</section>
+<section >
+<h3>vscodejp/handson-hello-vscode-extension 2/2</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/beginner/04_edit.md">ドキュメントを編集しよう</a></p></li>
+<li><p><a class="reference external" href="https://github.com/vscodejp/handson-hello-vscode-extension/blob/main/docs/expert/04_publish.md">作成した拡張機能をインストールしよう</a></p></li>
+</ul>
+</section>
+<section >
+<h3>VS Code ドキュメント（英語）</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/testing-extension">Testing Extensions</a></p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension">Publishing Extensions</a></p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/references/vscode-api">VS Code API</a></p></li>
+</ul>
+</section>
+<section >
+<h3>拡張開発まで扱った書籍</h3>
+<ul class="simple">
+<li><p>『<a class="reference external" href="https://gihyo.jp/book/2020/978-4-297-11201-1">Visual Studio Code実践ガイド</a>』74thさん</p></li>
+<li><p>『<a class="reference external" href="https://book.mynavi.jp/ec/products/detail/id=115232">プログラマーのためのVisual Studio Codeの教科書</a>』もよさそう</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>Supplement</h2>
+<p>補足</p>
+</section>
+<section >
+<h3>TypeScript</h3>
+<ul class="simple">
+<li><p>JavaScriptとTypeScriptはPythonと型ヒントの関係と理解</p>
+<ul>
+<li><p>ref: 『<a class="reference external" href="https://gihyo.jp/book/2022/978-4-297-12747-3">プロを目指す人のためのTypeScript入門</a>』</p></li>
+</ul>
+</li>
+<li><p>JavaScriptもあまり経験はありません</p></li>
+</ul>
+</section>
+<section >
+<h3>JavaScriptまわりの開発環境</h3>
+<ul class="simple">
+<li><p><strong class="command">npm install</strong> に <code class="docutils literal notranslate"><span class="pre">-g</span></code> （グローバルにインストール）は意図して付けていません</p></li>
+<li><p>Pythonで仮想環境を使った経験をベースにしていますが、言語が違うので適切なやり方ではないかもしれません</p></li>
+</ul>
+</section>
+<section >
+<h3>この先の拡張開発</h3>
+<ul class="simple">
+<li><p>一案：ハンズオンテキストの本編（LSP編）へ</p></li>
+</ul>
+</section>
+<section >
+<h3><em>コントリビューションポイント</em></h3>
+<ul class="simple">
+<li><p>「VS Codeを拡張できるAPIが用意された（限られた）箇所」 <a class="reference external" href="https://gihyo.jp/book/2020/978-4-297-11201-1">Visual Studio Code実践ガイド</a> （第13章）</p></li>
+<li><p>拡張開発でどのAPIも利用できるわけではない（テストコードからCodeLens操作できないのもこの方針だからかも）</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>XPで取り組むMLOps</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/mlops-march/mlops-with-extreme-programming.html">
+    <meta property="og:title" content="XP（エクストリームプログラミング）で取り組むMLOps">
+    <meta property="og:description" content="2023/03 第29回MLOps勉強会">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/mlops-march.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>XPで取り組むMLOps</h1>
+<p>XP（エクストリームプログラミング）</p>
+<p>2023/03/09 第29回MLOps勉強会 nikkie</p>
+</section>
+<section >
+<h2>イントロダクション</h2>
+<ul class="simple">
+<li><p>自己紹介</p></li>
+<li><p>開発チーム紹介</p></li>
+<li><p>XP紹介</p></li>
+<li><p>おことわり</p></li>
+</ul>
+</section>
+<section >
+<h2>お前、誰よ</h2>
+<ul class="simple">
+<li><p>ふたつぎ at ユーザベース</p></li>
+<li><p>データサイエンティスト（2019〜）</p></li>
+<li><p>自然言語処理、機械学習、テスト駆動開発、ペアプロ、たーのしー！</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>ユーザベースには、2つの開発チーム</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://tech.uzabase.com/">https://tech.uzabase.com/</a></p></li>
+<li><p>BtoB向けSaaSプラットフォームの開発チーム 🙋‍♂️</p></li>
+<li><p>ビジネスパーソン向けメディアサービスの開発チーム</p></li>
+</ul>
+<aside class="notes">
+スクショ差し込む余地あり</aside>
+<aside class="notes">
+https://hrmos.co/pages/uzabase/jobs?category=1766002544481845248</aside>
+</section>
+<section >
+<h3>BtoB向けSaaSプラットフォームの開発チーム</h3>
+<ul class="simple">
+<li><p>1つの開発チームに4つの職種</p>
+<ul>
+<li><p>例：データサイエンティストとソフトウェアエンジニアが <strong>同じチーム</strong></p></li>
+</ul>
+</li>
+<li><p>以降では「開発チーム」＝「BtoB向けSaaSプラットフォームの開発チーム」</p></li>
+</ul>
+</section>
+<section >
+<h3>こんなチームで働いています（異能は才能）</h3>
+<ul class="simple">
+<li><p>『<a class="reference external" href="https://gihyo.jp/book/2023/978-4-297-13314-6">評価指標入門</a>』の著者はじめ、いろんな強みを持つデータサイエンティストと働いています！</p></li>
+<li><p>全社週1で知見共有： <a class="reference external" href="https://tech.uzabase.com/entry/2022/12/08/155101">ユーザベースのデータサイエンティストが集まる社内勉強会を振り返ります!</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>XPって、何よ</h2>
+<p>XP（エクストリームプログラミング）で取り組むMLOps</p>
+</section>
+<section >
+<h3>私たち（SaaSプラットフォームの開発者）は</h3>
+<p><em>エクストリームプログラミング</em> を実践しています</p>
+</section>
+<section >
+<h3>アジャイル開発</h3>
+<aside class="notes">
+アジャイル開発宣言は画像入れられるかも</aside>
+<ul class="simple">
+<li><p>2001 <a class="reference external" href="https://agilemanifesto.org/iso/ja/manifesto.html">アジャイルソフトウェア開発宣言</a></p></li>
+<li><p>発表者はウォーターフォールもアジャイルも経験しています</p></li>
+</ul>
+</section>
+<section >
+<h3>アジャイル開発の手法</h3>
+<ul class="simple">
+<li><p>1手法として、<strong>XP</strong> （エクストリームプログラミング）</p></li>
+<li><p>他の手法として、<em>スクラム</em> など</p></li>
+<li><p>nikkieは入社するまで「XPは聞いたことがある」程度でした</p></li>
+</ul>
+</section>
+<section >
+<h3>チーム開発</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://agilemanifesto.org/iso/ja/principles.html">アジャイル宣言の背後にある原則</a> でもチームに言及</p></li>
+<li><p>私たち開発チームの考え方：<strong>成果を出す最小単位はチーム</strong></p></li>
+<li><p>加えて「個人が強くなったらなお最強じゃん」</p></li>
+</ul>
+</section>
+<section >
+<h3>XP（極限プログラミング？）</h3>
+<ul class="simple">
+<li><p>目的は <em>圧倒的なソフトウェア開発の実現</em> （創始者 ケント・ベック氏）</p></li>
+<li><p>通常の開発プラクティスを <strong>極限（エクストリーム）</strong> まで推し進める</p></li>
+</ul>
+<aside class="notes">
+『エクストリームプログラミング』はじめに</aside>
+</section>
+<section >
+<h3>XPの3要素</h3>
+<ul class="simple">
+<li><p><em>価値</em> (values)：抽象的・普遍的な判断基準</p></li>
+<li><p><em>プラクティス</em> (practices)：日常的な取り組み</p></li>
+<li><p>この2つを <em>原則</em> (principles)が橋渡し</p></li>
+</ul>
+</section>
+<section >
+<h3>この発表では <strong>プラクティス</strong> にフォーカス</h3>
+<ul class="simple">
+<li><p>再掲）通常の開発プラクティスを極限（エクストリーム）まで推し進める</p></li>
+<li><p>IMO 思うに <strong>習慣</strong> （<a class="reference external" href="https://speakerdeck.com/jnuank/sukuramuwoshi-jian-siteitasi-gaxpfalsexian-chang-nilai-tegan-zitakoto?slide=86">参考</a>）</p></li>
+<li><p><em>サークルオブライフ</em> （12のプラクティス）</p></li>
+</ul>
+<aside class="notes">
+practice 何らかの理由で習慣的に行っていること。自由意志で選択可能（ウィズダム英和辞典）</aside>
+</section>
+<section >
+<h3>サークルオブライフ</h3>
+<figure class="align-default">
+<img alt="https://ronjeffries.com/xprog/what-is-extreme-programming/circles.jpg" src="https://ronjeffries.com/xprog/what-is-extreme-programming/circles.jpg" />
+</figure>
+<p>ロン・ジェフリーズ氏がXPのプラクティスを描いた図</p>
+</section>
+<section >
+<h3>3つの円、計12のプラクティス（<em>習慣</em>）</h3>
+<ul class="simple">
+<li><p>外側の円（赤）：ビジネス向け 4つ</p></li>
+<li><p>真ん中の円（緑）：チーム向け 4つ</p></li>
+<li><p>内側の円（青）：開発者向け 4つ</p></li>
+</ul>
+</section>
+<section >
+<h3>XPのエッセンスとなる5プラクティス（by 角さん）</h3>
+<aside class="notes">
+https://www.docswell.com/s/kdmsnr/Z97LLK-xp-back-to-the-basics#p38</aside>
+<ul class="simple">
+<li><p>ペアプログラミング</p></li>
+<li><p>テスト駆動開発・リファクタリング</p></li>
+<li><p>シンプルな設計</p></li>
+<li><p>受け入れテスト</p></li>
+</ul>
+</section>
+<section >
+<h3>私たちデータサイエンティストも実践しています</h3>
+<ul class="simple">
+<li><p>日常的に、ペアプログラミング・テスト駆動開発</p></li>
+<li><p>シンプルな設計・リファクタリング</p></li>
+<li><p>受け入れテスト（APIのE2Eテスト）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>いくつか、おことわりを</h2>
+<p>3点共有</p>
+</section>
+<section >
+<h3>1 &quot;データサイエンティスト&quot;</h3>
+<ul class="simple">
+<li><p>「自分もデータサイエンティストだけど、発表者とは職務内容がちょっと違う？」</p></li>
+<li><p>ここまで聞いてこういった感想、あると思います</p></li>
+</ul>
+</section>
+<section >
+<h3>目的は、 <strong>事業に価値を</strong> 提供すること</h3>
+<blockquote>
+<div><p>機械学習、自然言語処理等の技術を利用して、ユーザベースが展開するB2B SaaSプロダクトの価値を高める （<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1770704536701308929">求人ページ</a>）</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>IMO：この場に集った私たち参加者はこの目的を共有している！</p></li>
+</ul>
+</section>
+<section >
+<h3>お互いに学び合いましょう</h3>
+<ul class="simple">
+<li><p>ポイントは <strong>読み替え</strong> だと思います</p></li>
+<li><p>勉強会での発表を読み替えて知見を見出すの、私、大好きなんです</p></li>
+</ul>
+</section>
+<section >
+<h3>自分の文脈に読み替えてヒントがあったら幸いです</h3>
+<blockquote>
+<div><p>私たちは、他者の実践の背景にどんな状況、制約があったのかを理解し、自分たちの状況、制約の下ではどのように実践するべきなのか捉え直さないといけない。</p>
+</div></blockquote>
+<p>『カイゼン・ジャーニー』(Kindle の位置No.231-233)</p>
+</section>
+<section >
+<h3>2 機械学習システムに <strong>ソフトウェアエンジニアリング</strong> でアプローチ</h3>
+<p>SaaS事業の開発チームの現在のやり方</p>
+</section>
+<section >
+<h3>GoogleのRules of Machine Learningにも</h3>
+<blockquote>
+<div><p>do machine learning like the great engineer you are, not like the great machine learning expert you aren't.</p>
+</div></blockquote>
+<p><a class="reference external" href="https://developers.google.com/machine-learning/guides/rules-of-ml?hl=en#overview">Overview</a> より</p>
+</section>
+<section >
+<h3>3 <em>小さなリリース</em> を積み重ねた半ばです</h3>
+<ul class="simple">
+<li><p>この場で話すのは現時点の <strong>暫定解</strong> （日々格闘中です！）</p></li>
+<li><p>小さいリリースを重ねた中での到達点であり、今後に続く小さなリリースの中で更新される</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>MLOps事例紹介</h2>
+<ul class="simple">
+<li><p>データサイエンスの課題設定</p></li>
+<li><p><strong>XP</strong> で取り組むMLOps事例紹介（2つ）</p></li>
+<li><p><strong>目指しているもの</strong> も紹介</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>SaaS事業におけるデータサイエンス</h2>
+<p>経済情報を使ったプロダクト</p>
+<ul class="simple">
+<li><p>SPEEDA</p></li>
+<li><p>FORCAS</p></li>
+<li><p>INITIAL</p></li>
+<li><p>etc</p></li>
+</ul>
+</section>
+<section >
+<h3>経済情報</h3>
+<ul class="simple">
+<li><p>企業情報</p></li>
+<li><p>ニュース</p></li>
+<li><p>業界（独自定義）</p></li>
+<li><p>etc etc</p></li>
+</ul>
+</section>
+<section >
+<h3>SaaS事業の課題設定</h3>
+<ul class="simple">
+<li><p><strong>企業</strong> の <strong>業界</strong> 推定（マルチラベル分類。こちらをメインに紹介）</p></li>
+<li><p><strong>ニュース</strong> に <strong>企業</strong> 紐付け（固有表現抽出）</p></li>
+<li><p>etc</p></li>
+</ul>
+</section>
+<section >
+<h3>企業の業界推定（マルチラベル分類）</h3>
+<ul class="simple">
+<li><p>企業情報1000万社（国内・海外、上場・非上場）</p></li>
+<li><p>ユーザベースのアナリストが、独自定義した業界（560業界）の中から選定</p></li>
+<li><p>教師あり学習して <strong>機械学習モデルで業界推定</strong> する</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>事例1 日々の開発</h2>
+<ul class="simple">
+<li><p>パイプライン</p></li>
+<li><p>基本コンポーネント</p></li>
+</ul>
+</section>
+<section >
+<h3>パイプラインとは、インフラストラクチャ</h3>
+<blockquote>
+<div><p>The infrastructure surrounding a machine learning algorithm.</p>
+</div></blockquote>
+<p><a class="reference external" href="https://developers.google.com/machine-learning/guides/rules-of-ml?hl=en#terminology">https://developers.google.com/machine-learning/guides/rules-of-ml?hl=en#terminology</a></p>
+<p>念のため、scikit-learnの <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> ではないです</p>
+</section>
+<section >
+<h3>2つのパイプラインを実装</h3>
+<ul class="simple">
+<li><p>モデル <strong>訓練</strong> パイプライン：データ取得〜モデル訓練&amp;出力</p></li>
+<li><p>モデル <strong>リリース</strong> パイプライン：訓練したモデルをAPIとしてリリース</p></li>
+</ul>
+</section>
+<section >
+<h3>技術スタック 1/2</h3>
+<ul class="simple">
+<li><p>モデル訓練：scikit-learnやPyTorch</p></li>
+<li><p>API化：FastAPI</p></li>
+<li><p>APIやパイプラインの各処理はKubernetesで動かす（Dockerコンテナ化）</p></li>
+</ul>
+</section>
+<section >
+<h3>補足：マイクロサービス</h3>
+<ul class="simple">
+<li><p>開発チームは、マイクロサービスアーキテクチャを採用</p></li>
+<li><p>データサイエンティストは、機械学習モデルを作るだけでなく、他の開発者が使えるように <strong>APIとしてリリース</strong> までやる</p></li>
+</ul>
+</section>
+<section >
+<h3>技術スタック 2/2</h3>
+<ul class="simple">
+<li><p>パイプラインの実体はJenkins</p></li>
+<li><p>JenkinsからKubernetesクラスタにJobやDeploymentを作成する</p>
+<ul>
+<li><p><cite>kubectl</cite> コマンドをAnsibleでラップ</p></li>
+</ul>
+</li>
+</ul>
+<aside class="notes">
+P.10 https://www.protosolution.co.jp/wp/wp-content/uploads/2021/12/Session-1_%E5%B0%8F%E5%89%AF%E5%B7%9D-%E5%81%A5_%E4%BA%8B%E6%A5%AD%E3%81%A8%E5%85%B1%E3%81%AB%E8%82%B2%E3%81%A6%E3%82%8B%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E3%81%93%E3%82%8C%E3%81%BE%E3%81%A7%E3%81%A8%E3%81%93%E3%82%8C%E3%81%8B%E3%82%89.pdf</aside>
+</section>
+<section >
+<h3>モデル訓練パイプライン</h3>
+<ol class="arabic simple">
+<li><p>データ取得</p></li>
+<li><p>データ加工</p></li>
+<li><p>学習</p></li>
+</ol>
+<aside class="notes">
+スライド14 データ取得〜データ加工〜学習</aside>
+<aside class="notes">
+構成図</aside>
+</section>
+<section >
+<h3>ボタン1つで、モデル訓練！（Automation🙌）</h3>
+<ul class="simple">
+<li><p>ボタン1つで最新データを取得してモデルを訓練できる</p></li>
+<li><p>最初から最後まで通してだけでなく、途中からの実行もできる（モデルだけ作り直す）</p></li>
+</ul>
+</section>
+<section >
+<h3>モデルリリースパイプライン</h3>
+<ul class="simple">
+<li><p>訓練パイプラインで作ったモデルをAPIとしてサーブ</p></li>
+<li><p>blue-green deployment（<a class="reference external" href="https://tech.uzabase.com/entry/2018/11/26/110407">弊社テックブログ</a>）により、簡単に切り戻せる</p></li>
+</ul>
+</section>
+<section >
+<h3>課題設定ごとにパイプライン</h3>
+<ul class="simple">
+<li><p>企業の業界推定（マルチラベル分類）モデル <strong>訓練</strong> のパイプライン</p></li>
+<li><p>ニュースの企業紐付け（固有表現抽出）モデル <strong>訓練</strong> のパイプライン</p></li>
+<li><p>モデルをAPIとして <strong>リリース</strong> するパイプライン</p></li>
+</ul>
+</section>
+<section >
+<h3>パイプラインの中の実装</h3>
+<ul class="simple">
+<li><p>開発しているのは <strong>再利用可能な基本コンポーネント</strong></p></li>
+<li><p>IMO：ライブラリ開発に近い</p></li>
+</ul>
+</section>
+<section >
+<h3>基本コンポーネント開発</h3>
+<ul class="simple">
+<li><p>解きたい課題は無数に出てくる</p>
+<ul>
+<li><p>イメージ：企業・ニュース・業界 -&gt; ニュースの業界推定 (NEW!)</p></li>
+</ul>
+</li>
+<li><p><strong>データが違えば違う問題が解ける</strong> ようにしている</p></li>
+</ul>
+<aside class="notes">
+スライド19</aside>
+</section>
+<section >
+<h3>基本コンポーネントの利用</h3>
+<ul class="simple">
+<li><p>前述のパイプラインの各ジョブの実装</p></li>
+<li><p>モデルの精度を追い求めるR&amp;Dでも利用（パイプライン活用）</p></li>
+</ul>
+<aside class="notes">
+プロダクションコードと実験コードの一致という性質</aside>
+</section>
+</section>
+<section >
+<h2>閑話休題🍵 お前、誰よ（コミュニティ編）</h2>
+<ul class="simple">
+<li><p>特にPythonコミュニティで にっきー（nikkie） として知られる</p></li>
+<li><p>Python Conference JP 2021 座長</p></li>
+<li><p>最近は <a class="reference external" href="https://nikkie-ftnext.hatenablog.com/">毎日1エントリ</a> 書いてます（100日超えました🙌）</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>目指しているもの</h2>
+<ul class="simple">
+<li><p>「XPで取り組むMLOpsでこれを実現したい！」</p></li>
+<li><p>現時点のもの</p></li>
+</ul>
+</section>
+<section >
+<h3>再びのサークルオブライフ</h3>
+<figure class="align-default">
+<img alt="https://ronjeffries.com/xprog/what-is-extreme-programming/circles.jpg" src="https://ronjeffries.com/xprog/what-is-extreme-programming/circles.jpg" />
+</figure>
+</section>
+<section >
+<h3>プラクティス（<em>習慣</em>）「小さなリリース」</h3>
+<ul class="simple">
+<li><p>＝小さい（ごく小規模な）リリースを <strong>頻繁</strong> に</p></li>
+<li><p>サークルオブライフでは Small Releases （赤の円の下）</p></li>
+</ul>
+</section>
+<section >
+<h3>リリースしやすい状況を作れている！</h3>
+<ul class="simple">
+<li><p>パイプラインによりボタン1つでリリース</p></li>
+<li><p>リリースは開発で自由にできる。デプロイ（ユーザに届ける）はビジネス判断という切り分け</p></li>
+</ul>
+<p>「小さなリリース」の前提条件</p>
+</section>
+<section >
+<h3>小さなリリース＝継続的デリバリー</h3>
+<p>変更するたびに本番環境にコードをリリース</p>
+</section>
+<section >
+<h3>(今)目指している状態： <strong>CD4ML</strong></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://martinfowler.com/articles/cd4ml.html">Continuous Delivery for Machine Learning</a></p></li>
+<li><p>&quot;機械学習の継続的デリバリー&quot;</p></li>
+<li><p><a class="reference external" href="https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems">Hidden Technical Debt in Machine Learning Systems</a> (2015, Google) を受けて</p></li>
+</ul>
+</section>
+<section >
+<h3>私たちの考え</h3>
+<ul class="simple">
+<li><p>時間をかけてめちゃめちゃいいモデルを作ってデプロイは私たちはしない</p></li>
+<li><p>めちゃめちゃよくなくても、<strong>ビジネス価値のあるモデル</strong> ができ次第、デプロイ</p>
+<ul>
+<li><p>その後も良くしていく（評価指標がカイゼンしたらリリース）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>事例2 小さなリリース</h2>
+</section>
+<section >
+<h3>XPの価値の1つ：フィードバック</h3>
+<ul class="simple">
+<li><p>ゴールに近づくためにフィードバックを使う</p>
+<ul>
+<li><p>データを使って事業に価値を提供したい！</p></li>
+<li><p>でも、最初はそのやり方が、わかんない！</p></li>
+</ul>
+</li>
+</ul>
+<aside class="notes">
+『エクストリームプログラミング』4.3</aside>
+</section>
+<section >
+<h3>できるだけ <strong>多く</strong> のフィードバックを生み出す</h3>
+<ul class="simple">
+<li><p>かつ、できるだけ <strong>早く</strong></p></li>
+<li><p>プラクティス（<em>習慣</em>）：小さなリリース</p></li>
+</ul>
+<aside class="notes">
+参考 ベイビーステップ『エクストリームプログラミング』5.13</aside>
+</section>
+<section >
+<h3><strong>小さい単位</strong> でフィードバックを得る</h3>
+<ul class="simple">
+<li><p>小さい単位であれば、1回あたりは早く、繰り返すことで多く、フィードバックを得られる！</p></li>
+<li><p>フィードバックから <strong>学ぶ</strong> （学びが多いだけゴールに早く近づける！）</p></li>
+</ul>
+</section>
+<section >
+<h3>余談：イメージは勾配降下法</h3>
+<ul class="simple">
+<li><p>『継続的デリバリーのソフトウェア工学』4章（IMO：この本はアジャイル開発のすばらしい本！）</p></li>
+<li><p>小さく＝ <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> ？</p></li>
+</ul>
+</section>
+<section >
+<h3>プラクティスは練習で身につける！</h3>
+<ul class="simple">
+<li><p>小さなリリース＝ <strong>いつでもリリースできる</strong> ように開発を進める</p></li>
+<li><p>最初は全然うまくできませんでした（テスト駆動開発もペアプログラミングも全部）</p></li>
+</ul>
+</section>
+<section >
+<h3>例：ハイパーパラメタの探索</h3>
+<ul class="simple">
+<li><p>範囲を絞る➡️具体値と決めていく</p></li>
+<li><p>評価指標はすでに決めてある</p></li>
+</ul>
+</section>
+<section >
+<h3>範囲を絞ったら、そこでリリース！</h3>
+<ul class="simple">
+<li><p>実験して範囲が絞り込まれた（<code class="docutils literal notranslate"><span class="pre">10</span> <span class="pre">**</span> <span class="pre">-N</span></code>）</p></li>
+<li><p>評価指標から今リリースしているモデルよりよい（better）と言える</p></li>
+<li><p>そのハイパーパラメタでモデルを訓練してAPIリリース</p></li>
+</ul>
+</section>
+<section >
+<h3>リリースのタイミングを <strong>何回も</strong> 作った</h3>
+<ul class="simple">
+<li><p>範囲が決まった後は、評価指標の値がよりよくなる値を見つけ次第、再びリリース</p></li>
+<li><p>めちゃめちゃ時間をかけて探索して1回だけリリースという進め方はしませんでした</p></li>
+</ul>
+</section>
+<section >
+<h3>リリースのタイミングを何回も作った結果</h3>
+<ul class="simple">
+<li><p>範囲を探索してリリースした後、 <strong>具体値の探索はしていない</strong></p></li>
+<li><p>代わりに、より価値の高い開発へ移れた！</p></li>
+<li><p>小さなリリースのメリット：一部でも価値を届けた状態で <strong>方向転換</strong> もできる</p></li>
+</ul>
+</section>
+<section >
+<h3>参考：Release Early, Release Often</h3>
+<figure class="align-default">
+<img alt="https://www.jamesshore.com/images/art-of-agile/figs/release_planning__multiple_releases.gif" src="https://www.jamesshore.com/images/art-of-agile/figs/release_planning__multiple_releases.gif" />
+</figure>
+<p>『アートオブアジャイルデベロップメント』原著初版公開版より</p>
+<aside class="notes">
+図 https://www.jamesshore.com/v2/books/aoad1/release_planning</aside>
+</section>
+<section >
+<h3>別の例：<em>賢い</em> 小さい機能</h3>
+<ul class="simple">
+<li><p>小さい機能を一から作る</p></li>
+<li><p>機械学習を使うとうまく作れそう（賢さ）</p></li>
+<li><p>ユーザは社内</p></li>
+</ul>
+</section>
+<section >
+<h3>リリースのタイミングを <strong>何回も</strong> 作った</h3>
+<ul class="simple">
+<li><p>ルールベース + システム開発 で小さい機能を作りきってリリース</p></li>
+<li><p>単純なモデル + 訓練に使うコード を次に作ってルールベースを置き換えてリリース</p></li>
+<li><p>モデルもシステムも一度に全部作ることはしませんでした</p></li>
+</ul>
+</section>
+<section >
+<h3>ゼロから作る 機械学習を使った機能</h3>
+<ul class="simple">
+<li><p>一からシステム開発するのは重い</p></li>
+<li><p><strong>システムをまず作りきる</strong></p></li>
+<li><p>機械学習を使いたい部分は最初は優先度を下げてルールベース</p></li>
+</ul>
+<aside class="notes">
+Rules of MLのheuristic</aside>
+</section>
+<section >
+<h3>ルールベースから機械学習への切り替え</h3>
+<ul class="simple">
+<li><p>機械学習モデルのパイプラインの作成も重い</p></li>
+<li><p><strong>パイプラインを作り切る</strong> のを優先（モデルは優先度を下げて単純にする）</p></li>
+<li><p>ルールベースを置き換えることで、モデルをシステムに組み込むAPIも固まる</p></li>
+</ul>
+</section>
+<section >
+<h3>その後、複雑なモデルを試していき、性能が向上したら置き換える</h3>
+<ul class="simple">
+<li><p>小さく何度もリリース！</p></li>
+<li><p>複数回のリリースのオーバーヘッドより、リリースを繰り返したほうが早い（当社比）</p></li>
+</ul>
+</section>
+<section >
+<h3>小さなリリースをするための考え方のコツ</h3>
+<ul class="simple">
+<li><p>縦スライス（横スライスではなく）</p></li>
+<li><p>何回もやる</p></li>
+</ul>
+</section>
+<section >
+<h3>横スライス（賢い小さい機能を例に）</h3>
+<ul class="simple">
+<li><p>システム部分を作る</p></li>
+<li><p>単純な機械学習モデルを使う部分を作る</p></li>
+<li><p>部分ごとに作っていき、これらが <em>全部終わって初めてリリース</em> できる</p></li>
+</ul>
+</section>
+<section >
+<h3>縦スライス</h3>
+<ul class="simple">
+<li><p><strong>限定的なもの</strong> を作って繰り返しリリースするという考え方の転換</p></li>
+<li><p>各スライスはそれ単体でリリースできる（練習あるのみ！）</p>
+<ul>
+<li><p>モデルの性能を限定して、薄く全部作る（ルールベースや単純なモデル）</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>参考：横スライスと縦スライス</h3>
+<figure class="align-default">
+<img alt="https://www.jamesshore.com/images/art-of-agile/figs/release_planning__horizontal_and_vertical_stripes.gif" src="https://www.jamesshore.com/images/art-of-agile/figs/release_planning__horizontal_and_vertical_stripes.gif" />
+</figure>
+<aside class="notes">
+『アートオブアジャイルデベロップメント』8.2</aside>
+<aside class="notes">
+vertical stripes (AoAD2e)</aside>
+</section>
+<section >
+<h3>何回もやる（1周、2周、3周、...）</h3>
+<ul class="simple">
+<li><p>1周目はゼロから作るので重い。小さく絞る</p></li>
+<li><p>2周目以降は1周目でできているものが使える</p></li>
+</ul>
+</section>
+<section >
+<h3>何回もやる</h3>
+<ul class="simple">
+<li><p>2周目以降の生産性が上がるように意志を込めて選ぶ（例ではシステムを優先した）</p></li>
+<li><p>&quot;イテレーション&quot;＝反復するので、とくに序盤は <strong>常に次がある</strong> （何回も繰り返した末に完成すればいい）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>まとめ🌯：XPで取り組むMLOps</h2>
+<ul class="simple">
+<li><p>ユーザベースのデータサイエンティストのMLOps事例を共有</p></li>
+<li><p>XPのプラクティスを実践してMLOpsしています</p></li>
+</ul>
+</section>
+<section >
+<h3>日々の開発</h3>
+<ul class="simple">
+<li><p>XPのプラクティス：ペアプログラミング・テスト駆動開発・etc</p></li>
+<li><p>基本コンポーネント・パイプライン開発</p></li>
+</ul>
+</section>
+<section >
+<h3>小さなリリースの反復</h3>
+<ul class="simple">
+<li><p>フィードバックを頻繁に得て学びながら進みたい！</p></li>
+<li><p>ハイパーパラメタ探索や機械学習を使った機能開発で小さく何度もリリースした事例を共有</p></li>
+<li><p>(今)目指すもの：CD4ML</p></li>
+</ul>
+</section>
+<section >
+<h3>ご清聴ありがとうございました</h3>
+<ul class="simple">
+<li><p>なにかヒントがあったらとても嬉しいです</p></li>
+<li><p>プラクティスは裏の考え方（原則・価値）を知ると、読み替えやすいですよ〜（XP沼へようこそ）</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>Appendix</h2>
+<p>TODO: ここに参考文献リンク</p>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

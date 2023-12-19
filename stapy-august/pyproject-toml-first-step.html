@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>pyproject.toml の一歩目</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/stapy-august/pyproject-toml-first-step.html">
+    <meta property="og:title" content="pyproject.tomlの一歩目">
+    <meta property="og:description" content="2023/08 みんなのPython勉強会#96 LT">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/stapy-august-pyproject-toml.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> の一歩目</h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>みんなのPython勉強会#96 LT</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2023/08/17 nikkie</p>
+</dd>
+</dl>
+</section>
+<section >
+<h2>お前、誰よ</h2>
+<ul class="simple">
+<li><p><strong>にっきー</strong> ／ <span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext">&#64;ftnext</a> ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext">&#64;ftnext</a></p></li>
+<li><p>みんなのPython勉強会 4代目LT王子・スタッフ</p></li>
+<li><p>株式会社ユーザベースのデータサイエンティスト（<a class="reference external" href="https://hrmos.co/pages/uzabase/jobs/1829077236709650481">We're hiring!</a>）</p></li>
+</ul>
+</section>
+<section >
+<h2>このLTでは</h2>
+<ul class="simple">
+<li><p>まずPythonイベントのインフォメーションをお伝えします（コミュニティ盛り上がったらいいな〜）</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> について話します</p></li>
+</ul>
+</section>
+<section >
+<h2>ℹ️インフォメーションℹ️</h2>
+<ul class="simple">
+<li><p>10/7(土) <a class="reference external" href="https://djangocongress.jp/">Django Congress JP 2023</a> （プロポーザルが8/21(月)まで）</p></li>
+<li><p>10/26(木)〜29(日) <a class="reference external" href="https://2023-apac.pycon.jp/">PyCon APAC 2023</a></p></li>
+</ul>
+</section>
+<section >
+<h2>本編：<code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> の一歩目</h2>
+</section>
+<section>
+<section >
+<h2>ライブラリを自作したことある方？🙋‍♂️🙋‍♀️</h2>
+</section>
+<section >
+<h3>自作ライブラリの公開</h3>
+<ul class="simple">
+<li><p>PyPI</p></li>
+</ul>
+<pre data-id="id4"><code data-trim data-noescape class="shell">$ pip install kojo-fan-art</code></pre>
+<ul class="simple">
+<li><p>GitHubからも <strong class="command">pip install</strong> できる</p></li>
+</ul>
+</section>
+<section >
+<h3>GitHubから <strong class="command">pip install</strong> の例</h3>
+<pre data-id="github-pip-install"><code data-trim data-noescape class="shell">$ pip install git+https://github.com/karaage0703/unko</code></pre>
+<p>からあげさん <a class="reference external" href="https://zenn.dev/karaage0703/articles/db8c663640c68b">Pythonで自分だけのクソライブラリを作る方法</a></p>
+</section>
+<section >
+<h3>GitHubからインストールできる秘密</h3>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">setup.py</span></div>
+<pre><code data-trim data-noescape class="python">from setuptools import setup, find_packages
+
+setup(
+    name='unko',
+    version='0.1',
+    packages=find_packages()
+)</code></pre>
+</div>
+<p><a class="reference external" href="https://github.com/karaage0703/unko/blob/main/setup.py">https://github.com/karaage0703/unko/blob/main/setup.py</a></p>
+</section>
+</section>
+<section>
+<section >
+<h2>主張： <code class="file docutils literal notranslate"><span class="pre">setup.py</span></code> に代えて <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> がオススメ！</h2>
+</section>
+<section >
+<h3>nikkieと <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code></h3>
+<ul class="simple">
+<li><p>また新しいこと覚えなきゃいけないのか...（乗り気でない）</p></li>
+<li><p>Pythonコミュニティ的には <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> への移行が進んでる？（私、取り残されてる？）</p></li>
+<li><p>使ってみたら、学習コスト思ってたほど高くなかったし <strong>便利じゃん</strong>！</p></li>
+</ul>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> を使った自作ライブラリの公開</h3>
+<pre data-id="id5"><code data-trim data-noescape class="shell">$ pip install git+https://github.com/ftnext/unko</code></pre>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">setup.py</span></code> の代わりに <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code></h3>
+<pre data-id="id6"><code data-trim data-noescape class="toml">[project]
+name = &quot;unko&quot;
+version = &quot;0.1&quot;</code></pre>
+<p><a class="reference external" href="https://github.com/ftnext/unko/blob/main/pyproject.toml">https://github.com/ftnext/unko/blob/main/pyproject.toml</a></p>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> は後発な分、わかりやすい！</h3>
+<pre data-id="id7"><code data-trim data-noescape class="toml">[project]
+dependencies = [
+    &quot;httpx&quot;,
+]</code></pre>
+<p><code class="file docutils literal notranslate"><span class="pre">setup.py</span></code> では <code class="docutils literal notranslate"><span class="pre">install_requires</span></code></p>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> は後発な分、わかりやすい！</h3>
+<pre data-id="id8"><code data-trim data-noescape class="toml">[project.optional-dependencies]
+dev = [
+    &quot;pytest&quot;,
+]</code></pre>
+<p><code class="file docutils literal notranslate"><span class="pre">setup.py</span></code> では <code class="docutils literal notranslate"><span class="pre">extras_require</span></code> （<code class="docutils literal notranslate"><span class="pre">install_requires</span></code> と混乱しがちでした😵）</p>
+</section>
+</section>
+<section>
+<section >
+<h2><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> は <strong>ツールの設定も</strong> できる！</h2>
+<p>インストールできるようにするだけじゃない！</p>
+</section>
+<section >
+<h3>Python開発に使う各種ツール</h3>
+<ul class="simple">
+<li><p>Black（フォーマッタ）</p></li>
+<li><p>pytest（テストコード実行）</p></li>
+<li><p>mypy（型チェック）</p></li>
+<li><p>etc.etc.</p></li>
+</ul>
+</section>
+<section >
+<h3><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> でツールを設定！</h3>
+<ul class="simple">
+<li><p>Gunosyさん <a class="reference external" href="https://data.gunosy.io/entry/linter_option_on_pyproject">その設定、pyproject.tomlに全部書けます</a></p></li>
+<li><p>nikkieは <strong>taskipy</strong> を使ってます。6月LT <a class="reference external" href="https://ftnext.github.io/2023-slides/stapy-june/development-environment-with-taskipy.html">taskipyを使ったPython開発環境の一例</a></p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>まとめ🌯 <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> の一歩目</h2>
+<ul class="simple">
+<li><p><code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 便利なので、みんな使おう！</p></li>
+<li><p><strong>自作ライブラリ</strong> を公開するときは <code class="file docutils literal notranslate"><span class="pre">setup.py</span></code> に代えて使ってみては（分かりやすい！）</p></li>
+<li><p><strong>ツールの設定を書く</strong> 用途で導入もできます</p></li>
+</ul>
+</section>
+<section >
+<h3>ご清聴ありがとうございました</h3>
+<p>Enjoy Python with <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code>!</p>
+</section>
+</section>
+<section >
+<h2>Appendix</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/why-dont-you-write-pyproject-toml-instead-of-setup-py">Pythonで自作ライブラリを作るとき、setup.pyに代えてpyproject.tomlを使ってみませんか？</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/pyproject-toml-project-keys-and-examples">使ってみようpyproject.toml！ projectの設定に使う項目のみんなを紹介するぜ！！</a></p></li>
+</ul>
+</section>
+<section >
+<h2>EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

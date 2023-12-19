@@ -1,0 +1,381 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <title>ChatGPT、どれくらいヤバいかって言うとマジヤバい！</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" href="../_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ftnext">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ftnext.github.io/2023-slides/stapy-march/chatgpt-is-exciting.html">
+    <meta property="og:title" content="ChatGPT、どれくらいヤバいかって言うとマジヤバい！">
+    <meta property="og:description" content="2023/03 みんなのPython勉強会#91 10分トーク2本立て 1/2">
+    <meta property="og:image" content="https://ftnext.github.io/2023-slides/_static/ogps/stapy-march-chatgpt.png">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>ChatGPT、どれくらいヤバいかって言うとマジヤバい！</h1>
+<dl class="field-list simple">
+<dt class="field-odd">Event<span class="colon">:</span></dt>
+<dd class="field-odd"><p>みんなのPython勉強会#91</p>
+</dd>
+<dt class="field-even">Presented<span class="colon">:</span></dt>
+<dd class="field-even"><p>2023/03/16 nikkie</p>
+</dd>
+</dl>
+</section>
+<section >
+<h2>みなさん、ChatGPT、使ってます？</h2>
+<ul class="simple">
+<li><p>ほとんど知らない</p></li>
+<li><p>初心者レベル</p></li>
+<li><p>そこそこ使う</p></li>
+<li><p>がっつり使っている</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>お前、誰よ</h2>
+<ul class="simple">
+<li><p><strong>にっきー</strong> ／ <span class="fab fa-twitter"></span> <a class="reference external" href="https://twitter.com/ftnext">&#64;ftnext</a> ／ <span class="fab fa-github"></span> <a class="reference external" href="https://github.com/ftnext">&#64;ftnext</a></p></li>
+<li><p>株式会社ユーザベースのデータサイエンティスト</p></li>
+</ul>
+</section>
+<section >
+<h3>ChatGPTと一緒に考えたプロフィール</h3>
+<blockquote>
+<div><p>こんばんは、にっきーです！データサイエンティストをしているITエンジニアです。</p>
+</div></blockquote>
+<p><a class="reference external" href="https://startpython.connpass.com/event/270313/">https://startpython.connpass.com/event/270313/</a></p>
+</section>
+<section >
+<h3>私はアニメを流しながらコード <strong>書けません</strong></h3>
+<blockquote>
+<div><p>Pythonを使ったデータ分析には熱中しており、アニメを見ながらコードを書くのが日課です。</p>
+</div></blockquote>
+</section>
+<section >
+<h3>アニメネタはあってもアニメの話は <strong>しません</strong></h3>
+<blockquote>
+<div><p>今日は、Pythonとアニメについてお話しできることを楽しみにしています！</p>
+</div></blockquote>
+</section>
+</section>
+<section >
+<h2>間違いあったらごめんなさい🙏</h2>
+<ul class="simple">
+<li><p>今回紹介する内容はすべて検証できているわけではありません</p></li>
+<li><p>状況は刻一刻と変わり、すでに古くなっている可能性すらあります</p></li>
+<li><p>勉強会中チャットなどで、最新の情報を提供いただくのは <strong>大歓迎</strong> です！</p></li>
+</ul>
+</section>
+<section>
+<section >
+<h2>そもそも GPT って、何よ？</h2>
+<ul class="simple">
+<li><p><strong>G</strong> enerative <strong>P</strong> re-trained <strong>T</strong> ransformerの略</p></li>
+<li><p><em>言語生成</em></p></li>
+<li><p>Gigazine <a class="reference external" href="https://gigazine.net/news/20221206-chatgpt-users-1-million/">対話型チャットAI「ChatGPT」開始から1週間も経たないうちにユーザーが100万人を突破、そもそもChatGPTとは一体何なのか？</a></p></li>
+</ul>
+</section>
+<section >
+<h3>脱線 <strong>T</strong> ransformer</h3>
+<ul class="simple">
+<li><p>2017年の論文「 <a class="reference external" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> 」で提案</p></li>
+<li><p>Transformerを採用した機械学習モデルの1つが2018年発表の <em>BERT</em> 、自然言語処理の流れを変えた</p></li>
+<li><p>stapyでは <a class="reference external" href="https://startpython.connpass.com/event/248044/">2022/06の自然言語処理特集</a> でBERTを取り上げています（話しました🙋‍♂️）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>OpenAIによるGPTの開発</h2>
+<ul class="simple">
+<li><p>2018 GPT</p></li>
+<li><p>2019 GPT-2 続きの文章 <strong>生成</strong></p></li>
+<li><p>2020 GPT-3 コードも生成できる</p></li>
+</ul>
+<p><em>スケール則</em> （モデルパラメタ増で性能向上）</p>
+</section>
+<section >
+<h3>OpenAIの動き</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://openai.com/blog/chatgpt">2022/11/30 ChatGPT</a> 自然なチャット！</p></li>
+<li><p><a class="reference external" href="https://openai.com/blog/introducing-chatgpt-and-whisper-apis">2023/03/01 ChatGPT API</a></p></li>
+<li><p><a class="reference external" href="https://openai.com/research/gpt-4">2023/03/14 GPT-4</a></p></li>
+</ul>
+</section>
+<section >
+<h3>熱いのは、LLM（大規模言語モデル）</h3>
+<ul class="simple">
+<li><p>Transformer系のモデル（GPTやBERTなど）が <em>言語モデル</em> と呼ばれていた</p></li>
+<li><p>ChatGPTを機にLLMが潮流に</p></li>
+<li><p>ChatGPTだけでなく、 <strong>各社LLMを公開</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>Webのテキストで訓練されたモデル</h3>
+<ul class="simple">
+<li><p><strong>検索代わり</strong> にLLMに聞く（👉Googleはコードレッド）</p></li>
+<li><p>生成なので、 <strong>アイデア出し</strong> にも使えているらしい</p></li>
+<li><p>ただし、 <em>嘘を付く</em> （hallucination 妄想）</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>Singularity is here（おそらく）</h2>
+<p>安宅さん 時代局面を考える</p>
+</section>
+<section >
+<h3>十分に発達した科学技術は、 <strong>魔法</strong> と見分けがつかない</h3>
+<ul class="simple">
+<li><p>非常にインパクトが大きく不可逆な <strong>転換点が到来</strong> している印象（産業革命相当？）</p></li>
+<li><p>LLMがもたらすパラダイムシフト</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>この機に触り始めましょう</h2>
+<p>乗るしかない、このビッグウェーブ！🌊</p>
+</section>
+<section >
+<h3><a class="reference external" href="https://chat.openai.com/">https://chat.openai.com/</a> にアクセス</h3>
+<ul class="simple">
+<li><p><strong>OpenAIアカウントを作るだけ</strong> で使い始められます</p></li>
+<li><p>手順参考 <a class="reference external" href="https://gigazine.net/news/20221207-chatgpt-for-google/">https://gigazine.net/news/20221207-chatgpt-for-google/</a></p></li>
+<li><p>ぶっちゃけこのトーク聞くよりいろいろ試すほうが学びが多いかも</p></li>
+</ul>
+</section>
+<section >
+<h3>ちょっとデモ</h3>
+<p>以下の <em>プロンプト</em> を試す</p>
+<ul class="simple">
+<li><p>こんにちは</p></li>
+<li><p>みんなのPython勉強会にメッセージ</p></li>
+<li><p>キャラ付け（後述）</p></li>
+</ul>
+</section>
+<section >
+<h3>Web APIもあります</h3>
+<ul class="simple">
+<li><p>有料、ただし無料で使える範囲あり</p></li>
+<li><p>Pythonから使うライブラリ <a class="reference external" href="https://pypi.org/project/openai/">openai</a> も</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>使ってみました</h2>
+<ul class="simple">
+<li><p>この勉強会のプロフィール作成</p></li>
+<li><p>英訳</p></li>
+<li><p>他の言語（Java）のコードをPythonに翻訳</p></li>
+</ul>
+</section>
+<section >
+<h3>作ってみました</h3>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/DIL82INALDI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/my-first-shion-meets-chatgpt">AIの声を聴かせて（ChatGPTに耳と口を与えてアニメガタリ！）</a></p>
+</section>
+</section>
+<section>
+<section >
+<h2>nikkie的 マジヤバいポイント！</h2>
+<p>時間が許す限り共有です</p>
+</section>
+<section >
+<h3>1️⃣賢いBotが <strong>いとも簡単に</strong> 作れる！</h3>
+<ul class="simple">
+<li><p>裏をChatGPT APIにするだけ</p></li>
+<li><p>Slack、LINE、Teamsなど、サンプル豊富</p></li>
+<li><p>Amazon Echoなどの裏に置くだけで会話可能</p></li>
+</ul>
+</section>
+<section >
+<h3>キャラ付けできる！</h3>
+<ul class="simple">
+<li><p>「語尾に〇〇をつけて」をキープしたままやり取りできる</p></li>
+<li><p><em>プロンプトエンジニアリング</em> と呼ばれる</p></li>
+<li><p>👉プロンプトインジェクション（なんて命令されているかバラしちゃう）</p></li>
+</ul>
+</section>
+<section >
+<h3>AITuber（アイチューバー）爆誕</h3>
+<ul class="simple">
+<li><p>YouTuber -&gt; VTuber -&gt; <strong>AITuber</strong></p></li>
+<li><p>キャラ付け × 音声合成 = 誰でも作れる！！</p></li>
+<li><p><a class="reference external" href="https://note.com/hit_kam/n/n64162d96e3e9">AITuber育成完全入門（冴えないAITuberの育て方）</a></p></li>
+</ul>
+</section>
+<section >
+<h3>2️⃣自然言語処理のタスクをやってくれる！</h3>
+<ul class="simple">
+<li><p>1つのモデルで対応</p>
+<ul>
+<li><p>要約、英訳、キーワード抽出、など</p></li>
+</ul>
+</li>
+<li><p><strong>対話でお願い</strong> できる</p></li>
+</ul>
+</section>
+<section >
+<h3>ChatGPTを使った検索</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scrapbox.io/nishio/%E8%87%AA%E5%88%86%E3%81%AEScrapbox%E3%82%92ChatGPT%E3%81%AB%E3%81%A4%E3%81%AA%E3%81%84%E3%81%A0">Scrapbox</a>、 <a class="reference external" href="https://blog.sushi.money/entry/2023/03/10/190000">はてなブログ</a> など、コンテンツの蓄積とChatGPTをかけ合わせる</p></li>
+<li><p>埋め込み（Embedding）ベクトル、類似度</p></li>
+<li><p>ツール LangChain など</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>ChatGPT × プログラミング</h2>
+<ul class="simple">
+<li><p>再掲）他の言語（Java）のコードをPythonに翻訳</p>
+<ul>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/clean-craftsmanship-refactoring-example-java-to-python-with-chatgpt#4TreeSet%E3%81%AE%E6%9B%B8%E3%81%8D%E6%8F%9B%E3%81%88">「TreeSetってPythonでは何？」</a></p></li>
+</ul>
+</li>
+<li><p>ChatGPTに聞くのが <strong>初手</strong> になった印象</p></li>
+</ul>
+</section>
+<section >
+<h3>IMO：ChatGPTとの協同</h3>
+<ul class="simple">
+<li><p>なにかの技術に入門する際の相棒になりそう</p></li>
+<li><p>みんなWebで検索する <strong>エラーの解決</strong> の仕方を知っている</p></li>
+<li><p>コードを生成するので <strong>チュートリアル</strong> としても使える</p></li>
+</ul>
+</section>
+</section>
+<section>
+<section >
+<h2>まとめ🌯 ChatGPT、どれくらいヤバいかって言うとマジヤバい！</h2>
+<ul class="simple">
+<li><p>ChatGPTとできることを共有</p></li>
+<li><p>対話UIでいろんなことをお願いできる <strong>LLM激ヤバ</strong></p></li>
+<li><p>GPT-4も出て、これからどうなっちゃうの！？（ワクワク）</p></li>
+</ul>
+</section>
+<section >
+<h3>事例勉強会もあります</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hannari-python.connpass.com/event/276843/">2023/03/17 はんなりPythonさん</a></p></li>
+<li><p><a class="reference external" href="https://omoshiroai.connpass.com/event/277755/">2023/03/23 オモシロAIごった煮会</a></p></li>
+<li><p><a class="reference external" href="https://findy.connpass.com/event/276736/">2023/03/23 エンジニアリングに組み込んでみたらこうなりました LT大会</a></p></li>
+</ul>
+</section>
+<section >
+<h3>ご清聴ありがとうございました</h3>
+<p>2本立てDEトロピカれ！</p>
+</section>
+</section>
+<section>
+<section >
+<h2>References</h2>
+</section>
+<section >
+<h3>nikkieがキャッチアップに使った動画や資料</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/awaken-chatgpt-is-awesome">動画や資料でChatGPTのヤバさを遅ればせながら認識！ワクワクもんだぁ！</a></p>
+<ul>
+<li><p>Weekly Ochiai</p></li>
+<li><p><strong>松尾さん、安宅さん</strong> （自民党AIプロジェクトチーム）</p></li>
+<li><p>note深津さんによる使いこなし配信</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>おすすめ記事</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://tech.uzabase.com/entry/2023/03/15/120000">TypeScriptではじめるChatGPT API：入門から一歩進んだテクニックまで</a></p></li>
+<li><p>ChatGPTでできることが整理されました</p></li>
+<li><p>nikkieコメント <a class="reference external" href="https://b.hatena.ne.jp/entry/4733686220661498436/comment/nikkie-ftnext">プロンプトエンジニアリングによるキャラ付け、要約（長い文章には再帰）、埋め込みを使った質問応答のTypeScript例。外部システムとの連携では人とAIが協働して問題解決してる、熱い！Python例もChatGPTが変換してくれそう</a></p></li>
+</ul>
+</section>
+<section >
+<h3>nikkieが追っているもの</h3>
+<ul class="simple">
+<li><p>はてなブックマークで上がっている記事</p></li>
+<li><p>Twitter <a class="reference external" href="https://twitter.com/umiyuki_ai">うみゆきさん</a> <a class="reference external" href="https://twitter.com/jaguring1">小猫遊さん</a> <a class="reference external" href="https://twitter.com/karaage0703">からあげさん</a> などなど</p></li>
+<li><p>追いきれない！ お祭り感！！</p></li>
+</ul>
+</section>
+<section >
+<h3>nikkieのアウトプット</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/clean-craftsmanship-refactoring-example-java-to-python-with-chatgpt">『Clean Craftsmanship』のリファクタリングのJavaのコード例をPythonで書き換える（検索してやりきった後にChatGPTも試してみました）</a></p></li>
+<li><p><a class="reference external" href="https://nikkie-ftnext.hatenablog.com/entry/first-time-revchatgpt-as-of-2023-feb">非公式のChatGPT APIのラッパーライブラリrevChatGPTを触る</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<h2>EOF</h2>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs4/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs4/plugin/notes/notes.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+    {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: "none",
+        slideNumber: "c/t",
+    }
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,RevealNotes,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>
